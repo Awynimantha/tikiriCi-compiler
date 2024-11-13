@@ -9,6 +9,11 @@ public class Token {
         this.tokenType = tokenType;
         this.tokenValue = tokenValue;
     }
+
+    public Token(String tokenType, String tokenValue) {
+        this.tokenType = tokenType;
+        this.tokenValue = new TokenValue(tokenType, tokenValue);
+    }
     
     public String getTokenType() {
         return tokenType;

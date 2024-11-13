@@ -11,5 +11,8 @@ public class TokenType {
    public static String LEFT_BRACE = "{";
    public static String RIGHT_BRACE = "}"; 
    public static String SEMICOLON = ";";
+   public static String NULL = "null";
    public static String WHITESPACE = " ";
+   public static String [] TOKENS =  { CONSTANT, INTEGER, VOID, RETURN, 
+      LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON, IDENTIFIER};
 }
