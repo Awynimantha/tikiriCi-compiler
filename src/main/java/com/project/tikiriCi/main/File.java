@@ -11,22 +11,18 @@ public class File {
         this.location = location;
         try {
             this.content = new FileInputStream(location);
-
         } catch (FileNotFoundException e) {
             throw e;
-
         }
         
     }
 
     public FileInputStream getContent() {
         return content;
-
     } 
 
     public String getLocation() {
         return location;
-
     }
 
     
