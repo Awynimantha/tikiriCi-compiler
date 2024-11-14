@@ -43,6 +43,10 @@ public class Tokenizer {
                 prev = token;                
                 i = inputStream.read();
             }
+            token = LocalUtil.matchAllRegex(stringBuilder.toString());
+            if(token.getTokenType() != TokenType.NULL) {
+                tokens.add(token);
+            }
             return tokens;
         } catch(IOException e) {
             throw e;

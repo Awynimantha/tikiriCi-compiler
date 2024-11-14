@@ -26,7 +26,6 @@ public class LocalUtil {
         for (String type: TokenType.TOKENS) {
             if(regexpMatch(type, string)) {
                 token = new Token(type, new TokenValue(type, string));
-                System.out.println(string+"---"+type);
                 break;
             }
         }
