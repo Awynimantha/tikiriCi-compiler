@@ -27,23 +27,22 @@ public class Tokenizer {
             StringBuilder stringBuilder = new StringBuilder();
             Token prev = new Token(TokenType.NULL, "null");
             Token token;
-            i = inputStream.read();
             while(i!=-1){
                 stringBuilder.append((char) i);
                 token = LocalUtil.matchAllRegex(stringBuilder.toString());
                 if(token.getTokenType() == TokenType.NULL) {
                     stringBuilder = new StringBuilder();
-                    stringBuilder.append(i);
+                    if(((char)i) != TokenType.WHITESPACE){
+                        stringBuilder.append((char)i);
+                        token = LocalUtil.matchAllRegex(stringBuilder.toString());
+                    }
                     if(prev.getTokenType() != TokenType.NULL ){
                         tokens.add(prev);    
                     }
-                } else {
-                    prev = token;
-                }
+                } 
+                prev = token;                
                 i = inputStream.read();
             }
-            Token final_token = LocalUtil.matchAllRegex(stringBuilder.toString());
-            tokens.add(final_token);
             return tokens;
         } catch(IOException e) {
             throw e;
