@@ -1,42 +1,43 @@
 package com.project.tikiriCi.lexer;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Map;
 
-import com.project.tikiriCi.config.TokenType;
+import com.project.tikiriCi.main.File;
 import com.project.tikiriCi.main.Token;
-import com.project.tikiriCi.utility.LocalUtil;
 
 public class Lexer {
-    private InputStream inputStream;
-    
-    public Lexer(InputStream inputStream) {
-        this.inputStream = inputStream;
+    private String fileLocation;
+    private Tokenizer tokenizer;
+
+    public Lexer(String fileLocation) {
+        this.fileLocation = fileLocation;
+        this.tokenizer = new Tokenizer();
     }
 
-    public ArrayList<Token> tokenize() throws IOException{
-        try {
-            ArrayList<Token> tokens = new ArrayList<Token>();
-            int i;
-            StringBuilder stringBuilder = new StringBuilder();
-            Token prev = new Token(TokenType.NULL, "null");
-            Token token;
-            do{
-                i = inputStream.read();
-                stringBuilder.append((char) i);
-                token = LocalUtil.matchAllRegex(stringBuilder.toString());
-                if(token.getTokenType() == TokenType.NULL) {
-                    stringBuilder = new StringBuilder();
-                    tokens.add(token);    
-                } else {
-                    prev = token;
-                }
-            } while(i != -1);
-            return tokens;
-        } catch(IOException e) {
+    public ArrayList<Token> doLex() throws FileNotFoundException, IOException{
+        ArrayList<Token> tokens = null;
+        FileInputStream fileInputStream;
+        try{
+            File file = new File(fileLocation);
+            fileInputStream = file.getContent();
+            tokenizer.setInputStream(fileInputStream);
+        } catch(FileNotFoundException e) {
             throw e;
         }
+
+        try {
+            tokens = tokenizer.tokenize();
+            
+        } catch (IOException e) {
+            
+        }
+        
+        return tokens;
     }
+
+
+    
 }
