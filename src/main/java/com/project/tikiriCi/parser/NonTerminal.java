@@ -2,7 +2,12 @@ package com.project.tikiriCi.parser;
 
 import java.util.List;
 
-public class NonTerminal implements GrammerElement{
-    private String name;
-    private List<Derivation> derivations; 
+public class NonTerminal extends GrammerElement{
+
+    public NonTerminal(String name, List<Derivation> derivations) {
+        super(name, derivations,false);
+        
+    }
+
+   
 }

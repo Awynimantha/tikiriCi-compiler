@@ -9,12 +9,19 @@ public class Derivation {
     public Derivation(List<GrammerElement> grammerElements) {
         this.grammerElements = grammerElements;
     }
+    public Derivation(GrammerElement... grammerElements){
+        List<GrammerElement> list = new ArrayList<GrammerElement>();
+        for (GrammerElement grammerElement : grammerElements) {
+            list.add(grammerElement);
+        }
+        this.grammerElements = list;
+    }
 
     public Derivation() {
         this.grammerElements = new ArrayList<GrammerElement>();
     }
 
-    public void addElement(GrammerElement grammerElement) {
+    public void addGrammarElement(GrammerElement grammerElement) {
         grammerElements.add(grammerElement);
     }
 
