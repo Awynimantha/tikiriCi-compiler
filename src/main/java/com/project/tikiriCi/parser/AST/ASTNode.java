@@ -12,7 +12,7 @@ public class ASTNode {
         this.grammerElement = grammerElement;
         this.children = children;
     }
-    
+
     public GrammerElement getGrammerElement() {
         return grammerElement;
     }
@@ -27,6 +27,10 @@ public class ASTNode {
 
     public void setChildren(List<ASTNode> children) {
         this.children = children;
+    }
+
+    public void addChild(ASTNode astNode) {
+        this.children.add(astNode);
     }
 
 

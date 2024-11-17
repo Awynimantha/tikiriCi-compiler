@@ -2,21 +2,19 @@ package com.project.tikiriCi.parser;
 
 import java.util.List;
 
-import com.project.tikiriCi.config.TokenType;
-
 public class Terminal extends GrammerElement{
 
-    private TokenType tokenType;
-    public Terminal(String name, List<Derivation> derivations, boolean isTerminal, TokenType tokenType) {
-        super(name, derivations, isTerminal);
+    private String tokenType;
+    public Terminal(String name, List<Derivation> derivations,  String tokenType) {
+        super(name, derivations, true, tokenType);
         this.tokenType = tokenType;
     }
 
-    public TokenType getTokenType() {
+    public String getTokenType() {
         return tokenType;
     }
 
-    public void setTokenType(TokenType tokenType) {
+    public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
     }
     
