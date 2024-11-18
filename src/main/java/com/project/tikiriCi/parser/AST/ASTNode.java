@@ -1,5 +1,6 @@
 package com.project.tikiriCi.parser.AST;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.project.tikiriCi.parser.GrammerElement;
@@ -8,9 +9,9 @@ public class ASTNode {
     private GrammerElement grammerElement;
     private List<ASTNode> children;
     
-    public ASTNode(GrammerElement grammerElement, List<ASTNode> children) {
+    public ASTNode(GrammerElement grammerElement) {
         this.grammerElement = grammerElement;
-        this.children = children;
+        this.children = new ArrayList<ASTNode>() ;
     }
 
     public GrammerElement getGrammerElement() {
