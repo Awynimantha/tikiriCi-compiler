@@ -11,8 +11,9 @@ public class TokenType {
    public static String LEFT_BRACE = "^\\{(?!\\n)$";
    public static String RIGHT_BRACE = "^\\}(?!\\n)$"; 
    public static String SEMICOLON = "^;(?!\\n)$";
+   public static String TYPE = "^int\\b(?!\\n)$";
    public static String NULL = "null";
    public static char WHITESPACE =  ' ';
-   public static String [] TOKENS =  { CONSTANT, INTEGER, VOID, RETURN, 
+   public static String [] TOKENS =  { TYPE,CONSTANT, INTEGER, VOID, RETURN, 
       LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON, IDENTIFIER};
 }
