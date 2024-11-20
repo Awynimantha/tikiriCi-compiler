@@ -7,7 +7,7 @@ import com.project.tikiriCi.parser.NonTerminal;
 import com.project.tikiriCi.parser.Terminal;
 
 public class Grammar {
-   public static Terminal INT = new Terminal("integer",  TokenType.INTEGER);
+   public static Terminal INT = new Terminal("integer",  TokenType.CONSTANT);
 
    public static Terminal IDENTIFIER = new Terminal("identifier", TokenType.IDENTIFIER);
 

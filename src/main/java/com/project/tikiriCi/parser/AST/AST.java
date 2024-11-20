@@ -36,15 +36,17 @@ public class AST {
                     parseElment(astNode);
                 }
             }    
-
         }
     }
 
     private void consumeTerminal(List<Token> tokens, GrammerElement grammerElement) {
         int firstIndex = 0;
         Token firstToken = tokens.get(firstIndex);
+        //System.out.println(grammerElement.getTokenType()+"------"+firstToken.getTokenType());
         if(grammerElement.getTokenType() == firstToken.getTokenType()){
             tokens.remove(firstIndex);
+        } else{
+             System.out.println("Error--------------------");
         }
 
     }
