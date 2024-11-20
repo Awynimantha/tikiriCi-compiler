@@ -2,16 +2,18 @@ package com.project.tikiriCi.bytecode_gen;
 
 import org.objectweb.asm.ClassWriter;
 
-public class Program {
+public class Program extends BytecodeComp{
     private ClassWriter classWriter;
-    private MainClass mainClass;
     
     public Program(MainClass mainClass) {
-        this.classWriter = mainClass.getClassWriter();
-        this.mainClass = mainClass;
+        this.classWriter = new ClassWriter(0);
+        writeToClassWriter();
     }
 
-    public void generateProgram() {
-        //write bytecode
+    public void writeToClassWriter() {
+    }
+
+    public ClassWriter getClassWriter() {
+        return this.classWriter;
     }
 }

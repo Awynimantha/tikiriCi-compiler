@@ -1,19 +1,31 @@
 package com.project.tikiriCi.bytecode_gen;
 
+import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
-import com.project.tikiriCi.bytecode_gen.method_instruction.Instruction;
-
-public class Method {
+public class Method extends BytecodeComp{
     private ClassWriter classWriter;
-    private Instruction instruction;
-    public Method(Instruction instruction) {
-        this.classWriter = instruction.getClassWriter();
-        this.instruction = instruction;
+    private MethodVisitor methodVisitor;
+    
+    public Method(MainClass mainClass) {
+        this.classWriter = mainClass.getClassWriter();
+        writeToClassWriter();
+    }
+
+    public MethodVisitor getMethodVisitor() {
+        return this.methodVisitor;
     }
 
     public ClassWriter getClassWriter() {
         return this.classWriter;
+    }
+
+    @Override
+    public void writeToClassWriter() {
+        MethodVisitor mainMethod = classWriter.visitMethod(ACC_PUBLIC + ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
+        this.methodVisitor = mainMethod;
+        
     }
 
     

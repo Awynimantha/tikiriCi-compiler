@@ -1,20 +1,33 @@
 package com.project.tikiriCi.bytecode_gen;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import static org.objectweb.asm.Opcodes.*;
 
-public class MainClass {
+public class MainClass extends BytecodeComp{
     private ClassWriter classWriter;
-    private Method method;
 
-    public MainClass(Method method) {
-        this.classWriter = method.getClassWriter();
-        this.method = method;
+    public MainClass(Program program) {
+        this.classWriter = program.getClassWriter();
     }
 
     public ClassWriter getClassWriter() {
         return classWriter;
     }
 
+    @Override
+    public void writeToClassWriter() {
+        classWriter.visit(V1_8, ACC_PUBLIC, "Main", null, "java/lang/Object", null);
+        MethodVisitor constructor = classWriter.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+        constructor.visitCode();
+        constructor.visitVarInsn(ALOAD, 0); // Load "this"
+        constructor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false); // Call super()
+        constructor.visitInsn(RETURN); // Return
+        constructor.visitMaxs(1, 1);
+        constructor.visitEnd();
+    }
+
+    
     
 
 }
