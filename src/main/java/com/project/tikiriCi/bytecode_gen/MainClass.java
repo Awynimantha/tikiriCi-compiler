@@ -5,10 +5,14 @@ import org.objectweb.asm.ClassWriter;
 public class MainClass {
     private ClassWriter classWriter;
     private Method method;
-    
-    public MainClass(ClassWriter classWriter, Method method) {
-        this.classWriter = classWriter;
+
+    public MainClass(Method method) {
+        this.classWriter = method.getClassWriter();
         this.method = method;
+    }
+
+    public ClassWriter getClassWriter() {
+        return classWriter;
     }
 
     

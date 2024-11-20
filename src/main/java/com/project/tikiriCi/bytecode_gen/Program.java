@@ -7,7 +7,7 @@ public class Program {
     private MainClass mainClass;
     
     public Program(MainClass mainClass) {
-        this.classWriter = mainClass.getClassWrite();
+        this.classWriter = mainClass.getClassWriter();
         this.mainClass = mainClass;
     }
 
