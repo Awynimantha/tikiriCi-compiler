@@ -1,7 +1,5 @@
 package com.project.tikiriCi.bytecode_gen.method_instruction;
 
-import org.objectweb.asm.MethodVisitor;
-
 import com.project.tikiriCi.bytecode_gen.Method;
 
 public class Return extends Instruction {
@@ -13,7 +11,7 @@ public class Return extends Instruction {
 
     @Override
     public void writeToClassWriter() {
-       
+        
     }
 
  

@@ -9,6 +9,7 @@ public class MainClass extends BytecodeComp{
 
     public MainClass(Program program) {
         this.classWriter = program.getClassWriter();
+        writeToClassWriter();
     }
 
     public ClassWriter getClassWriter() {
