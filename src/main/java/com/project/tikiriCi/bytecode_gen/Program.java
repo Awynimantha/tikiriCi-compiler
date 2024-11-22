@@ -6,7 +6,8 @@ public class Program extends BytecodeComp{
     private ClassWriter classWriter;
     
     public Program(MainClass mainClass) {
-        this.classWriter = new ClassWriter(0);
+        this.classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES 
+        | ClassWriter.COMPUTE_MAXS);
         writeToClassWriter();
     }
 
