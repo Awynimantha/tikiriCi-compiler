@@ -5,7 +5,8 @@ import org.objectweb.asm.ClassWriter;
 public class Program extends BytecodeComp{
     private ClassWriter classWriter;
     
-    public Program(MainClass mainClass) {
+    public Program(MainClass mainClass, String treeNodeType) {
+        super(treeNodeType);
         this.classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES 
         | ClassWriter.COMPUTE_MAXS);
         writeToClassWriter();

@@ -7,7 +7,8 @@ import static org.objectweb.asm.Opcodes.*;
 public class MainClass extends BytecodeComp{
     private ClassWriter classWriter;
 
-    public MainClass(Program program) {
+    public MainClass(Program program, String treeNodeType) {
+        super(treeNodeType);
         this.classWriter = program.getClassWriter();
         writeToClassWriter();
     }

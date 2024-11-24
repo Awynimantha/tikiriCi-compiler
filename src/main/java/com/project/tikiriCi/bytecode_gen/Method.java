@@ -8,7 +8,8 @@ public class Method extends BytecodeComp{
     private ClassWriter classWriter;
     private MethodVisitor methodVisitor;
     
-    public Method(MainClass mainClass) {
+    public Method(MainClass mainClass, String treeNodeType) {
+        super(treeNodeType);
         this.classWriter = mainClass.getClassWriter();
         writeToClassWriter();
     }
@@ -23,15 +24,9 @@ public class Method extends BytecodeComp{
 
     @Override
     public void writeToClassWriter() {
-        MethodVisitor mainMethod = classWriter.visitMethod(ACC_PUBLIC + ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
+        MethodVisitor mainMethod = classWriter.visitMethod(ACC_PUBLIC + ACC_STATIC, "main", 
+            "([Ljava/lang/String;)I", null, null);
         this.methodVisitor = mainMethod;
-        mainMethod.visitCode();
-        mainMethod.visitInsn(ICONST_9); // Push the constant 9 onto the stack
-        mainMethod.visitMethodInsn(INVOKESTATIC, "java/lang/System", "exit", "(I)V", false); // Call System.exit(9)
-        mainMethod.visitInsn(RETURN); // Return void
-        mainMethod.visitMaxs(1, 1); // Specify stack and local variables
-        mainMethod.visitEnd();
-        classWriter.visitEnd();
         
     }
 

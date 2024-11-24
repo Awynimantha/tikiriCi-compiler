@@ -29,26 +29,33 @@ public class AST {
         for (Derivation derivation : derivations) {
             for (GrammerElement grammerElement : derivation.getGrammarElements()) {
                 ASTNode astNode = new ASTNode(grammerElement);
-                node.addChild(astNode);
                 if(grammerElement.getIsTerminal()){
+                    if(grammerElement.isASTNode()){
+                        node.addChild(astNode);
+                    }
                     consumeTerminal(this.tokens, grammerElement);
+
                 } else {
+                    node.addChild(astNode);
                     parseElment(astNode);
                 }
             }    
         }
     }
 
-    private void consumeTerminal(List<Token> tokens, GrammerElement grammerElement) {
+    private ASTNode consumeTerminal(List<Token> tokens, GrammerElement grammerElement) {
+        ASTNode astNode = new ASTNode();
         int firstIndex = 0;
         Token firstToken = tokens.get(firstIndex);
         //System.out.println(grammerElement.getTokenType()+"------"+firstToken.getTokenType());
         if(grammerElement.getTokenType() == firstToken.getTokenType()){
+            grammerElement.setValue(firstToken.getTokenValue().getStringValue());
+            astNode = new ASTNode(grammerElement);
             tokens.remove(firstIndex);
         } else{
              System.out.println("Error--------------------");
         }
-
+        return astNode;
     }
 
     public void traverse() {
@@ -59,7 +66,12 @@ public class AST {
     public void traverseNode(ASTNode astNode) {
         List<ASTNode> children = astNode.getChildren();
         for (ASTNode child : children) {
-            System.out.println(child.getGrammerElement().getName());
+            GrammerElement grammerElement = child.getGrammerElement();
+            if(grammerElement.getIsTerminal()){
+                System.out.println(child.getGrammerElement().getName()+"--->"+child.getGrammerElement().getValue());
+            }   else {
+                System.out.println(child.getGrammerElement().getName());
+            }
             traverseNode(child);
         }
 

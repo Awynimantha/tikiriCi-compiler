@@ -1,29 +1,39 @@
 package com.project.tikiriCi.bytecode_gen.method_instruction;
 
-import java.lang.invoke.MethodHandle;
-
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 import com.project.tikiriCi.bytecode_gen.BytecodeComp;
+import com.project.tikiriCi.config.TreeNodeType;
+
+
 
 public abstract class Instruction extends BytecodeComp{
-    private ClassWriter classWriter;
     private MethodVisitor methodVisitor;
-
-    public Instruction(MethodVisitor methodVisitor) {
-        this.classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+    private ClassWriter classWriter;
+   
+    public Instruction(MethodVisitor methodVisitor, ClassWriter classWriter, String treeNodeType) {
+        super(treeNodeType);
         this.methodVisitor = methodVisitor;
+        this.classWriter = classWriter;
     }
 
     public ClassWriter getClassWriter() {
-        return this.classWriter;
+        return classWriter;
     }
 
-    public void writeToClass() {
-
+    public void setClassWriter(ClassWriter classWriter) {
+        this.classWriter = classWriter;
     }
 
-
+    public abstract void writeToMethodVisitor();
     
+    public void writeToClassWriter() {
+        //no class writer
+    }
+
+    public MethodVisitor getMethodVisitor() {
+        return this.methodVisitor;
+    }
+   
 }

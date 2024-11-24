@@ -9,14 +9,30 @@ public abstract  class GrammerElement {
     private List<Derivation> derivations;
     private String tokenType;  
     private Boolean isTerminal; 
+    private boolean isASTNode;
+    private String value;
     
-    public GrammerElement(String name, List<Derivation> derivations, boolean isTerminal, String tokenType) {
+    
+    public GrammerElement(String name, List<Derivation> derivations, boolean isTerminal, String tokenType, Boolean isASTNode) {
         this.name = name;
         this.derivations = derivations;
         this.isTerminal = isTerminal;
         this.tokenType = tokenType;
+        this.isASTNode = isASTNode;
     } 
     
+    public boolean isASTNode() {
+        return isASTNode;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     public String getTokenType() {
         return tokenType;
     }
