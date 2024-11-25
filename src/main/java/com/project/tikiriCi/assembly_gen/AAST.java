@@ -30,6 +30,7 @@ public class AAST {
     }
 
     public void traverseNode(ASTNode astNode, AASTNode aastNode) {
+        // AST node children is needed to create the AAST node in the tree
         GrammerElement grammerElement = astNode.getGrammerElement();
         if(grammerElement.getName() == TreeNodeType.FUNCTION){
             String functionName = astNode.popChild(0).getGrammerElement().getValue();
