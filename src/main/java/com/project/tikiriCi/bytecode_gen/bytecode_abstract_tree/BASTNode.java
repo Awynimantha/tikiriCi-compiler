@@ -2,13 +2,11 @@ package com.project.tikiriCi.bytecode_gen.bytecode_abstract_tree;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.project.tikiriCi.bytecode_gen.BytecodeComp;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class BASTNode {
     private GrammerElement grammerElement;
     private List<BASTNode> children;
-    private BytecodeComp bytecodeComp;
 
     public BASTNode() {
         this.children = new ArrayList<BASTNode>();
@@ -34,14 +32,5 @@ public class BASTNode {
     public void setChildren(List<BASTNode> children) {
         this.children = children;
     }
-
-    public BytecodeComp getBytecodeComp() {
-        return bytecodeComp;
-    }
-
-    public void setBytecodeComp(BytecodeComp bytecodeComp) {
-        this.bytecodeComp = bytecodeComp;
-    }
-
     
 }

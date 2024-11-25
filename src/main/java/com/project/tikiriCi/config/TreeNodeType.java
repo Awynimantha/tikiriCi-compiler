@@ -6,5 +6,6 @@ public class TreeNodeType {
     public static String RETURN = "return";
     public static String EXPRESSION = "expression";
     public static String STATEMENT = "statement";
+    public static String INTEGER = "integer";
     
 }

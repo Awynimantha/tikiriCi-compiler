@@ -1,7 +1,5 @@
 package com.project.tikiriCi.bytecode_gen;
 
-import com.project.tikiriCi.config.TreeNodeType;
-
 public abstract class BytecodeComp {
     private String treeNodeType;
 

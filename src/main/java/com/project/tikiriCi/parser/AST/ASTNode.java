@@ -37,6 +37,12 @@ public class ASTNode {
         this.children.add(astNode);
     }
 
+    public ASTNode popChild(int index) {
+        ASTNode astNode = children.get(index);
+        children.remove(index);
+        return astNode;
+    }
+
 
     
 }

@@ -8,22 +8,22 @@ import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class AST {
-    private ASTNode ASTRoot;
+    private ASTNode ASTRoot;  
     private List<Token> tokens;
-
+    
     public AST(List<Token> tokens) {
         //always start with start symbol
         ASTNode startNode = new ASTNode(Grammar.START);
         this.ASTRoot = startNode;
         this.tokens = tokens;
     }
-
+    
     public void createAST() {
-       ASTNode node = this.ASTRoot;
-       parseElment(node);
-
+        ASTNode node = this.ASTRoot;
+        parseElment(node);
+        
     } 
-
+    
     public void parseElment(ASTNode node) {
         List<Derivation> derivations = node.getGrammerElement().getDerivation();
         for (Derivation derivation : derivations) {
@@ -34,13 +34,17 @@ public class AST {
                         node.addChild(astNode);
                     }
                     consumeTerminal(this.tokens, grammerElement);
-
+                    
                 } else {
                     node.addChild(astNode);
                     parseElment(astNode);
                 }
             }    
         }
+    }
+
+    public ASTNode getASTRoot() {
+        return ASTRoot;
     }
 
     private ASTNode consumeTerminal(List<Token> tokens, GrammerElement grammerElement) {
