@@ -1,11 +1,14 @@
 package com.project.tikiriCi.assembly_gen.elements;
 
 import com.project.tikiriCi.assembly_gen.AASTNode;
+import com.project.tikiriCi.config.TreeNodeType;
+import com.project.tikiriCi.parser.GrammerElement;
 
-public class AssInteger extends AASTNode implements AssExpression{
+public class AssInteger extends AssExpression{
     private String  value;
     
-    public AssInteger(String value) {
+    public AssInteger(GrammerElement grammerElement, String value) {
+        super(TreeNodeType.INTEGER,grammerElement);
         this.value = value;
     }
     

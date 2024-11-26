@@ -3,6 +3,7 @@ package com.project.tikiriCi.assembly_gen.assembly_script;
 import com.project.tikiriCi.assembly_gen.AASTNode;
 import com.project.tikiriCi.assembly_gen.elements.AssExpression;
 import com.project.tikiriCi.assembly_gen.elements.AssInteger;
+import com.project.tikiriCi.assembly_gen.elements.AssReturn;
 import com.project.tikiriCi.config.TreeNodeType;
 
 public class ReturnAssembly extends AssemblyCodeComp {
@@ -14,9 +15,11 @@ public class ReturnAssembly extends AssemblyCodeComp {
     }
 
     public String generateAssembly() {
-        AssInteger assInteger = (AssInteger) astNode;
-        if(astNode.getGrammerElement().getName() == TreeNodeType.INTEGER) {
-            return String.format("  mov rax, %d \n mov rdi, rax \n mov rax, 60 \n syscall \n", assInteger.getGrammerElement().getValue());
+        AssReturn assReturn = (AssReturn) astNode;
+        AssExpression assExpression = assReturn.getAssExpression();
+        if(assExpression.getTreeNodeType() == TreeNodeType.INTEGER) {
+            AssInteger assInteger =  (AssInteger)assExpression;
+            return String.format("  mov rax, %s \n mov rdi, rax \n mov rax, 60 \n syscall \n", assInteger.getGrammerElement().getValue());
         }
         return "";
     }

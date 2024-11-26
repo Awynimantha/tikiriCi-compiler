@@ -22,6 +22,7 @@ public class Lexer {
         FileInputStream fileInputStream;
         try{
             File file = new File(fileLocation);
+            file.readFile();
             fileInputStream = file.getContent();
             tokenizer.setInputStream(fileInputStream);
         } catch(FileNotFoundException e) {

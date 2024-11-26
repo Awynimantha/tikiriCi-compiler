@@ -19,6 +19,10 @@ public class AssReturn extends AssInstruction{
         this.treeNodeType = treeNodeType;
     }
 
+    public AssExpression getAssExpression() {
+        return this.assExpression;
+    }
+
 
     
 }

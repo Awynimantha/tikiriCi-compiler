@@ -18,6 +18,8 @@ public class AssemblyScript {
     public AssemblyScript(String name, String location, AAST aAST) {
         this.name = name;
         this.location = location;
+        this.aAST = aAST;
+        this.content = "";
     }
 
     public void addContent(String content) {
@@ -26,6 +28,7 @@ public class AssemblyScript {
 
     public void writeToScript() throws FileNotFoundException{
         File file = new File(this.location);
+        traverse();
         file.setWriteContent(content);
         try {
             file.writeToFile();
@@ -39,11 +42,11 @@ public class AssemblyScript {
     }
 
     public void traverseNode(AASTNode aastNode){
+        AssemblyCodeComp assemblyCodeComp = new AssemblyCodeBuilder(aastNode).getassemblyCodeComp();
+        content = content + assemblyCodeComp.generateAssembly();
         List<AASTNode> children = aastNode.getChildren();
         for (AASTNode node : children) {
             traverseNode(node);
-            AssemblyCodeComp assemblyCodeComp = new AssemblyCodeBuilder(node).getassemblyCodeComp();
-            content.concat(assemblyCodeComp.generateAssembly());
 
         }
     }

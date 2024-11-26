@@ -48,7 +48,7 @@ public class AAST {
             ASTNode intNode = expNode.popChild();
             if(retNode.getGrammerElement().getName() == TreeNodeType.RETURN){
                 if(intNode.getGrammerElement().getName() == TreeNodeType.INTEGER){
-                    AssInteger assInteger = new AssInteger(retNode.getGrammerElement().
+                    AssInteger assInteger = new AssInteger(intNode.getGrammerElement(),intNode.getGrammerElement().
                             getValue());
                     AssReturn assReturn = new AssReturn(assInteger,retNode.getGrammerElement());
                     aastNode.addChildren(assReturn);
