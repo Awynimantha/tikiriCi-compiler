@@ -13,7 +13,7 @@ public class AST {
     
     public AST(List<Token> tokens) {
         //always start with start symbol
-        ASTNode startNode = new ASTNode(Grammar.START);
+        ASTNode startNode = new ASTNode(Grammar.PROGRAM);
         this.ASTRoot = startNode;
         this.tokens = tokens;
     }
@@ -69,7 +69,7 @@ public class AST {
 
     public void traverseNode(ASTNode astNode) {
         List<ASTNode> children = astNode.getChildren();
-        for (ASTNode child : children) {
+        for (ASTNode child : children) {        
             GrammerElement grammerElement = child.getGrammerElement();
             if(grammerElement.getIsTerminal()){
                 System.out.println(child.getGrammerElement().getName()+"--->"+child.getGrammerElement().getValue());

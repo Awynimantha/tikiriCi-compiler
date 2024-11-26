@@ -2,6 +2,7 @@ package com.project.tikiriCi;
 
 import java.util.ArrayList;
 
+import com.project.tikiriCi.assembly_gen.AAST;
 import com.project.tikiriCi.lexer.Lexer;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.Parser;
@@ -21,8 +22,9 @@ public class Main
         Parser parser = new Parser(tokens);
         parser.parse();
         AST ast = parser.getAST();
-        ast.traverse();
-        
+        AAST aast =  new AAST();
+        aast.createAAST(ast);
+        aast.traverseTree(); 
        } catch (Exception e) {
             e.printStackTrace();
        }

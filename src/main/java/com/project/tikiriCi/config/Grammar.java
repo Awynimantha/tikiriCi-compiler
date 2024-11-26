@@ -35,7 +35,7 @@ public class Grammar {
       )
    ), TokenType.NULL); 
 
-   public static NonTerminal START = new NonTerminal(TreeNodeType.PROGRAM, Arrays.asList(
+   public static NonTerminal PROGRAM = new NonTerminal(TreeNodeType.PROGRAM, Arrays.asList(
       new Derivation(FUNCTION)  
    ), TokenType.NULL);
 

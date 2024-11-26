@@ -1,8 +1,10 @@
 package com.project.tikiriCi.assembly_gen;
 
+import com.project.tikiriCi.assembly_gen.elements.AssExpression;
 import com.project.tikiriCi.assembly_gen.elements.AssFunction;
 import com.project.tikiriCi.assembly_gen.elements.AssInteger;
 import com.project.tikiriCi.assembly_gen.elements.AssProgram;
+import com.project.tikiriCi.assembly_gen.elements.AssReturn;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.config.TreeNodeType;
 import com.project.tikiriCi.parser.GrammerElement;
@@ -33,21 +35,23 @@ public class AAST {
         // AST node children is needed to create the AAST node in the tree
         GrammerElement grammerElement = astNode.getGrammerElement();
         if(grammerElement.getName() == TreeNodeType.FUNCTION){
-            String functionName = astNode.popChild(0).getGrammerElement().getValue();
-            String functionType = astNode.popChild(1).getGrammerElement().getValue();
+            String functionName = astNode.popChild().getGrammerElement().getValue();
             AssFunction assFunction = new AssFunction(astNode.getGrammerElement(), 
-                functionType, functionName);
+                "", functionName);
             aastNode.addChildren(assFunction);
             for (ASTNode node : astNode.getChildren()) {
                 traverseNode(node, assFunction);
             }
         } else if(grammerElement.getName() == TreeNodeType.STATEMENT){
-            ASTNode aNode = astNode.popChild(0);
-            if(aNode.getGrammerElement().getName() == TreeNodeType.RETURN){
-                if(aNode.getGrammerElement().getName() == TreeNodeType.INTEGER){
-                    AssInteger assInteger = new AssInteger(aNode.getGrammerElement().
+            ASTNode retNode = astNode.popChild();
+            ASTNode expNode = astNode.popChild();
+            ASTNode intNode = expNode.popChild();
+            if(retNode.getGrammerElement().getName() == TreeNodeType.RETURN){
+                if(intNode.getGrammerElement().getName() == TreeNodeType.INTEGER){
+                    AssInteger assInteger = new AssInteger(retNode.getGrammerElement().
                             getValue());
-                    aastNode.addChildren(assInteger);
+                    AssReturn assReturn = new AssReturn(assInteger,retNode.getGrammerElement());
+                    aastNode.addChildren(assReturn);
                     for (ASTNode node : astNode.getChildren()) {
                         traverseNode(node, assInteger);
                         
@@ -59,6 +63,17 @@ public class AAST {
                 traverseNode(node, aastNode);
 
             }
+        }
+    }
+
+    public void traverseTree(){
+        traverse(root);
+    }
+
+    public void traverse(AASTNode aastNode) {
+        System.out.println(aastNode.getAASTNodeType());
+        for (AASTNode node : aastNode.getChildren()) {
+            traverse(node);
         }
     }
 
