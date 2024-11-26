@@ -1,6 +1,5 @@
 package com.project.tikiriCi.assembly_gen.elements;
 
-import com.project.tikiriCi.config.TreeNodeType;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class AssReturn extends AssInstruction{
