@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import com.project.tikiriCi.main.File;
 import com.project.tikiriCi.main.Token;
-
+// 
 public class Lexer {
     private String fileLocation;
     private Tokenizer tokenizer;
@@ -28,14 +28,11 @@ public class Lexer {
         } catch(FileNotFoundException e) {
             throw e;
         }
-
         try {
-            tokens = tokenizer.tokenize();
-            
+            tokens = tokenizer.tokenize();           
         } catch (IOException e) {
             
-        }
-        
+        }    
         return tokens;
     }
 

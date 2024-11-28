@@ -12,7 +12,6 @@ public class AST {
     private List<Token> tokens;
     
     public AST(List<Token> tokens) {
-        //always start with start symbol
         ASTNode startNode = new ASTNode(Grammar.PROGRAM);
         this.ASTRoot = startNode;
         this.tokens = tokens;
@@ -33,8 +32,7 @@ public class AST {
                     if(grammerElement.isASTNode()){
                         node.addChild(astNode);
                     }
-                    consumeTerminal(this.tokens, grammerElement);
-                    
+                    consumeTerminal(this.tokens, grammerElement);                   
                 } else {
                     node.addChild(astNode);
                     parseElment(astNode);
@@ -51,7 +49,6 @@ public class AST {
         ASTNode astNode = new ASTNode();
         int firstIndex = 0;
         Token firstToken = tokens.get(firstIndex);
-        //System.out.println(grammerElement.getTokenType()+"------"+firstToken.getTokenType());
         if(grammerElement.getTokenType() == firstToken.getTokenType()){
             grammerElement.setValue(firstToken.getTokenValue().getStringValue());
             astNode = new ASTNode(grammerElement);
@@ -78,8 +75,6 @@ public class AST {
             }
             traverseNode(child);
         }
-
-
     }
 
     
