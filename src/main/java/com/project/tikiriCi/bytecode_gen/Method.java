@@ -9,8 +9,8 @@ public class Method extends BytecodeComp{
     private MethodVisitor methodVisitor;
     private String methodName;
        
-    public Method(MainClass mainClass, String treeNodeType) {
-        super(treeNodeType);
+    public Method(MainClass mainClass, String ASTNodeType) {
+        super(ASTNodeType);
         this.classWriter = mainClass.getClassWriter();
         writeToClassWriter();
     }

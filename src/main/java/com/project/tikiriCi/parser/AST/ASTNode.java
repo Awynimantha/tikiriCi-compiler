@@ -2,6 +2,9 @@ package com.project.tikiriCi.parser.AST;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.project.tikiriCi.assembly_gen.AASTNode;
+import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class ASTNode {
@@ -29,6 +32,13 @@ public class ASTNode {
         return children;
     }
 
+    public ASTNode getChild(int index) {
+        if (index<children.size()){
+            return children.get(index);
+        }
+        return null;
+    }
+
     public void setChildren(List<ASTNode> children) {
         this.children = children;
     }
@@ -51,6 +61,27 @@ public class ASTNode {
         return astNode;
     }
 
+    public AASTNode accept(ASTNodeVisitor nodeVisitor) {
+        if(grammerElement.getName() == ASTNodeType.PROGRAM){
+            return nodeVisitor.createProgramNode();
+        } else if(grammerElement.getName() == ASTNodeType.FUNCTION) {
+            return nodeVisitor.createFunctionNode();
+        }
+
+        return new AASTNode();
+    }
+
+    public String getValue() {
+        return grammerElement.getValue();
+    }
+
+    public String getASTNodeType() {
+        return grammerElement.getName();
+    }
+
+    public String getTokenType() {
+        return grammerElement.getTokenType();
+    }
 
     
 }

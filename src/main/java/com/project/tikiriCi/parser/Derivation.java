@@ -29,5 +29,9 @@ public class Derivation {
         return this.grammerElements;
     }
 
+    public GrammerElement peekDerivation() {
+        return grammerElements.get(0);
+    }
+
 
 }

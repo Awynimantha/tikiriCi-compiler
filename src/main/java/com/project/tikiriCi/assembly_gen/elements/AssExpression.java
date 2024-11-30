@@ -4,18 +4,19 @@ import com.project.tikiriCi.assembly_gen.AASTNode;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class AssExpression extends AASTNode{
-    public String treeNodeType;
+    public String astNodeType;
 
-    public AssExpression(String treeNodeType, GrammerElement grammerElement) {
+    public AssExpression(String astNodeType, GrammerElement grammerElement) {
         super(grammerElement);
-        this.treeNodeType = treeNodeType;
+        this.astNodeType = astNodeType;
     }
-    public String getTreeNodeType() {
-        return treeNodeType;
+    public String getASTNodeType() {
+        return astNodeType;
     }
 
-    public void setTreeNodeType(String treeNodeType) {
-        this.treeNodeType = treeNodeType;
+    public void setASTNodeType(String ASTNodeType) {
+        this.astNodeType = ASTNodeType;
     } 
+
     
 }

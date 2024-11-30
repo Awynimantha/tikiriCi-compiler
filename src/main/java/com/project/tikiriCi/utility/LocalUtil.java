@@ -2,6 +2,7 @@ package com.project.tikiriCi.utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +31,42 @@ public class LocalUtil {
             }
         }
         return token;
+    }
+
+    public static Boolean isSymbol(String string) {
+        if(string.length()!=1) {
+            return false;
+        }
+        if(regexpMatch(TokenType.SYMBOL, string)) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public static Token isToken(String currentString ,String nextString) {
+        Token token = new Token(TokenType.NULL, new TokenValue(TokenType.NULL, currentString) );
+        String type = TokenType.TOKEN;
+        String newRegex = "\\b"+currentString+"\\b";
+        if(regexpMatch(newRegex, nextString)) {
+            token = new Token(type, new TokenValue(type, currentString));
+        }
+        return token;
+    }
+
+
+    public static Boolean ignoreChar(char i) {
+        for (char charVal : TokenType.IGNORE_TOKENS) {
+            if(charVal == i) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Token peekTokenList(List<Token> tokenList) {
+        return tokenList.get(0);
+
     }
     
 }

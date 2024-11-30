@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.project.tikiriCi.config.TokenType;
+import com.project.tikiriCi.exception.LexerException;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.utility.LocalUtil;
 
@@ -20,32 +21,55 @@ public class Tokenizer {
         this.inputStream = null;
     }
     
-    public ArrayList<Token> tokenize() throws IOException{
+    public ArrayList<Token> tokenize() throws IOException, LexerException{
         try {
             ArrayList<Token> tokens = new ArrayList<Token>();
-            int i = 0;
-            StringBuilder stringBuilder = new StringBuilder();
-            Token prev = new Token(TokenType.NULL, "null");
+            int i = inputStream.read();
+            StringBuilder currentString = new StringBuilder();
+            StringBuilder nextStringAdd = new StringBuilder();
             Token token;
+            String value;
             while(i!=-1){
-                stringBuilder.append((char) i);
-                token = LocalUtil.matchAllRegex(stringBuilder.toString());
-                if(token.getTokenType() == TokenType.NULL) {
-                    stringBuilder = new StringBuilder();
-                    if(((char)i) != TokenType.WHITESPACE){
-                        stringBuilder.append((char)i);
-                        token = LocalUtil.matchAllRegex(stringBuilder.toString());
-                    }
-                    if(prev.getTokenType() != TokenType.NULL ){
-                        tokens.add(prev);    
-                    }
-                } 
-                prev = token;                
+                if(LocalUtil.ignoreChar((char) i)){
+                    i = inputStream.read();
+                    continue;
+                }
+                currentString.append((char) i);
                 i = inputStream.read();
-            }
-            token = LocalUtil.matchAllRegex(stringBuilder.toString());
-            if(token.getTokenType() != TokenType.NULL) {
-                tokens.add(token);
+                if(i == -1) {
+                    token = LocalUtil.matchAllRegex(currentString.toString());
+                    if(token.getTokenType() != TokenType.NULL){
+                        tokens.add(token);
+                    } else {
+                        throw new LexerException("Invalid Token: "+token.getTokenValue().getStringValue());
+                    }
+                } else {
+                    nextStringAdd.append((char) i);
+                    if(LocalUtil.isSymbol(currentString.toString())){
+                        token = LocalUtil.matchAllRegex(currentString.toString());
+                        if(token.getTokenType() == TokenType.NULL) {
+                            //error
+                            throw new LexerException("Invalid Symbol Token: "+token.getTokenValue().getStringValue());
+                        }
+                        tokens.add(token);
+                        currentString = new StringBuilder();
+                        nextStringAdd = new StringBuilder();
+                        continue;
+                    } 
+                    token = LocalUtil.isToken(currentString.toString(), currentString.toString()+nextStringAdd.toString());
+                    if(token.getTokenType() == TokenType.TOKEN) {
+                        token = LocalUtil.matchAllRegex(currentString.toString());
+                        if(token.getTokenType() != TokenType.NULL){
+                            tokens.add(token);
+                        } else {
+                            //error
+                            throw new LexerException("Invalid Token: "+token.getTokenValue().getStringValue());
+                        }
+                        currentString = new StringBuilder();
+
+                    }
+                    nextStringAdd = new StringBuilder();
+                }
             }
             return tokens;
         } catch(IOException e) {

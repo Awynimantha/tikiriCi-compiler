@@ -2,8 +2,6 @@ package com.project.tikiriCi.parser;
 
 import java.util.List;
 
-import com.project.tikiriCi.config.TokenType;
-
 public abstract  class GrammerElement {
     private String name;
     private List<Derivation> derivations;

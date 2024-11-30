@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.project.tikiriCi.bytecode_gen.Method;
-import com.project.tikiriCi.config.TreeNodeType;
+import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.AST.AST;
 import com.project.tikiriCi.parser.AST.ASTNode;
@@ -29,7 +29,7 @@ public class BAST {
     public void traverseNode(ASTNode astNode, BASTNode bastNode) {
         List<ASTNode> children = astNode.getChildren();
         GrammerElement grammerElement = astNode.getGrammerElement();
-        if(grammerElement.getName() == TreeNodeType.FUNCTION){
+        if(grammerElement.getName() == ASTNodeType.FUNCTION){
           
         } 
         for (ASTNode child : children) {

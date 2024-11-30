@@ -3,25 +3,20 @@ package com.project.tikiriCi.assembly_gen.elements;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class AssReturn extends AssInstruction{
-   private String treeNodeType;
-   private AssExpression assExpression;
+   private String ASTNodeType;
 
    public AssReturn(AssExpression assExpression, GrammerElement grammerElement) {
-       this.treeNodeType = grammerElement.getName();
-       this.assExpression = assExpression;
+       this.ASTNodeType = grammerElement.getName();
     }
     
     public String getAASTNodeType() {
-        return treeNodeType;
+        return ASTNodeType;
     }
  
-    public void setTreeNodeType(String treeNodeType) {
-        this.treeNodeType = treeNodeType;
+    public void setASTNodeType(String ASTNodeType) {
+        this.ASTNodeType = ASTNodeType;
     }
 
-    public AssExpression getAssExpression() {
-        return this.assExpression;
-    }
 
 
     

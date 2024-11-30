@@ -6,7 +6,7 @@ import java.util.List;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class AASTNode {
-    private String treeNodeType;
+    private String AASTNodeType;
     private List<AASTNode> children;
     private GrammerElement grammerElement;
 
@@ -14,9 +14,14 @@ public class AASTNode {
         this.children = new ArrayList<AASTNode>();
     }
 
-    public AASTNode(GrammerElement grammerElement) {
+    public AASTNode(String aASTNodeType) {
+        this.AASTNodeType = aASTNodeType;
+        this.children = new ArrayList<AASTNode>();
+    }
+
+    public AASTNode(GrammerElement grammerElement, String aASTNodeType) {
         this.grammerElement = grammerElement;
-        this.treeNodeType = grammerElement.getName();
+        this.AASTNodeType = aASTNodeType;
         this.children = new ArrayList<AASTNode>();
     }
 
@@ -37,11 +42,11 @@ public class AASTNode {
     }
 
     public String getAASTNodeType() {
-        return this.treeNodeType;
+        return this.AASTNodeType;
     }
 
-    public void setAASTNodeType(String treeNodeType) {
-        this.treeNodeType = treeNodeType; 
+    public void setAASTNodeType(String ASTNodeType) {
+        this.AASTNodeType = ASTNodeType; 
     }
 
 

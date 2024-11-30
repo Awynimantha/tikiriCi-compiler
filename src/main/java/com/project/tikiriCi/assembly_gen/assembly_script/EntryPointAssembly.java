@@ -1,6 +1,6 @@
 package com.project.tikiriCi.assembly_gen.assembly_script;
 
-import com.project.tikiriCi.config.TreeNodeType;
+import com.project.tikiriCi.config.ASTNodeType;
 
 /**
  * EntryPoint
@@ -8,7 +8,7 @@ import com.project.tikiriCi.config.TreeNodeType;
 public class EntryPointAssembly extends AssemblyCodeComp {
 
     public EntryPointAssembly() {
-        super(TreeNodeType.PROGRAM); 
+        super(ASTNodeType.PROGRAM); 
     }
 
     public String generateAssembly(){

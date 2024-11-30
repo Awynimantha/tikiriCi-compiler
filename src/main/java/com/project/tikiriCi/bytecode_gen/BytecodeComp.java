@@ -1,14 +1,14 @@
 package com.project.tikiriCi.bytecode_gen;
 
 public abstract class BytecodeComp {
-    private String treeNodeType;
+    private String ASTNodeType;
 
-    public BytecodeComp(String treeNodeType) {
-        this.treeNodeType = treeNodeType;
+    public BytecodeComp(String ASTNodeType) {
+        this.ASTNodeType = ASTNodeType;
     }
 
-    public String getTreeNodeType() {
-        return this.treeNodeType;
+    public String getASTNodeType() {
+        return this.ASTNodeType;
     }
 
     public abstract void writeToClassWriter();

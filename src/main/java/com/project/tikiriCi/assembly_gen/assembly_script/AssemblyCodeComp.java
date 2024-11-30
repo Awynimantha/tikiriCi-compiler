@@ -1,16 +1,16 @@
 package com.project.tikiriCi.assembly_gen.assembly_script;
 
 public abstract class AssemblyCodeComp { 
-    public String treeNodeType;
+    public String astNodeType;
 
-    public AssemblyCodeComp(String treeNodeType) {
-        this.treeNodeType = treeNodeType;
+    public AssemblyCodeComp(String astNodeType) {
+        this.astNodeType = astNodeType;
     }
 
     abstract public String generateAssembly();
 
-    public String getTreeNodeType() {
-        return this.treeNodeType;
+    public String getASTNodeType() {
+        return this.astNodeType;
     }
 
 }

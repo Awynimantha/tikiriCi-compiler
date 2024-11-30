@@ -1,12 +1,10 @@
 package com.project.tikiriCi.assembly_gen;
 
-import com.project.tikiriCi.assembly_gen.elements.AssExpression;
 import com.project.tikiriCi.assembly_gen.elements.AssFunction;
 import com.project.tikiriCi.assembly_gen.elements.AssInteger;
 import com.project.tikiriCi.assembly_gen.elements.AssProgram;
 import com.project.tikiriCi.assembly_gen.elements.AssReturn;
-import com.project.tikiriCi.config.TokenType;
-import com.project.tikiriCi.config.TreeNodeType;
+import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.AST.AST;
 import com.project.tikiriCi.parser.AST.ASTNode;
@@ -34,7 +32,7 @@ public class AAST {
     public void traverseNode(ASTNode astNode, AASTNode aastNode) {
         // AST node children is needed to create the AAST node in the tree
         GrammerElement grammerElement = astNode.getGrammerElement();
-        if(grammerElement.getName() == TreeNodeType.FUNCTION){
+        if(grammerElement.getName() == ASTNodeType.FUNCTION){
             String functionName = astNode.popChild().getGrammerElement().getValue();
             AssFunction assFunction = new AssFunction(astNode.getGrammerElement(), 
                 "", functionName);
@@ -42,12 +40,12 @@ public class AAST {
             for (ASTNode node : astNode.getChildren()) {
                 traverseNode(node, assFunction);
             }
-        } else if(grammerElement.getName() == TreeNodeType.STATEMENT){
+        } else if(grammerElement.getName() == ASTNodeType.STATEMENT){
             ASTNode retNode = astNode.popChild();
             ASTNode expNode = astNode.popChild();
             ASTNode intNode = expNode.popChild();
-            if(retNode.getGrammerElement().getName() == TreeNodeType.RETURN){
-                if(intNode.getGrammerElement().getName() == TreeNodeType.INTEGER){
+            if(retNode.getGrammerElement().getName() == ASTNodeType.RETURN){
+                if(intNode.getGrammerElement().getName() == ASTNodeType.INTEGER){
                     AssInteger assInteger = new AssInteger(intNode.getGrammerElement(),intNode.getGrammerElement().
                             getValue());
                     AssReturn assReturn = new AssReturn(assInteger,retNode.getGrammerElement());
