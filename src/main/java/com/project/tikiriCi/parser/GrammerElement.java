@@ -2,7 +2,7 @@ package com.project.tikiriCi.parser;
 
 import java.util.List;
 
-public abstract  class GrammerElement {
+public class GrammerElement {
     private String name;
     private List<Derivation> derivations;
     private String tokenType;  
@@ -10,7 +10,9 @@ public abstract  class GrammerElement {
     private boolean isASTNode;
     private String value;
     
-    
+    public GrammerElement(){
+    } 
+
     public GrammerElement(String name, List<Derivation> derivations, boolean isTerminal, String tokenType, Boolean isASTNode) {
         this.name = name;
         this.derivations = derivations;
