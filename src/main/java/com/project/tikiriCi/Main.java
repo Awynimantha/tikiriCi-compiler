@@ -23,9 +23,10 @@ public class Main
             Parser parser = new Parser(tokens);
             parser.parse();
             AST ast = parser.getAST();
-            ast.traverse();
-            // AAST aast =  new AAST();
-            // aast.createAAST(ast);
+           // ast.traverse();
+            AAST aast =  new AAST();
+            aast.createAAST(ast);
+            aast.traverseTree();
             // AssemblyScript assemblyScript = new AssemblyScript(null, "/home/yasiru/Desktop/test/ass.asm", aast);
             // assemblyScript.writeToScript();
         } catch (Exception e) {

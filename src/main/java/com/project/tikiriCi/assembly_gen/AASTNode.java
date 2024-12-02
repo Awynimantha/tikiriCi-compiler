@@ -49,6 +49,12 @@ public class AASTNode {
         this.AASTNodeType = ASTNodeType; 
     }
 
+    public void insertChildAtStart(AASTNode aastNode) {
+        children.add(0, aastNode);
+    }
+
+    
+
 
 
     

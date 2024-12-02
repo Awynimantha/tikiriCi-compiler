@@ -1,9 +1,6 @@
 package com.project.tikiriCi.assembly_gen.assembly_script;
 
 import com.project.tikiriCi.assembly_gen.AASTNode;
-import com.project.tikiriCi.assembly_gen.elements.AssExpression;
-import com.project.tikiriCi.assembly_gen.elements.AssInteger;
-import com.project.tikiriCi.assembly_gen.elements.AssReturn;
 import com.project.tikiriCi.config.ASTNodeType;
 
 public class ReturnAssembly extends AssemblyCodeComp {

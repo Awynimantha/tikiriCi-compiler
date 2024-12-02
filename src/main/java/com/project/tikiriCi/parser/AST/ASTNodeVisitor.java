@@ -3,7 +3,6 @@ package com.project.tikiriCi.parser.AST;
 import java.util.List;
 
 import com.project.tikiriCi.assembly_gen.AASTNode;
-import com.project.tikiriCi.assembly_gen.elements.AssFunction;
 import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
@@ -11,20 +10,18 @@ import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class ASTNodeVisitor {
-    private ASTNode astNode;
     private int tmpVarible;
 
-    public ASTNodeVisitor(ASTNode astNode) {
-        this.astNode = astNode;
+    public ASTNodeVisitor() {
         this.tmpVarible = 0;
     }
 
     // Implement 
-    public AASTNode createProgramNode() {
+    public AASTNode createProgramNode(ASTNode astNode) {
         return new AASTNode(Grammar.PROGRAM, AASTNodeType.PROGRAM);
     }
     
-    public AASTNode createFunctionNode() {
+    public AASTNode createFunctionNode(ASTNode astNode) {
         return new AASTNode(astNode.getGrammerElement(), 
                     AASTNodeType.FUNCTION);
     }
@@ -40,18 +37,18 @@ public class ASTNodeVisitor {
         
     }
 
-    public AASTNode createInstructionNode() {
-        AASTNode aastNode = new AASTNode();
+    public AASTNode createInstructionNode(ASTNode astNode) {
+        AASTNode aastNode = new AASTNode(AASTNodeType.INSTRUCTION);
         List<ASTNode> nodes = astNode.getChildren();
         GrammerElement grammerElement = nodes.get(0).getGrammerElement();
-        if(grammerElement.getTokenType() == ASTNodeType.RETURN) {
-            ASTNode astNode = nodes.get(0);
-            AASTNode returnValNode = expressionToAAST(aastNode, astNode);
+        //Statement type
+        if(grammerElement.getName() == ASTNodeType.RETURN) {
+            ASTNode expressionNode = astNode.getChild(1); //expression
+            AASTNode returnValNode = expressionToAAST(aastNode,expressionNode);
             AASTNode returnNode = new AASTNode(AASTNodeType.RETURN);
             returnNode.addChildren(returnValNode);
             aastNode.addChildren(returnNode);
         }
-
         return aastNode;
     }
 
@@ -67,9 +64,9 @@ public class ASTNodeVisitor {
             ASTNode operator = unary_operator.getChild(0);
             AASTNode unop = new AASTNode();
             if(operator.getTokenType() == TokenType.HYPHONE) {
-                unop = new AASTNode(operator.getGrammerElement(), AASTNodeType.COMPLEMENT);
-            } else if(operator.getTokenType() == TokenType.TILDE) {
                 unop = new AASTNode(operator.getGrammerElement(), AASTNodeType.NEGATE);
+            } else if(operator.getTokenType() == TokenType.TILDE) {
+                unop = new AASTNode(operator.getGrammerElement(), AASTNodeType.COMPLEMENT);
             }
             AASTNode unary_node = new AASTNode(AASTNodeType.UNARY);
             unary_node.addChildren(unop);
@@ -77,7 +74,10 @@ public class ASTNodeVisitor {
             unary_node.addChildren(dst);
             instructionNode.addChildren(unary_node);
             return dst;
+        } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
+            return expressionToAAST(instructionNode, firstNode);
         }
+        
         return null;
     }
 

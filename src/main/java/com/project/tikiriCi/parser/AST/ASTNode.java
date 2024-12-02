@@ -63,9 +63,11 @@ public class ASTNode {
 
     public AASTNode accept(ASTNodeVisitor nodeVisitor) {
         if(grammerElement.getName() == ASTNodeType.PROGRAM){
-            return nodeVisitor.createProgramNode();
+            return nodeVisitor.createProgramNode(this);
         } else if(grammerElement.getName() == ASTNodeType.FUNCTION) {
-            return nodeVisitor.createFunctionNode();
+            return nodeVisitor.createFunctionNode(this);
+        } else if(grammerElement.getName() == ASTNodeType.STATEMENT){
+            return nodeVisitor.createInstructionNode(this);
         }
 
         return new AASTNode();
