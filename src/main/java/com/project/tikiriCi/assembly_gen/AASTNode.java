@@ -3,10 +3,13 @@ package com.project.tikiriCi.assembly_gen;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.tikiriCi.assembly_gen.ASMT.ASMTNode;
+import com.project.tikiriCi.assembly_gen.ASMT.ASMTNodeVisitor;
+import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class AASTNode {
-    private String AASTNodeType;
+    private String aASTNodeType;
     private List<AASTNode> children;
     private GrammerElement grammerElement;
 
@@ -15,13 +18,13 @@ public class AASTNode {
     }
 
     public AASTNode(String aASTNodeType) {
-        this.AASTNodeType = aASTNodeType;
+        this.aASTNodeType = aASTNodeType;
         this.children = new ArrayList<AASTNode>();
     }
 
     public AASTNode(GrammerElement grammerElement, String aASTNodeType) {
         this.grammerElement = grammerElement;
-        this.AASTNodeType = aASTNodeType;
+        this.aASTNodeType = aASTNodeType;
         this.children = new ArrayList<AASTNode>();
     }
 
@@ -42,18 +45,35 @@ public class AASTNode {
     }
 
     public String getAASTNodeType() {
-        return this.AASTNodeType;
+        return this.aASTNodeType;
     }
 
     public void setAASTNodeType(String ASTNodeType) {
-        this.AASTNodeType = ASTNodeType; 
+        this.aASTNodeType = ASTNodeType; 
     }
 
     public void insertChildAtStart(AASTNode aastNode) {
         children.add(0, aastNode);
     }
 
+    public AASTNode getChild(int index) {
+        if(children.size()>index) {
+            return children.get(index);
+        }
+        return null;
+    }
     
+     public ASMTNode accept(ASMTNodeVisitor nodeVisitor) {
+        if(grammerElement.getName() == ASTNodeType.PROGRAM){
+            return nodeVisitor.createProgramASTMTNode(this);
+        } else if(grammerElement.getName() == ASTNodeType.FUNCTION) {
+            return nodeVisitor.createFunctionASTMNode(this);
+        } else if(grammerElement.getName() == ASTNodeType.STATEMENT){
+            return nodeVisitor.createInstruction(this);
+        }
+
+        return new ASMTNode();
+    }
 
 
 

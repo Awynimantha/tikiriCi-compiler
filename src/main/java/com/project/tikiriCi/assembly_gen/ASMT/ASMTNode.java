@@ -4,18 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.tikiriCi.parser.GrammerElement;
-import com.project.tikiriCi.parser.AST.ASTNode;
 
 public class ASMTNode {
+    private String ASMTreetype;
     private GrammerElement grammerElement;
     private List<ASMTNode> children;
    
     public ASMTNode() {
         this.children = new ArrayList<ASMTNode>();
     }
+
+    public ASMTNode(String asmTreeType) {
+        this.ASMTreetype = asmTreeType;
+        this.children = new ArrayList<ASMTNode>();
+    }
     
-    public ASMTNode(GrammerElement grammerElement) {
+    public ASMTNode(GrammerElement grammerElement, String asmTreeType) {
         this.grammerElement = grammerElement;
+        this.ASMTreetype = asmTreeType;
         this.children = new ArrayList<ASMTNode>();
     } 
     
@@ -31,8 +37,24 @@ public class ASMTNode {
         return children;
     }
 
+    public ASMTNode getChild(int index) {
+        if(index<children.size()){
+            return children.get(index);
+        }
+        return null;
+    }
+
     public void setChildren(List<ASMTNode> children) {
         this.children = children;
     }
+
+    public void addChild(ASMTNode astNode) {
+        this.children.add(astNode);
+    }
+
+    public String getASMTreeType() {
+        return this.ASMTreetype;
+    }
+
     
 }

@@ -8,7 +8,7 @@ public class ASMTreeType {
     public static String UNARY_OP = "unary_op";
     public static String OPERAND = "operand";
     public static String ALLOCATESTACK = "allocatestack";
-    public static String INTEGER = "integer";
+    public static String IMM = "imm";
     public static String RET = "return ";
     public static String NEGATE = "negate";
     public static String NOT = "not";
