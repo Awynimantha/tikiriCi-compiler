@@ -3,9 +3,9 @@ package com.project.tikiriCi.parser.AST;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.project.tikiriCi.assembly_gen.AASTNode;
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.parser.GrammerElement;
+import com.project.tikiriCi.parser.assembly_gen.AASTNode;
 
 public class ASTNode {
     private GrammerElement grammerElement;

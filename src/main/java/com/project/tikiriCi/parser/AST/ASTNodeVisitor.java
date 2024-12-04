@@ -2,12 +2,12 @@ package com.project.tikiriCi.parser.AST;
 
 import java.util.List;
 
-import com.project.tikiriCi.assembly_gen.AASTNode;
 import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.parser.GrammerElement;
+import com.project.tikiriCi.parser.assembly_gen.AASTNode;
 
 public class ASTNodeVisitor {
     private int tmpVarible;
@@ -27,7 +27,7 @@ public class ASTNodeVisitor {
     }
 
     private AASTNode getTmpVariable() {
-        String keyword = "tmp";
+        String keyword = "tmp.";
         String ret = keyword+(this.tmpVarible);
         this.tmpVarible = this.tmpVarible + 1;
         GrammerElement grammerElement = new GrammerElement();
