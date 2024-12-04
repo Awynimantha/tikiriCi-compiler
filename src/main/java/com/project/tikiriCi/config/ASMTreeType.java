@@ -6,6 +6,7 @@ public class ASMTreeType {
     public static String INSTRUCTION = "instruction";
     public static String MOV = "mov";
     public static String UNARY_OP = "unary_op";
+    public static String UNARY = "unary";
     public static String OPERAND = "operand";
     public static String ALLOCATESTACK = "allocatestack";
     public static String IMM = "imm";
