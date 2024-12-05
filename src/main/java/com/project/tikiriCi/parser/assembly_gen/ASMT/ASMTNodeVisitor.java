@@ -25,7 +25,7 @@ public class ASMTNodeVisitor {
 
     }
 
-    private ASMTNode createOperandNode(AASTNode aastNode){
+    public ASMTNode createOperandNode(AASTNode aastNode){
         ASMTNode val = new ASMTNode();
         GrammerElement grammerElement = new GrammerElement();
         grammerElement.setValue(aastNode.getGrammerElement().getValue());
@@ -40,7 +40,7 @@ public class ASMTNodeVisitor {
         return val;
     }
 
-    private ASMTNode createUOpreatorNode(AASTNode uoperatorAAST) {
+    public ASMTNode createUOpreatorNode(AASTNode uoperatorAAST) {
         ASMTNode operator = new ASMTNode();
         if(uoperatorAAST.getAASTNodeType() == AASTNodeType.COMPLEMENT){
             operator = new ASMTNode(ASMTreeType.NOT);
@@ -51,14 +51,14 @@ public class ASMTNodeVisitor {
     }
 
 
-    private ASMTNode createMovNode(ASMTNode source, ASMTNode destination) {
+    public ASMTNode createMovNode(ASMTNode source, ASMTNode destination) {
         ASMTNode moveNode = new ASMTNode(ASMTreeType.MOV);
         moveNode.addChild(source);
         moveNode.addChild(destination);
         return moveNode;
     }
 
-    private ASMTNode createUnaryNode(ASMTNode unary_operator, ASMTNode destination){
+    public ASMTNode createUnaryNode(ASMTNode unary_operator, ASMTNode destination){
         ASMTNode unary = new ASMTNode(ASMTreeType.UNARY);
         unary.addChild(unary_operator);
         unary.addChild(destination);

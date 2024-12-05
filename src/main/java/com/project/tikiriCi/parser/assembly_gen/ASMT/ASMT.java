@@ -7,6 +7,8 @@ import java.util.Queue;
 import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASMTreeType;
 import com.project.tikiriCi.config.Registers;
+import com.project.tikiriCi.parser.GrammerElement;
+import com.project.tikiriCi.parser.AST.ASTNode;
 import com.project.tikiriCi.parser.assembly_gen.AAST;
 import com.project.tikiriCi.parser.assembly_gen.AASTNode;
 
@@ -28,11 +30,12 @@ public class ASMT {
         traverseNode(aastRoot, root, asmtNodeVisitor);
     }
 
-    public void replaceRegister() {
+    public int replaceRegister() {
         //breadth first traversal
         Queue<ASMTNode> queue = new LinkedList<ASMTNode>();
         ASMTNode asmtNode = new ASMTNode();
-        queue.offer(root);
+        int regNumber = 1;
+        queue.offer(this.root);
         while(!queue.isEmpty()) {
             asmtNode = queue.poll();
             List<ASMTNode> asmtNodesList = asmtNode.getChildren();
@@ -43,8 +46,8 @@ public class ASMT {
                     continue;
                 }
                 String numString = regNumberStr[1];
-                int regNumber = Short.parseShort(numString);
-                regNumber = (regNumber+1)*(4);
+                regNumber = Short.parseShort(numString);
+                regNumber = (regNumber+1)*(8);
                 String newTemRegName = "-" + regNumber + "("+Registers.BASE_POINTER+")";
                 asmtNode.getGrammerElement().setValue(newTemRegName);
             }
@@ -53,6 +56,57 @@ public class ASMT {
             }
             
         }
+        return regNumber;
+    }
+
+    public void fixRegAndStack() {
+        Queue<ASMTNode> queue = new LinkedList<ASMTNode>();
+        ASMTNode asmtNode = new ASMTNode();
+        int numOfReg = replaceRegister();
+
+        //create allocate size node
+        GrammerElement grammerElement = new GrammerElement();
+        grammerElement.setValue(numOfReg+"");
+        ASMTNode stackSize = new ASMTNode(grammerElement ,ASMTreeType.INTEGER);
+
+        //create the allocatesize node
+        ASMTNode allocateStack = new ASMTNode(ASMTreeType.ALLOCATESTACK);
+        allocateStack.addChild(stackSize);
+
+        queue.offer(this.root);
+        while(!queue.isEmpty()){
+            //pop the child
+            asmtNode = queue.poll();
+            List<ASMTNode> asmtNodeList = asmtNode.getChildren();
+            //implementation
+            if(asmtNode.getASMTreeType() == ASMTreeType.INSTRUCTION){
+                asmtNode.addChildrenToFront(allocateStack);
+            }
+
+            for(ASMTNode node: asmtNodeList) {
+                queue.offer(node);
+            }
+        }
+
+    }
+
+    public void fixMoveNode(ASMTNode asmtNode, ASMTNode instructionNode) {
+        ASMTNodeVisitor asmtNodeVisitor = new ASMTNodeVisitor();
+        ASMTNode firstPReg = asmtNode.getChild(0);
+        ASMTNode secondReg = asmtNode.getChild(1);
+
+        ASMTNode register = new ASMTNode(ASMTreeType.REG);
+        register.addChild(new ASMTNode(ASMTreeType.R10));
+        //remove the node visitor
+        ASMTNode firstMov = asmtNodeVisitor.createMovNode(firstPReg, register);
+        ASMTNode secondMov = asmtNodeVisitor.createMovNode(register, secondReg);
+
+        //ASMTNode  
+        // if(firstOperand.getASMTreeType() == ASMTreeType.PSEUDO || 
+        //     secondOperand.getASMTreeType() == ASMTreeType.PSEUDO){
+            
+
+        // }
     }
 
     public void traverseNode(AASTNode aastNode, ASMTNode asmtNode, ASMTNodeVisitor astNodeVisitor) {
@@ -74,7 +128,8 @@ public class ASMT {
     
     public void traverse(ASMTNode asmtNode) {
         for (ASMTNode node : asmtNode.getChildren()) {
-            if(node.getASMTreeType() == ASMTreeType.IMM || node.getASMTreeType() == ASMTreeType.PSEUDO) {
+            if(node.getASMTreeType() == ASMTreeType.IMM || node.getASMTreeType() == ASMTreeType.PSEUDO ||
+                node.getASMTreeType() == ASMTreeType.INTEGER) {
                 System.out.println(node.getASMTreeType()+"-->"+node.getGrammerElement().getValue());
             } else{
                 System.out.println(node.getASMTreeType());

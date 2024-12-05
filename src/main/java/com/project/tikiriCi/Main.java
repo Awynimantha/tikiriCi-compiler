@@ -30,7 +30,7 @@ public class Main
             //aast.traverseTree();
             ASMT asmt = new ASMT();
             asmt.createASMT(aast);
-            asmt.replaceRegister();
+            asmt.fixRegAndStack();
             asmt.traverseTree();
             // AssemblyScript assemblyScript = new AssemblyScript(null, "/home/yasiru/Desktop/test/ass.asm", aast);
             // assemblyScript.writeToScript();

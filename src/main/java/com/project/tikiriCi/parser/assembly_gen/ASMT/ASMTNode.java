@@ -56,5 +56,10 @@ public class ASMTNode {
         return this.ASMTreetype;
     }
 
+    public void addChildrenToFront(ASMTNode asmtNode) {
+        int front = 0;
+        children.add(front, asmtNode);
+    }
+
     
 }
