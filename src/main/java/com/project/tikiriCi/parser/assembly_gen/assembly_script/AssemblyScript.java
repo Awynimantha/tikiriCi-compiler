@@ -5,25 +5,26 @@ import java.io.IOException;
 import java.util.List;
 
 import com.project.tikiriCi.main.File;
-import com.project.tikiriCi.parser.assembly_gen.AAST;
-import com.project.tikiriCi.parser.assembly_gen.AASTNode;
 import com.project.tikiriCi.parser.assembly_gen.AssemblyCodeBuilder;
+import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMT;
+import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNode;
+import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNodeVisitor;
 
 public class AssemblyScript {
     private String name;
     private String location;
     private String content;
-    private AAST aAST;
+    private ASMT ASMT;
 
-    public AssemblyScript(String name, String location, AAST aAST) {
+    public AssemblyScript(String name, String location, ASMT ASMT) {
         this.name = name;
         this.location = location;
-        this.aAST = aAST;
+        this.ASMT = ASMT;
         this.content = "";
     }
 
     public void addContent(String content) {
-        content.concat(content);
+        this.content += content;
     }
 
     public void writeToScript() throws FileNotFoundException{
@@ -38,14 +39,16 @@ public class AssemblyScript {
     }
 
     public void traverse(){
-        traverseNode(aAST.getRoot());
+        ASMTNodeVisitor asmtNodeVisitor = new ASMTNodeVisitor();
+        addContent(ASMT.getRoot().accept(asmtNodeVisitor));
+        traverseNode(ASMT.getRoot());
     }
 
-    public void traverseNode(AASTNode aastNode){
-        AssemblyCodeComp assemblyCodeComp = new AssemblyCodeBuilder(aastNode).getassemblyCodeComp();
-        content = content + assemblyCodeComp.generateAssembly();
-        List<AASTNode> children = aastNode.getChildren();
-        for (AASTNode node : children) {
+    public void traverseNode(ASMTNode ASMTNode){
+        List<ASMTNode> children = ASMTNode.getChildren();
+        ASMTNodeVisitor asmtNodeVisitor = new ASMTNodeVisitor();
+        for (ASMTNode node : children) {
+            addContent(node.accept(asmtNodeVisitor));
             traverseNode(node);
 
         }

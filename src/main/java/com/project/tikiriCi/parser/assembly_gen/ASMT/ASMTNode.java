@@ -3,6 +3,7 @@ package com.project.tikiriCi.parser.assembly_gen.ASMT;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.tikiriCi.config.ASMTreeType;
 import com.project.tikiriCi.parser.GrammerElement;
 
 public class ASMTNode {
@@ -37,6 +38,10 @@ public class ASMTNode {
         return children;
     }
 
+    public String getValue() {
+        return grammerElement.getValue();
+    }
+
     public ASMTNode getChild(int index) {
         if(index<children.size()){
             return children.get(index);
@@ -59,6 +64,38 @@ public class ASMTNode {
     public void addChildrenToFront(ASMTNode asmtNode) {
         int front = 0;
         children.add(front, asmtNode);
+    }
+
+    public void addChildAt(int index, ASMTNode asmtNode) {
+        children.add(index, asmtNode);
+    }
+
+    public void removeChildAt(int index) {
+        if(index<children.size()){
+            children.remove(index);
+        }
+    }
+
+    public void emptyChildren() {
+        children.clear();
+    }
+
+    public String accept(ASMTNodeVisitor asmtNodeVisitor) {
+        if(ASMTreetype == ASMTreeType.PROGRAM) {
+            return asmtNodeVisitor.createProgramAssembly(this);
+        } else if(ASMTreetype == ASMTreeType.FUNCTION) {
+            return asmtNodeVisitor.createFunctionAssembly(this);
+        } else if(ASMTreetype == ASMTreeType.ALLOCATESTACK){
+            return asmtNodeVisitor.createAllocateSizeAssembly(this);
+        }else if(ASMTreetype == ASMTreeType.UNARY) {
+            return asmtNodeVisitor.createUnaryAssembly(this);
+        } else if(ASMTreetype == ASMTreeType.MOV) {
+            return asmtNodeVisitor.createMovAssembly(this);
+        } else if(ASMTreetype == ASMTreeType.RET) {
+            return asmtNodeVisitor.createReturnAssembly(this);
+        }
+        return "";
+
     }
 
     

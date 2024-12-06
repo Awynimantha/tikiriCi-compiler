@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.project.tikiriCi.config.ASMTreeType;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.main.TokenValue;
+import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNode;
 
 public class LocalUtil {
 
@@ -68,5 +70,14 @@ public class LocalUtil {
         return tokenList.get(0);
 
     }
-    
+   
+    public static Boolean isInvalidMov(ASMTNode asmtNode){
+        ASMTNode firstOp = asmtNode.getChild(0);
+        ASMTNode secondOp = asmtNode.getChild(1);
+        if(firstOp.getASMTreeType() == ASMTreeType.PSEUDO && 
+            secondOp.getASMTreeType() == ASMTreeType.PSEUDO) {
+                return true;
+        }
+        return false;
+    }
 }

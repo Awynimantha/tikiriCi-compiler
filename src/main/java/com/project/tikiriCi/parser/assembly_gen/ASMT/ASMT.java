@@ -1,5 +1,6 @@
 package com.project.tikiriCi.parser.assembly_gen.ASMT;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -11,6 +12,7 @@ import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.AST.ASTNode;
 import com.project.tikiriCi.parser.assembly_gen.AAST;
 import com.project.tikiriCi.parser.assembly_gen.AASTNode;
+import com.project.tikiriCi.utility.LocalUtil;
 
 public class ASMT {
     private ASMTNode root;
@@ -25,7 +27,7 @@ public class ASMT {
     
     public void createASMT(AAST aast) {
         AASTNode aastRoot = aast.getRoot();
-        ASMTNodeVisitor asmtNodeVisitor = new ASMTNodeVisitor();
+        AASTNodeVisitor asmtNodeVisitor = new AASTNodeVisitor();
         this.root = aastRoot.accept(asmtNodeVisitor);
         traverseNode(aastRoot, root, asmtNodeVisitor);
     }
@@ -90,8 +92,50 @@ public class ASMT {
 
     }
 
-    public void fixMoveNode(ASMTNode asmtNode, ASMTNode instructionNode) {
-        ASMTNodeVisitor asmtNodeVisitor = new ASMTNodeVisitor();
+      public void processMovNodes() {
+        Queue<ASMTNode> queue = new LinkedList<ASMTNode>();
+        ASMTNode asmtNode = new ASMTNode();
+        int numOfReg = replaceRegister();
+
+        //create allocate size node
+        GrammerElement grammerElement = new GrammerElement();
+        grammerElement.setValue(numOfReg+"");
+        ASMTNode stackSize = new ASMTNode(grammerElement ,ASMTreeType.INTEGER);
+
+        //create the allocatesize node
+        ASMTNode allocateStack = new ASMTNode(ASMTreeType.ALLOCATESTACK);
+        allocateStack.addChild(stackSize);
+
+        queue.offer(this.root);
+        while(!queue.isEmpty()){
+            //pop the child
+            asmtNode = queue.poll();
+            List<ASMTNode> asmtNodeList = asmtNode.getChildren();
+          
+            List<ASMTNode> newChildren = new ArrayList<ASMTNode>();
+            for(ASMTNode node: asmtNodeList) {
+                if(node.getASMTreeType() == ASMTreeType.MOV){
+                    if(LocalUtil.isInvalidMov(node)){
+                        List<ASMTNode> newMovNodesList = fixMoveNode(node);
+                        newChildren.add(newMovNodesList.get(0));
+                        newChildren.add(newMovNodesList.get(1));
+                        queue.offer(newMovNodesList.get(0));
+                        queue.offer(newMovNodesList.get(1));
+                        continue;
+                    }
+                }
+                newChildren.add(node);
+                queue.offer(node);
+            }
+            asmtNode.emptyChildren();
+            asmtNode.setChildren(newChildren);
+        }
+
+    }
+
+    public List<ASMTNode> fixMoveNode(ASMTNode asmtNode) {
+        AASTNodeVisitor asmtNodeVisitor = new AASTNodeVisitor();
+        List<ASMTNode> asmtNodesList = new ArrayList<ASMTNode>();
         ASMTNode firstPReg = asmtNode.getChild(0);
         ASMTNode secondReg = asmtNode.getChild(1);
 
@@ -101,20 +145,21 @@ public class ASMT {
         ASMTNode firstMov = asmtNodeVisitor.createMovNode(firstPReg, register);
         ASMTNode secondMov = asmtNodeVisitor.createMovNode(register, secondReg);
 
-        //ASMTNode  
-        // if(firstOperand.getASMTreeType() == ASMTreeType.PSEUDO || 
-        //     secondOperand.getASMTreeType() == ASMTreeType.PSEUDO){
-            
-
-        // }
+        if(firstPReg.getASMTreeType() == ASMTreeType.PSEUDO ||
+            secondReg.getASMTreeType() == ASMTreeType.PSEUDO){           
+                asmtNodesList.add(firstMov);
+                asmtNodesList.add(secondMov);
+        }
+        return asmtNodesList;
     }
 
-    public void traverseNode(AASTNode aastNode, ASMTNode asmtNode, ASMTNodeVisitor astNodeVisitor) {
+    public void traverseNode(AASTNode aastNode, ASMTNode asmtNode, AASTNodeVisitor astNodeVisitor) {
         List<AASTNode> childrenNodes = aastNode.getChildren();
         for (AASTNode child : childrenNodes) {
             String astNodeType = child.getAASTNodeType();
             //process only important node
-            if(astNodeType== AASTNodeType.PROGRAM || astNodeType == AASTNodeType.FUNCTION || astNodeType==AASTNodeType.INSTRUCTION){
+            if(astNodeType== AASTNodeType.PROGRAM || astNodeType == AASTNodeType.FUNCTION || 
+                astNodeType==AASTNodeType.INSTRUCTION){
                 ASMTNode newAASTNode = child.accept(astNodeVisitor);
                 traverseNode(child, newAASTNode, astNodeVisitor);
                 asmtNode.addChild(newAASTNode);
@@ -129,7 +174,7 @@ public class ASMT {
     public void traverse(ASMTNode asmtNode) {
         for (ASMTNode node : asmtNode.getChildren()) {
             if(node.getASMTreeType() == ASMTreeType.IMM || node.getASMTreeType() == ASMTreeType.PSEUDO ||
-                node.getASMTreeType() == ASMTreeType.INTEGER) {
+                node.getASMTreeType() == ASMTreeType.INTEGER || node.getASMTreeType() == ASMTreeType.FUNCTION) {
                 System.out.println(node.getASMTreeType()+"-->"+node.getGrammerElement().getValue());
             } else{
                 System.out.println(node.getASMTreeType());

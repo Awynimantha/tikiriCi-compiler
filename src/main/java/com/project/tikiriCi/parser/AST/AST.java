@@ -2,6 +2,7 @@ package com.project.tikiriCi.parser.AST;
 
 import java.util.List;
 
+import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.Derivation;
@@ -52,7 +53,7 @@ public class AST {
             ASTNode astNode = new ASTNode(grammerElement);
             if(grammerElement.getIsTerminal()){
                 if(grammerElement.isASTNode()){
-                        //shorten
+                    //shorten
                     astNode.getGrammerElement().setValue(LocalUtil.peekTokenList(tokens).getTokenValue().getStringValue());
                     node.addChild(astNode);
                 }

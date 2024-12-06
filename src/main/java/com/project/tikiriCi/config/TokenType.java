@@ -3,7 +3,7 @@ package com.project.tikiriCi.config;
 public class TokenType {
    public static String SYMBOL = "[^\\w\\s]";
    public static String TOKEN = "[\\w]+\\b";
-   public static String  IDENTIFIER = "\\b[a-zA-Z_]\\w*\\b";
+   public static String IDENTIFIER = "\\b[a-zA-Z_]\\w*\\b";
    public static String CONSTANT = "[0-9]+\\b";
    public static String INTEGER = "int\\b";
    public static String VOID = "void\\b";

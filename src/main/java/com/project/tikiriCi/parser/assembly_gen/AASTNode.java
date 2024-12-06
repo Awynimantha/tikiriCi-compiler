@@ -7,7 +7,7 @@ import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNode;
-import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNodeVisitor;
+import com.project.tikiriCi.parser.assembly_gen.ASMT.AASTNodeVisitor;
 
 public class AASTNode {
     private String aASTNodeType;
@@ -64,7 +64,7 @@ public class AASTNode {
         return null;
     }
     
-     public ASMTNode accept(ASMTNodeVisitor nodeVisitor) {
+     public ASMTNode accept(AASTNodeVisitor nodeVisitor) {
         if(aASTNodeType == AASTNodeType.PROGRAM){
             return nodeVisitor.createProgramASTMTNode(this);
         } else if(aASTNodeType == AASTNodeType.FUNCTION) {
