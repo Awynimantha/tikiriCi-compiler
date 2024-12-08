@@ -20,8 +20,8 @@ public class AASTNodeVisitor {
     }
 
     public ASMTNode createFunctionASTMNode(AASTNode aastNode) {
-        return new ASMTNode(Grammar.FUNCTION, ASMTreeType.FUNCTION);
-
+        GrammerElement grammerElement = aastNode.getGrammerElement();
+        return new ASMTNode(grammerElement, ASMTreeType.FUNCTION);
     }
 
     public ASMTNode createOperandNode(AASTNode aastNode){
@@ -35,7 +35,6 @@ public class AASTNodeVisitor {
             val = new ASMTNode(grammerElement, ASMTreeType.PSEUDO);
             return val;
         }
-
         return val;
     }
 

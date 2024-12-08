@@ -81,7 +81,8 @@ public class AAST {
     
     public void traverse(AASTNode aastNode) {
         for (AASTNode node : aastNode.getChildren()) {
-            if(node.getAASTNodeType() == AASTNodeType.VAR || node.getAASTNodeType() == AASTNodeType.CONSTANCE) {
+            if(node.getAASTNodeType() == AASTNodeType.VAR || node.getAASTNodeType() == AASTNodeType.CONSTANCE ||
+            node.getAASTNodeType() == AASTNodeType.FUNCTION) {
                 System.out.println(node.getAASTNodeType()+"-->"+node.getGrammerElement().getValue());
             } else{
                 System.out.println(node.getAASTNodeType());

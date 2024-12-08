@@ -35,7 +35,7 @@ public class ASMTNodeVisitor {
 
     public String createAllocateSizeAssembly(ASMTNode asmtNode) {
         String allocSize = getAllocatedSize(asmtNode);
-        String asm = "pushq %rbp \n movq %rsp, %rbp \n subq $"+allocSize+", %rsp \n";
+        String asm = "pushq %rbp \nmovq %rsp, %rbp \nsubq $"+allocSize+", %rsp \n";
         return asm;
 
     }
@@ -63,7 +63,7 @@ public class ASMTNodeVisitor {
     }
 
     public String createReturnAssembly(ASMTNode asmtNode) {
-        return "movq %rbp, %rsp \n popq %rbp \n movq %rax, %rdi \n movq $60, %rax  \n  syscall ";          
+        return "movq %rbp, %rsp \npopq %rbp \nmovq %rax, %rdi \nmovq $60, %rax  \nsyscall ";          
     }
 
 

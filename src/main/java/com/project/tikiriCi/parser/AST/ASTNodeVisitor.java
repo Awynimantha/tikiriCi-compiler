@@ -22,13 +22,16 @@ public class ASTNodeVisitor {
     }
     
     public AASTNode createFunctionNode(ASTNode astNode) {
-        return new AASTNode(astNode.getGrammerElement(), 
+        String functionName = astNode.getChild(0).getValue();
+        GrammerElement grammerElement = new GrammerElement();
+        grammerElement.setValue(functionName);
+        return new AASTNode(grammerElement, 
                     AASTNodeType.FUNCTION);
     }
 
     private AASTNode getTmpVariable() {
         String keyword = "tmp.";
-        String ret = keyword+(this.tmpVarible);
+        String ret = keyword + (this.tmpVarible);
         this.tmpVarible = this.tmpVarible + 1;
         GrammerElement grammerElement = new GrammerElement();
         grammerElement.setValue(ret);
@@ -41,7 +44,6 @@ public class ASTNodeVisitor {
         AASTNode aastNode = new AASTNode(AASTNodeType.INSTRUCTION);
         List<ASTNode> nodes = astNode.getChildren();
         GrammerElement grammerElement = nodes.get(0).getGrammerElement();
-        //Statement type
         if(grammerElement.getName() == ASTNodeType.RETURN) {
             ASTNode expressionNode = astNode.getChild(1); //expression
             AASTNode returnValNode = expressionToAAST(aastNode,expressionNode);
@@ -57,6 +59,7 @@ public class ASTNodeVisitor {
         if(firstNode.getASTNodeType() == ASTNodeType.INTEGER) {
             AASTNode constance = new AASTNode(firstNode.getGrammerElement(), AASTNodeType.CONSTANCE);
             return constance;
+
         } else if(firstNode.getASTNodeType() == ASTNodeType.UNOP){    
             AASTNode src = expressionToAAST(instructionNode, expression.getChild(1));
             AASTNode dst = getTmpVariable();
@@ -74,6 +77,7 @@ public class ASTNodeVisitor {
             unary_node.addChildren(dst);
             instructionNode.addChildren(unary_node);
             return dst;
+
         } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
             return expressionToAAST(instructionNode, firstNode);
         }

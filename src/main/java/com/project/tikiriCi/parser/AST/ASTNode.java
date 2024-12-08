@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.tikiriCi.config.ASTNodeType;
+import com.project.tikiriCi.main.Token;
+import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.assembly_gen.AASTNode;
 
@@ -69,9 +71,19 @@ public class ASTNode {
         } else if(grammerElement.getName() == ASTNodeType.STATEMENT){
             return nodeVisitor.createInstructionNode(this);
         }
-
         return new AASTNode();
     }
+
+    // public Derivation pickDerivation(Token nextToken) {
+    //     List<Derivation> derivations = grammerElement.getDerivation();
+    //     PickDerivVisitor pickDerivVisitor = 
+    //     Derivation returnDeriv = new Derivation();
+    //     if( derivations.size()>0 && derivations.size()<=1){
+    //         returnDeriv = derivations.get(0);
+    //     } else if(grammerElement.getName() == ASTNodeType.EXPRESSION) {
+    //         return 
+    //     }
+    // }
 
     public String getValue() {
         return grammerElement.getValue();

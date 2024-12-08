@@ -11,58 +11,63 @@ import com.project.tikiriCi.utility.LocalUtil;
 
 public class AST {
     private ASTNode ASTRoot;  
-    private List<Token> tokens;
-    private Token nextToken;
     
-    public AST(List<Token> tokens) {
+    public AST() {
         ASTNode startNode = new ASTNode(Grammar.PROGRAM);
         this.ASTRoot = startNode;
-        this.tokens = tokens;
     }
     
-    public void createAST() {
-        ASTNode node = this.ASTRoot;
-        this.nextToken = LocalUtil.peekTokenList(tokens);
-        parseElment(node);
-        
-    } 
+    
     
     public void parseElment(ASTNode node) {
+        //LL(K) parser k = 1
         List<Derivation> derivations = node.getGrammerElement().getDerivation();
         Derivation pickedDerivation = new Derivation();
-        for (Derivation derivation : derivations) {
-            GrammerElement firstGrammerElement = derivation.peekDerivation();
-            if(firstGrammerElement.getIsTerminal()){
-                if(nextToken.getTokenType() == firstGrammerElement.getTokenType()){
-                    pickedDerivation = derivation;
-                    break;
-                }
-            } else {
-                List<Derivation> firstGrammerElementDerivation = firstGrammerElement.getDerivation();
-                for (Derivation deriv : firstGrammerElementDerivation) {
-                    firstGrammerElement = deriv.peekDerivation();
-                    if(nextToken.getTokenType() == firstGrammerElement.getTokenType()){
-                        pickedDerivation = derivation;
-                        break;
-                    }
-                }
-            }
-        }
+        // for (Derivation derivation : derivations) {
+        //     GrammerElement firstGrammerElement = derivation.peekDerivation();
+        //     if(firstGrammerElement.getIsTerminal()){
+        //         if(nextToken.getTokenType() == firstGrammerElement.getTokenType()){
+        //             pickedDerivation = derivation;
+        //             break;
+        //         }
+        //     } else {
+        //         List<Derivation> firstGrammerElementDerivation = firstGrammerElement.getDerivation();
+        //         for (Derivation deriv : firstGrammerElementDerivation) {
+        //             firstGrammerElement = deriv.peekDerivation();
+        //             if(firstGrammerElement.getIsTerminal()){
+        //                 if(nextToken.getTokenType() == firstGrammerElement.getTokenType()){
+        //                     pickedDerivation = derivation;
+        //                     break;
+        //                 }
+        //             } else{
+        //                 List<Derivation> fgrammerChildren = firstGrammerElement.getDerivation();
+        //                 for (Derivation derivationl : fgrammerChildren) {
+        //                     GrammerElement firstElement = derivationl.peekDerivation();
+        //                     if(nextToken.getTokenType() == firstElement.getTokenType()){
+        //                         pickedDerivation = derivation;
+        //                         break;      
+        //                     }
+        //                 }
 
-        for (GrammerElement grammerElement : pickedDerivation.getGrammarElements()) {
-            ASTNode astNode = new ASTNode(grammerElement);
-            if(grammerElement.getIsTerminal()){
-                if(grammerElement.isASTNode()){
-                    //shorten
-                    astNode.getGrammerElement().setValue(LocalUtil.peekTokenList(tokens).getTokenValue().getStringValue());
-                    node.addChild(astNode);
-                }
-                nextToken = consumeTerminal(this.tokens, grammerElement);                   
-            } else {
-                node.addChild(astNode);
-                parseElment(astNode);
-            }
-        }    
+        //             }
+        //         }
+        //     }
+        // }
+        //Process the picked derivation
+        // for (GrammerElement grammerElement : pickedDerivation.getGrammarElements()) {
+        //     ASTNode astNode = new ASTNode(grammerElement);
+        //     if(grammerElement.getIsTerminal()){
+        //         if(grammerElement.isASTNode()){
+        //             astNode.getGrammerElement().setValue(
+        //                 LocalUtil.peekTokenList(tokens).getTokenValue().getStringValue());
+        //             node.addChild(astNode);
+        //         }
+        //         nextToken = consumeTerminal(this.tokens, grammerElement);                   
+        //     } else {
+        //         node.addChild(astNode);
+        //         parseElment(astNode);
+        //     }
+        // }    
         
     }
 
@@ -70,28 +75,12 @@ public class AST {
         return ASTRoot;
     }
 
-    private Token consumeTerminal(List<Token> tokens, GrammerElement grammerElement) {
-        int firstIndex = 0;
-        if(tokens.size()<1){
-            System.out.println("Error: Expected a"+ grammerElement.getTokenType()+" nothing found");
-        }
-        Token firstToken = tokens.get(firstIndex);
-        if(grammerElement.getTokenType() == firstToken.getTokenType()){
-            tokens.remove(firstIndex);
-            if(tokens.size()>0){
-                firstToken = tokens.get(firstIndex);
-            }
-
-        } else{
-             System.out.println("Error: Expected a \""+grammerElement.getTokenType()+ "\", \""+firstToken.getTokenType()+ "\" found");
-        }
-        return firstToken;
-    }
+    
 
     public void traverse() {
         traverseNode(ASTRoot);
     }
-
+    //Ugly printer
     public void traverseNode(ASTNode astNode) {
         List<ASTNode> children = astNode.getChildren();
         for (ASTNode child : children) {        

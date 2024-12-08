@@ -16,17 +16,32 @@ public class Grammar {
 
    public static Terminal TILDE =  new Terminal("tilde", TokenType.TILDE, true);
 
+   public static Terminal PLUS = new Terminal("plus", TokenType.PLUS, true);
+
+   public static Terminal MUL = new Terminal("mul", TokenType.MUL, true);
+
+   public static Terminal DIV = new Terminal("div", TokenType.DIV, true);
+
+   public static Terminal MOD = new Terminal("mod", TokenType.MOD, true);
+
+   public static NonTerminal BINOP = new NonTerminal(ASTNodeType.BINOP, Arrays.asList(
+      new Derivation(PLUS),
+      new Derivation(MUL),
+      new Derivation(DIV),
+      new Derivation(MOD)
+   ), TokenType.NULL);
+
    public static NonTerminal UNOP = new NonTerminal(ASTNodeType.UNOP, Arrays.asList(
       new Derivation(HYPHON),
       new Derivation(TILDE)
    ), TokenType.NULL);
 
+   
+   public static NonTerminal FACTOR = createFactor();
    public static NonTerminal EXP = createExpression();
+   
 
    public static NonTerminal STATEMENT = new NonTerminal(ASTNodeType.STATEMENT, Arrays.asList(
-      new Derivation(
-         new Terminal("(", TokenType.LEFT_PARAN, true)
-      ),
       new Derivation(
          new Terminal(ASTNodeType.RETURN, TokenType.RETURN, true),
          EXP,
@@ -66,25 +81,50 @@ public class Grammar {
    //    return statements;
    // }
 
-   private static NonTerminal createExpression() {
-      NonTerminal expression = new NonTerminal("expression", new ArrayList<Derivation>(), TokenType.NULL);
-      expression.getDerivation().addAll(Arrays.asList(
-         new Derivation(
-            INT
-         ),
-         new Derivation(
-            UNOP,
-            expression
+   private static NonTerminal createFactor() {
+    NonTerminal factor = new NonTerminal(ASTNodeType.FACTOR, new ArrayList<Derivation>(), TokenType.NULL);
+    return factor;
+}
 
-         ),
-         new Derivation(
-            new Terminal("(", TokenType.LEFT_PARAN, false),
-            expression,
-            new Terminal(")", TokenType.RIGHT_PARAN, false)
-         )
-      ));
-      return expression;
-   }
+private static NonTerminal createExpression() {
+    NonTerminal expression = new NonTerminal(ASTNodeType.EXPRESSION, new ArrayList<Derivation>(), TokenType.NULL);
+    NonTerminal factor = createFactor();
+
+    expression.getDerivation().addAll(
+        Arrays.asList(
+            new Derivation(
+                factor 
+            ),
+            new Derivation(
+                expression,
+                BINOP,
+                expression
+            )
+        )
+    );
+
+    factor.getDerivation().addAll(
+        Arrays.asList(
+            new Derivation(
+                INT
+            ),
+            new Derivation(
+                UNOP,
+                factor
+            ),
+            new Derivation(
+                new Terminal("(", TokenType.LEFT_PARAN, true),
+                expression, // Reference the existing expression object
+                new Terminal(")", TokenType.RIGHT_PARAN, true)
+            )
+        )
+    );
+
+    return expression;
+}
+
+
+  
    
 
 
