@@ -3,6 +3,7 @@ package com.project.tikiriCi.parser;
 import java.util.List;
 
 import com.project.tikiriCi.config.ASTNodeType;
+import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.AST.AST;
@@ -64,6 +65,39 @@ public class Parser {
         }  
     }
 
+    private void parserFactor(ASTNode astNode) {
+        Derivation pickedDerivation = pickFactorDerivation(astNode);
+        for (GrammerElement grammerElement : pickedDerivation.getGrammarElements()) {
+            ASTNode newNode = new ASTNode(grammerElement);
+            if(grammerElement.getIsTerminal()){
+                if(grammerElement.isASTNode()){
+                    astNode.getGrammerElement().setValue(
+                        LocalUtil.peekTokenList(tokens).getTokenValue().getStringValue());
+                    astNode.addChild(newNode);
+                }
+                nextToken = consumeTerminal(this.tokens, grammerElement);                   
+            } else {
+                astNode.addChild(newNode);
+                parseElement(astNode);
+            }
+        }  
+        
+    }
+
+    private ASTNode parseBinOp() {
+        List<Derivation> derivations = Grammar.BINOP.getDerivation();
+        ASTNode returnNode = new ASTNode();
+        for (Derivation derivation : derivations) {
+            GrammerElement grammerElement = derivation.getGrammarElements().get(0);
+            if(grammerElement.getTokenType() == nextToken.getTokenType()) {
+                grammerElement.setName(ASTNodeType.BINOP);
+                returnNode = new ASTNode(grammerElement);
+                consumeTerminal(tokens, grammerElement);
+            }         
+        }
+        return returnNode;
+    }
+
     private Derivation pickFactorDerivation(ASTNode astNode) {
         Derivation returnDerivation = new Derivation();
         List<Derivation> derivations = astNode.getGrammerElement().getDerivation();
@@ -76,6 +110,20 @@ public class Parser {
         }
         return returnDerivation;
     }
+
+    private void parseExpression(ASTNode astNode) {
+        ASTNode leftNode = new ASTNode();
+        parserFactor(leftNode);
+        while(this.nextToken.getTokenType() == TokenType.PLUS || this.nextToken.getTokenType() == TokenType.HYPHONE) {
+            ASTNode operator = parseBinOp();
+            ASTNode rightNode = new ASTNode();
+            parserFactor(rightNode);
+        }
+        
+
+    }
+
+  
 
 
     private Token consumeTerminal(List<Token> tokens, GrammerElement grammerElement) {
