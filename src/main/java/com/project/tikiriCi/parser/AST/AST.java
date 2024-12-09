@@ -77,9 +77,11 @@ public class AST {
     }
     //Ugly printer
     public void traverseNode(ASTNode astNode) {
+
         List<ASTNode> children = astNode.getChildren();
         for (ASTNode child : children) {        
             GrammerElement grammerElement = child.getGrammerElement();
+            System.out.println("--------------------"+child.getChildren().size()+"----------------------");
             if(grammerElement.getIsTerminal()){
                 System.out.println(child.getGrammerElement().getName()+"--->"+child.getGrammerElement().getValue());
             }   else {

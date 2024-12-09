@@ -34,7 +34,7 @@ public class Parser {
         if(nodeType == ASTNodeType.EXPRESSION) {
             ASTNode node = new ASTNode(Grammar.EXP);
             astNode.addChild(node);
-            parseExpression(node);
+            parseExpression(node,0);
         } else {
             parseElement(astNode);
         }
@@ -138,17 +138,21 @@ public class Parser {
         return returnDerivation;
     }
 
-    private void parseExpression(ASTNode astNode) { 
+    private void parseExpression(ASTNode astNode, int minPrec) { 
+        // GrammerElement expGrammerElement = Grammar.EXP;
+        // ASTNode expNode = new ASTNode(expGrammerElement);
+        // astNode.addChild(expNode);
+
         GrammerElement grammerElement = Grammar.FACTOR;
         ASTNode node = new ASTNode(grammerElement);
         astNode.addChild(node);
         parserFactor(node);//contain 1
-        while(this.nextToken.getTokenType() == TokenType.PLUS || this.nextToken.getTokenType() == TokenType.HYPHONE) {
+        while(LocalUtil.isBinaryOp(nextToken) && nextToken.getPrecedence() >= minPrec) {
             parseBinOp(astNode);
-            grammerElement = Grammar.FACTOR;
+            grammerElement = Grammar.EXP;
             node = new ASTNode(grammerElement);
             astNode.addChild(node);
-            parserFactor(node);
+            parseExpression(node, nextToken.getPrecedence()+1);
         }      
     }
 

@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.project.tikiriCi.config.ASMTreeType;
+import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.main.TokenValue;
@@ -79,5 +80,15 @@ public class LocalUtil {
                 return true;
         }
         return false;
+    }
+
+    public static Boolean isBinaryOp(Token token) {
+         String[] tokens = TokenType.BINARY_OPS;
+         for (String string : tokens) {
+            if(string == token.getTokenType()) {
+                return true;
+            }
+         }
+         return false;
     }
 }
