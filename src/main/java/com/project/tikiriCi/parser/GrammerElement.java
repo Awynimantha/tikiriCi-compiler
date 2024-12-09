@@ -64,4 +64,8 @@ public class GrammerElement {
     public List<Derivation> getDerivation() {
         return this.derivations;
     }
+
+    public GrammerElement clone() {
+        return new GrammerElement(name, derivations, isASTNode, tokenType, isTerminal);
+    }
 }

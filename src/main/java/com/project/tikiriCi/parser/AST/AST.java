@@ -2,12 +2,9 @@ package com.project.tikiriCi.parser.AST;
 
 import java.util.List;
 
-import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
-import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
-import com.project.tikiriCi.utility.LocalUtil;
 
 public class AST {
     private ASTNode ASTRoot;  
@@ -74,8 +71,6 @@ public class AST {
     public ASTNode getASTRoot() {
         return ASTRoot;
     }
-
-    
 
     public void traverse() {
         traverseNode(ASTRoot);

@@ -103,7 +103,7 @@ private static NonTerminal createExpression() {
         )
     );
 
-    factor.getDerivation().addAll(
+    FACTOR.getDerivation().addAll(
         Arrays.asList(
             new Derivation(
                 INT
