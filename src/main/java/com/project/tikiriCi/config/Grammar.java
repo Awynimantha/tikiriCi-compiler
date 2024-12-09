@@ -49,7 +49,6 @@ public class Grammar {
       )
    ), TokenType.NULL);
    
-  // public static NonTerminal STATEMENTS = createStatement();
 
    public static NonTerminal FUNCTION = new NonTerminal(ASTNodeType.FUNCTION, Arrays.asList(
       new Derivation(
@@ -65,69 +64,52 @@ public class Grammar {
    ), TokenType.NULL);
    
 
-   public static NonTerminal PROGRAM = new NonTerminal(ASTNodeType.PROGRAM, Arrays.asList(
-      new Derivation(FUNCTION)
-   ), TokenType.NULL);
+    public static NonTerminal PROGRAM = new NonTerminal(ASTNodeType.PROGRAM, Arrays.asList(
+        new Derivation(FUNCTION)
+    ), TokenType.NULL);
 
-   // private static NonTerminal createStatement() {
-   //    NonTerminal statements = new NonTerminal("statements", new ArrayList<Derivation>(), TokenType.NULL);
-   //    statements.getDerivation().addAll(Arrays.asList(
-   //       new Derivation(
-   //          STATEMENT,
-   //          statements
+    private static NonTerminal createFactor() {
+        NonTerminal factor = new NonTerminal(ASTNodeType.FACTOR, new ArrayList<Derivation>(), TokenType.NULL);
+        return factor;
+    }
 
-   //       )
-   //    ));
-   //    return statements;
-   // }
+    private static NonTerminal createExpression() {
+        NonTerminal expression = new NonTerminal(ASTNodeType.EXPRESSION, new ArrayList<Derivation>(), TokenType.NULL);
+        NonTerminal factor = createFactor();
 
-   private static NonTerminal createFactor() {
-    NonTerminal factor = new NonTerminal(ASTNodeType.FACTOR, new ArrayList<Derivation>(), TokenType.NULL);
-    return factor;
-}
-
-private static NonTerminal createExpression() {
-    NonTerminal expression = new NonTerminal(ASTNodeType.EXPRESSION, new ArrayList<Derivation>(), TokenType.NULL);
-    NonTerminal factor = createFactor();
-
-    expression.getDerivation().addAll(
-        Arrays.asList(
-            new Derivation(
-                factor 
-            ),
-            new Derivation(
-                expression,
-                BINOP,
-                expression
+        expression.getDerivation().addAll(
+            Arrays.asList(
+                new Derivation(
+                    factor 
+                ),
+                new Derivation(
+                    expression,
+                    BINOP,
+                    expression
+                )
             )
-        )
-    );
+        );
 
-    FACTOR.getDerivation().addAll(
-        Arrays.asList(
-            new Derivation(
-                INT
-            ),
-            new Derivation(
-                UNOP,
-                factor
-            ),
-            new Derivation(
-                new Terminal("(", TokenType.LEFT_PARAN, true),
-                expression, // Reference the existing expression object
-                new Terminal(")", TokenType.RIGHT_PARAN, true)
+        FACTOR.getDerivation().addAll(
+            Arrays.asList(
+                new Derivation(
+                    INT
+                ),
+                new Derivation(
+                    UNOP,
+                    factor
+                ),
+                new Derivation(
+                    new Terminal("(", TokenType.LEFT_PARAN, true),
+                    expression, // Reference the existing expression object
+                    new Terminal(")", TokenType.RIGHT_PARAN, true)
+                )
             )
-        )
-    );
+        );
 
-    return expression;
-}
-
-
-  
-   
-
-
-
+        return expression;
+    }
+    
+    
 
 }

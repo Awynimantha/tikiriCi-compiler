@@ -1,5 +1,7 @@
 package com.project.tikiriCi.main;
 
+import com.project.tikiriCi.config.TokenType;
+
 public class Token {
     private String tokenType;
     private TokenValue tokenValue;
@@ -28,6 +30,20 @@ public class Token {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public int getPrecedence() {
+        if(tokenType == TokenType.PLUS) {
+            return 45;
+        } else if(tokenType == TokenType.HYPHONE) {
+            return 45;
+        } else if(tokenType == TokenType.MUL) {
+            return 50;
+        } else if(tokenType == TokenType.DIV){
+            return 50;
+        } else {
+            return 50;
+        }
     }
 
     
