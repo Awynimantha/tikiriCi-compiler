@@ -101,7 +101,7 @@ public class Parser {
         Derivation pickedDerivation = pickFactorDerivation(astNode);
         for (GrammerElement grammerElement : pickedDerivation.getGrammarElements()) {
             GrammerElement newGrammerElement = grammerElement.clone();
-            ASTNode newNode = new ASTNode();
+            ASTNode newNode = new ASTNode(grammerElement);
             if(grammerElement.getIsTerminal()){
                 if(grammerElement.isASTNode()){
                     newGrammerElement.setValue(
