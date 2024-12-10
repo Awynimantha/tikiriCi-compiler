@@ -12,17 +12,17 @@ public class Grammar {
 
    public static Terminal IDENTIFIER = new Terminal("identifier", TokenType.IDENTIFIER, true);
 
-   public static Terminal HYPHON = new Terminal("hyphone",TokenType.HYPHONE, true);
+   public static Terminal HYPHON = new Terminal(ASTNodeType.NEGATE,TokenType.HYPHONE, true);
 
-   public static Terminal TILDE =  new Terminal("tilde", TokenType.TILDE, true);
+   public static Terminal TILDE =  new Terminal(ASTNodeType.COMPLEMENT, TokenType.TILDE, true);
 
-   public static Terminal PLUS = new Terminal("plus", TokenType.PLUS, true);
+   public static Terminal PLUS = new Terminal(ASTNodeType.PLUS, TokenType.PLUS, true);
 
-   public static Terminal MUL = new Terminal("mul", TokenType.MUL, true);
+   public static Terminal MUL = new Terminal(ASTNodeType.MUL, TokenType.MUL, true);
 
-   public static Terminal DIV = new Terminal("div", TokenType.DIV, true);
+   public static Terminal DIV = new Terminal(ASTNodeType.DIV, TokenType.DIV, true);
 
-   public static Terminal MOD = new Terminal("mod", TokenType.MOD, true);
+   public static Terminal MOD = new Terminal(ASTNodeType.MOD, TokenType.MOD, true);
 
    public static NonTerminal BINOP = new NonTerminal(ASTNodeType.BINOP, Arrays.asList(
       new Derivation(PLUS),

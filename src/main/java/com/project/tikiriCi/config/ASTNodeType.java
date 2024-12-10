@@ -12,5 +12,9 @@ public class ASTNodeType {
     public static String COMPLEMENT = "complement";
     public static String NEGATE = "negate";
     public static String FACTOR = "factor";
+    public static String MUL = "mul";
+    public static String DIV = "div";
+    public static String MOD = "mod";
+    public static String PLUS = "plus";
     
 }

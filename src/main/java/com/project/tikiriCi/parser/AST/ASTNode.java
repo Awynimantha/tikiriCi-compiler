@@ -22,6 +22,14 @@ public class ASTNode {
         this.children = new ArrayList<ASTNode>() ;
     }
 
+     public ASTNode(GrammerElement grammerElement, ASTNode... astNodeList) {
+        this.grammerElement = grammerElement;
+        this.children = new ArrayList<ASTNode>() ;
+        for (ASTNode astNode : astNodeList) {
+            addChild(astNode);
+        }
+    }
+
     public GrammerElement getGrammerElement() {
         return grammerElement;
     }
@@ -87,6 +95,10 @@ public class ASTNode {
 
     public String getValue() {
         return grammerElement.getValue();
+    }
+
+    public void setValue(String value) {
+        grammerElement.setValue(value);
     }
 
     public String getASTNodeType() {
