@@ -6,6 +6,7 @@ public class AASTNodeType {
     public static String INSTRUCTION = "instruction";
     public static String RETURN = "return";
     public static String UNARY = "unary";
+    public static String BINARY = "binary";
     public static String VAL = "val";
     public static String VAR = "var";
     public static String UNARY_OPERATOR = "unary_operator";
@@ -13,5 +14,7 @@ public class AASTNodeType {
     public static String COMPLEMENT = "complement";
     public static String NEGATE = "negate";
     public static String CONSTANCE = "constance";
+    public static String PLUS = "addition";
+    public static String MUL = "multiplication";
     
 }

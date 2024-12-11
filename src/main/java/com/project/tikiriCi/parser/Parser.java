@@ -113,7 +113,7 @@ public class Parser {
             ASTNode factorNode = new ASTNode(Grammar.FACTOR);
             factorNode.addChild(new ASTNode(grammerElement));
             return factorNode;
-        } else if(nextToken.getTokenType() == TokenType.HYPHONE && nextToken.getTokenType() == TokenType.TILDE){
+        } else if(nextToken.getTokenType() == TokenType.HYPHONE || nextToken.getTokenType() == TokenType.TILDE){
             ASTNode operator = parseBinOp();
             ASTNode inner_exp = parserFactor();
             ASTNode factorNode  = new ASTNode(Grammar.FACTOR);
@@ -150,6 +150,10 @@ public class Parser {
         
     }
 
+    // private ASTNode parseUnaryNode() {
+
+    // }
+
     private Derivation pickFactorDerivation(ASTNode astNode) {
         Derivation returnDerivation = new Derivation();
         List<Derivation> derivations = Grammar.FACTOR.getDerivation();
@@ -166,7 +170,7 @@ public class Parser {
     private ASTNode parseExpression(int minPrec) { 
         ASTNode left = parserFactor();
         ASTNode expLeft = new ASTNode(Grammar.EXP);
-        expLeft.addChild(left);
+        expLeft.addChildren(left.getChildren());;
         while(LocalUtil.isBinaryOp(nextToken) && nextToken.getPrecedence() >= minPrec) {
             int prec = nextToken.getPrecedence();
             ASTNode operator = parseBinOp();

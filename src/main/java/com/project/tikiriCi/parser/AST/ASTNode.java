@@ -109,5 +109,11 @@ public class ASTNode {
         return grammerElement.getTokenType();
     }
 
+    public void addChildren(List<ASTNode> childrenList) {
+        for (ASTNode astNode : childrenList) {
+            children.add(astNode);
+        }
+    }
+
     
 }

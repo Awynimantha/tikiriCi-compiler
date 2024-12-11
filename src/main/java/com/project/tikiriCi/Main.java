@@ -25,11 +25,11 @@ public class Main
             parser.parse();
             AST ast = parser.getAST();
             ast.traverse();
-            // AAST aast =  new AAST();
-            // aast.createAAST(ast);
-            // //aast.traverseTree();
-            // ASMT asmt = new ASMT();
-            // asmt.createASMT(aast);
+            AAST aast =  new AAST();
+            aast.createAAST(ast);
+            aast.traverseTree();
+            ASMT asmt = new ASMT();
+            asmt.createASMT(aast);
             // asmt.fixRegAndStack();
             // asmt.processMovNodes();
             // //asmt.traverseTree();

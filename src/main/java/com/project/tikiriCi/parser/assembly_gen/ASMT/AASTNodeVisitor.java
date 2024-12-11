@@ -68,10 +68,12 @@ public class AASTNodeVisitor {
         List<AASTNode> nodeList = aastNode.getChildren();
         List<ASMTNode> asmNodeList = new ArrayList<ASMTNode>();
         for (AASTNode childNode : nodeList) {
-            if(childNode.getAASTNodeType() == AASTNodeType.RETURN){
+            if(childNode.getAASTNodeType() == AASTNodeType.RETURN) {
                 asmNodeList = createReturnInstruction(childNode);
-            } else if(childNode.getAASTNodeType() == AASTNodeType.UNARY){
+            } else if(childNode.getAASTNodeType() == AASTNodeType.UNARY) {
                 asmNodeList = createUnaryInstruction(childNode);
+            } else if(childNode.getAASTNodeType() == AASTNodeType.BINARY) {
+
             } 
             for (ASMTNode asmtNode : asmNodeList) {
                 instructionNode.addChild(asmtNode);

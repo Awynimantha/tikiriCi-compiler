@@ -56,7 +56,7 @@ public class ASTNodeVisitor {
 
     private AASTNode expressionToAAST(AASTNode instructionNode,ASTNode expression) {
         ASTNode firstNode = expression.getChild(0);
-        if(firstNode.getASTNodeType() == ASTNodeType.INTEGER) {
+        if(expression.getChildren().size()==1 && firstNode.getASTNodeType() == ASTNodeType.INTEGER) {
             AASTNode constance = new AASTNode(firstNode.getGrammerElement(), AASTNodeType.CONSTANCE);
             return constance;
 
@@ -78,9 +78,29 @@ public class ASTNodeVisitor {
             instructionNode.addChildren(unary_node);
             return dst;
 
+        } else if(expression.getChildren().size()>1 && expression.getChild(1).getASTNodeType() == ASTNodeType.BINOP){
+            AASTNode v1 = expressionToAAST(instructionNode, expression.getChild(0));
+            AASTNode v2 = expressionToAAST(instructionNode, expression.getChild(2));
+            AASTNode dst = getTmpVariable();
+            AASTNode binop = new AASTNode();
+            ASTNode unary_operator = expression.getChild(1);
+            ASTNode operator = unary_operator.getChild(0);
+            if(operator.getTokenType() == TokenType.PLUS) {
+                binop = new AASTNode(operator.getGrammerElement(), AASTNodeType.NEGATE);
+            } else if(operator.getTokenType() == TokenType.MUL) {
+                binop = new AASTNode(operator.getGrammerElement(), AASTNodeType.COMPLEMENT);
+            }
+            AASTNode binary_node = new AASTNode(AASTNodeType.BINARY);
+            binary_node.addChildren(binop);
+            binary_node.addChildren(v1);
+            binary_node.addChildren(v2);
+            binary_node.addChildren(dst);
+            instructionNode.addChildren(binary_node);
+            return dst;
         } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
             return expressionToAAST(instructionNode, firstNode);
         }
+        
         
         return null;
     }
