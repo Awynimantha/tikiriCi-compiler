@@ -1,13 +1,11 @@
 package com.project.tikiriCi.parser;
 
-import java.io.EOFException;
 import java.util.List;
-
-import javax.swing.text.AsyncBoxView.ChildLocator;
 
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
+import com.project.tikiriCi.exception.CompilerException;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.AST.AST;
 import com.project.tikiriCi.parser.AST.ASTNode;
@@ -24,7 +22,7 @@ public class Parser {
         this.nextToken = tokens.get(0);
     }
 
-    public void parse() {
+    public void parse() throws CompilerException {
         parseNode(ast.getASTRoot());
     }
 
@@ -32,12 +30,9 @@ public class Parser {
         return this.ast;
     }
 
-    public void parseNode(ASTNode astNode) {
+    public void parseNode(ASTNode astNode) throws CompilerException{
         String nodeType = astNode.getGrammerElement().getName();
         if(nodeType == ASTNodeType.EXPRESSION) {
-            // GrammerElement expGrammerElement = Grammar.EXP;
-            // ASTNode expNode = new ASTNode(expGrammerElement);
-            // astNode.addChild(expNode);
             ASTNode expNode= parseExpression(0);
             List<ASTNode> nodes = expNode.getChildren();
             for (ASTNode childNode : nodes) {
@@ -48,7 +43,7 @@ public class Parser {
         }
     }
 
-    public void parseElement(ASTNode node) {
+    public void parseElement(ASTNode node) throws CompilerException{
         List<Derivation> derivations = node.getGrammerElement().getDerivation();
         String nodeType = node.getGrammerElement().getName();
         Derivation pickedDerivation = new Derivation();
@@ -105,7 +100,7 @@ public class Parser {
         }  
     }
 
-    private ASTNode parserFactor() {
+    private ASTNode parserFactor() throws CompilerException{
         if(nextToken.getTokenType() == TokenType.CONSTANT) {
             GrammerElement  grammerElement = Grammar.INT.clone();
             grammerElement.setValue(nextToken.getTokenValue().getStringValue());
@@ -127,7 +122,7 @@ public class Parser {
             this.nextToken = consumeTerminal(tokens, TokenType.RIGHT_PARAN);
             return factorNode;
         } else {
-            throw new IllegalArgumentException("Malformed factor: Unexpected token '"  + "'");
+            throw new CompilerException("Malformed expression: Unexpected token '"+ nextToken.getTokenValue().getStringValue() + "'");
         }
         return null;
     }
@@ -150,10 +145,6 @@ public class Parser {
         
     }
 
-    // private ASTNode parseUnaryNode() {
-
-    // }
-
     private Derivation pickFactorDerivation(ASTNode astNode) {
         Derivation returnDerivation = new Derivation();
         List<Derivation> derivations = Grammar.FACTOR.getDerivation();
@@ -167,7 +158,7 @@ public class Parser {
         return returnDerivation;
     }
 
-    private ASTNode parseExpression(int minPrec) { 
+    private ASTNode parseExpression(int minPrec) throws CompilerException{ 
         ASTNode left = parserFactor();
         ASTNode expLeft = new ASTNode(Grammar.EXP);
         expLeft.addChildren(left.getChildren());;

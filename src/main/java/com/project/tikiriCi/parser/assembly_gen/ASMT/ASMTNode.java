@@ -93,6 +93,8 @@ public class ASMTNode {
             return asmtNodeVisitor.createMovAssembly(this);
         } else if(ASMTreetype == ASMTreeType.RET) {
             return asmtNodeVisitor.createReturnAssembly(this);
+        } else if(ASMTreetype == ASMTreeType.BINARY) {
+            return asmtNodeVisitor.createBinaryAssembly(this);
         }
         return "";
 

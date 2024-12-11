@@ -86,9 +86,9 @@ public class ASTNodeVisitor {
             ASTNode unary_operator = expression.getChild(1);
             ASTNode operator = unary_operator.getChild(0);
             if(operator.getTokenType() == TokenType.PLUS) {
-                binop = new AASTNode(operator.getGrammerElement(), AASTNodeType.NEGATE);
+                binop = new AASTNode(operator.getGrammerElement(), AASTNodeType.PLUS);
             } else if(operator.getTokenType() == TokenType.MUL) {
-                binop = new AASTNode(operator.getGrammerElement(), AASTNodeType.COMPLEMENT);
+                binop = new AASTNode(operator.getGrammerElement(), AASTNodeType.MUL);
             }
             AASTNode binary_node = new AASTNode(AASTNodeType.BINARY);
             binary_node.addChildren(binop);

@@ -26,7 +26,7 @@ public class TokenType {
    public static char TAB = '\t';
    public static char NEW_LINE = '\n';
    public static String [] SYMBOLS = {LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE,
-   SEMICOLON,TILDE, HYPHONE, PLUS, MUL, DIV, MOD};
+      SEMICOLON,TILDE, HYPHONE, PLUS, MUL, DIV, MOD};
    public static String[] BINARY_OPS = {PLUS, MUL, DIV, MOD, HYPHONE};
    public static String [] TOKENS =  {PLUS, MUL, DIV, MOD, TILDE, HYPHONE, DOUBLE_HYPHONE, TYPE, CONSTANT, INTEGER, VOID, RETURN, 
       LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON, IDENTIFIER};

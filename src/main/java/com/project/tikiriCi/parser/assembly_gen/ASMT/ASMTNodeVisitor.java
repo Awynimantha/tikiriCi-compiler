@@ -62,6 +62,19 @@ public class ASMTNodeVisitor {
         return asm;
     }
 
+    public String createBinaryAssembly(ASMTNode asmtNode) {
+        ASMTNode binary_op = asmtNode.getChild(0);
+        ASMTNode operand1 = asmtNode.getChild(1);
+        ASMTNode operand2 = asmtNode.getChild(2);
+        String asm = "";
+        if(binary_op.getASMTreeType() == ASMTreeType.ADD) {
+            asm = "addq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
+        } else if(binary_op.getASMTreeType() == ASMTreeType.MUL) {
+            asm = "imulq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
+        }
+        return asm;
+    }
+
     public String createReturnAssembly(ASMTNode asmtNode) {
         return "movq %rbp, %rsp \npopq %rbp \nmovq %rax, %rdi \nmovq $60, %rax  \nsyscall ";          
     }
