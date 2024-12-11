@@ -109,11 +109,12 @@ public class Parser {
             factorNode.addChild(new ASTNode(grammerElement));
             return factorNode;
         } else if(nextToken.getTokenType() == TokenType.HYPHONE || nextToken.getTokenType() == TokenType.TILDE){
-            ASTNode operator = parseBinOp();
+            ASTNode operator = parseUnOp();
             ASTNode inner_exp = parserFactor();
             ASTNode factorNode  = new ASTNode(Grammar.FACTOR);
             factorNode.addChild(operator);
             factorNode.addChild(inner_exp);
+            return factorNode;
         } else if(nextToken.getTokenType() == TokenType.LEFT_PARAN){
             this.nextToken = consumeTerminal(tokens, TokenType.LEFT_PARAN);
             ASTNode factorNode = new ASTNode(Grammar.FACTOR);
@@ -124,7 +125,6 @@ public class Parser {
         } else {
             throw new CompilerException("Malformed expression: Unexpected token '"+ nextToken.getTokenValue().getStringValue() + "'");
         }
-        return null;
     }
 
     private ASTNode parseBinOp() {
@@ -136,12 +136,36 @@ public class Parser {
             operandGrammerElement = Grammar.PLUS;
         } else if(nextToken.getTokenType() == TokenType.MUL) {
             operandGrammerElement = Grammar.MUL;
+        } else if(nextToken.getTokenType() == TokenType.HYPHONE) {
+            operandGrammerElement = Grammar.HYPHON;
+        } else if(nextToken.getTokenType() == TokenType.DIV) {
+            operandGrammerElement = Grammar.DIV;
+        } else if(nextToken.getTokenType() == TokenType.MOD) {
+            operandGrammerElement = Grammar.MOD;
         }
         operandNode.setGrammerElement(operandGrammerElement);
         operandNode.setValue(nextToken.getTokenValue().getStringValue());
         this.nextToken = consumeTerminal(tokens, operandGrammerElement);
         binOPNode.addChild(operandNode);
         return binOPNode;
+        
+    }
+
+    private ASTNode parseUnOp() {
+        GrammerElement unOpGrammerElement = Grammar.UNOP;
+        GrammerElement operandGrammerElement = new GrammerElement();
+        ASTNode unOPNode = new ASTNode(unOpGrammerElement);
+        ASTNode operandNode = new ASTNode();
+        if(nextToken.getTokenType() == TokenType.TILDE) {
+            operandGrammerElement = Grammar.TILDE;
+        } else if(nextToken.getTokenType() == TokenType.HYPHONE) {
+            operandGrammerElement = Grammar.HYPHON;
+        }
+        operandNode.setGrammerElement(operandGrammerElement);
+        operandNode.setValue(nextToken.getTokenValue().getStringValue());
+        this.nextToken = consumeTerminal(tokens, operandGrammerElement);
+        unOPNode.addChild(operandNode);
+        return unOPNode;
         
     }
 

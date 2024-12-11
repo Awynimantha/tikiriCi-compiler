@@ -16,6 +16,8 @@ public class Grammar {
 
    public static Terminal TILDE =  new Terminal(ASTNodeType.COMPLEMENT, TokenType.TILDE, true);
 
+   public static Terminal NOT =  new Terminal(ASTNodeType.NOT, TokenType.NOT, true);
+
    public static Terminal PLUS = new Terminal(ASTNodeType.PLUS, TokenType.PLUS, true);
 
    public static Terminal MUL = new Terminal(ASTNodeType.MUL, TokenType.MUL, true);
@@ -24,16 +26,41 @@ public class Grammar {
 
    public static Terminal MOD = new Terminal(ASTNodeType.MOD, TokenType.MOD, true);
 
+   public static Terminal AND = new Terminal(ASTNodeType.AND, TokenType.AND, true);
+
+   public static Terminal OR = new Terminal(ASTNodeType.OR, TokenType.OR, true);
+
+   public static Terminal EQUAL = new Terminal(ASTNodeType.EQUAL, TokenType.EQUAL, true);
+
+   public static Terminal NOTEQUAL = new Terminal(ASTNodeType.NOTEQUAL, TokenType.NOTEQUAL, true);
+
+   public static Terminal LESSTHAN = new Terminal(ASTNodeType.LESSTHAN, TokenType.LEFT_CHEVRON, true);
+
+   public static Terminal LESSOREQUAL = new Terminal(ASTNodeType.LESSOREQUAL, TokenType.EQUAL_LEFT_CHEVRON, true);
+
+   public static Terminal GREATERTHAN = new Terminal(ASTNodeType.GREATERTHAN, TokenType.RIGHT_CHEVRON, true);
+
+   public static Terminal GREATEROREQUAL = new Terminal(ASTNodeType.GREATEROREQUAL, TokenType.EQUAL_RIGHT_CHEVRON, true);
+
    public static NonTerminal BINOP = new NonTerminal(ASTNodeType.BINOP, Arrays.asList(
       new Derivation(PLUS),
       new Derivation(MUL),
+      new Derivation(HYPHON),
       new Derivation(DIV),
-      new Derivation(MOD)
+      new Derivation(MOD),
+      new Derivation(OR),
+      new Derivation(EQUAL),
+      new Derivation(NOTEQUAL),
+      new Derivation(LESSTHAN),
+      new Derivation(LESSOREQUAL),
+      new Derivation(GREATERTHAN),
+      new Derivation(GREATEROREQUAL)
    ), TokenType.NULL);
 
    public static NonTerminal UNOP = new NonTerminal(ASTNodeType.UNOP, Arrays.asList(
       new Derivation(HYPHON),
-      new Derivation(TILDE)
+      new Derivation(TILDE),
+      new Derivation(NOT)
    ), TokenType.NULL);
 
    

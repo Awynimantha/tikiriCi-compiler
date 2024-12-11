@@ -13,6 +13,15 @@ public class TokenType {
    public static String LEFT_BRACE = "\\{";
    public static String RIGHT_BRACE = "\\}"; 
    public static String SEMICOLON = ";";
+   public static String NOT = "\\!";
+   public static String AND = "&&";
+   public static String OR = "||";
+   public static String EQUAL = "=="; 
+   public static String NOTEQUAL = "!=";
+   public static String LEFT_CHEVRON = "<";
+   public static String RIGHT_CHEVRON = ">";
+   public static String EQUAL_RIGHT_CHEVRON = "=>";
+   public static String EQUAL_LEFT_CHEVRON = "=<";
    public static String TYPE = "int\\b";
    public static String TILDE = "\\~";
    public static String HYPHONE = "\\-";

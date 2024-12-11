@@ -71,6 +71,8 @@ public class ASMTNodeVisitor {
             asm = "addq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
         } else if(binary_op.getASMTreeType() == ASMTreeType.MUL) {
             asm = "imulq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
+        } else if(binary_op.getASMTreeType() == ASMTreeType.SUB) {
+            
         }
         return asm;
     }
