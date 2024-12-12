@@ -1,7 +1,7 @@
 package com.project.tikiriCi.parser.assembly_gen.assembly_script;
 
 import com.project.tikiriCi.config.ASTNodeType;
-import com.project.tikiriCi.parser.assembly_gen.AASTNode;
+import com.project.tikiriCi.parser.AAST.AASTNode;
 
 public class ReturnAssembly extends AssemblyCodeComp {
     private AASTNode astNode;

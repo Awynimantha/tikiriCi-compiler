@@ -1,6 +1,7 @@
 package com.project.tikiriCi.parser.assembly_gen;
 
 import com.project.tikiriCi.config.ASTNodeType;
+import com.project.tikiriCi.parser.AAST.AASTNode;
 import com.project.tikiriCi.parser.assembly_gen.assembly_script.AssemblyCodeComp;
 import com.project.tikiriCi.parser.assembly_gen.assembly_script.EntryPointAssembly;
 import com.project.tikiriCi.parser.assembly_gen.assembly_script.FunctionAssembly;

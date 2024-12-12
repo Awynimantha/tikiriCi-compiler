@@ -7,7 +7,7 @@ import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
-import com.project.tikiriCi.parser.assembly_gen.AASTNode;
+import com.project.tikiriCi.parser.AAST.AASTNode;
 
 public class ASTNode {
     private GrammerElement grammerElement;

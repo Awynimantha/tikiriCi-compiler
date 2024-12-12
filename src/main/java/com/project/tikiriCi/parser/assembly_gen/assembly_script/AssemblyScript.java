@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.util.List;
 
 import com.project.tikiriCi.main.File;
+import com.project.tikiriCi.parser.ASMT.ASMT;
+import com.project.tikiriCi.parser.ASMT.ASMTNode;
+import com.project.tikiriCi.parser.ASMT.ASMTNodeVisitor;
 import com.project.tikiriCi.parser.assembly_gen.AssemblyCodeBuilder;
-import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMT;
-import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNode;
-import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNodeVisitor;
 
 public class AssemblyScript {
     private String name;

@@ -1,4 +1,4 @@
-package com.project.tikiriCi.parser.assembly_gen.ASMT;
+package com.project.tikiriCi.parser.ASMT;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,9 +9,10 @@ import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASMTreeType;
 import com.project.tikiriCi.config.Registers;
 import com.project.tikiriCi.parser.GrammerElement;
+import com.project.tikiriCi.parser.AAST.AAST;
+import com.project.tikiriCi.parser.AAST.AASTNode;
+import com.project.tikiriCi.parser.AAST.AASTNodeVisitor;
 import com.project.tikiriCi.parser.AST.ASTNode;
-import com.project.tikiriCi.parser.assembly_gen.AAST;
-import com.project.tikiriCi.parser.assembly_gen.AASTNode;
 import com.project.tikiriCi.utility.LocalUtil;
 
 public class ASMT {

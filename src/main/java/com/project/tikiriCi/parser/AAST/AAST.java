@@ -1,4 +1,4 @@
-package com.project.tikiriCi.parser.assembly_gen;
+package com.project.tikiriCi.parser.AAST;
 
 import java.util.List;
 

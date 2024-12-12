@@ -11,12 +11,12 @@ import com.project.tikiriCi.parser.AST.AST;
 import com.project.tikiriCi.parser.AST.ASTNode;
 import com.project.tikiriCi.utility.LocalUtil;
 
-public class Parser {
+public class TokenParser {
     private AST ast;
     private List<Token> tokens;
     private Token nextToken;
 
-    public Parser(List<Token> tokens) {
+    public TokenParser(List<Token> tokens) {
         this.ast = new AST();
         this.tokens = tokens;
         this.nextToken = tokens.get(0);
@@ -123,7 +123,7 @@ public class Parser {
             this.nextToken = consumeTerminal(tokens, TokenType.RIGHT_PARAN);
             return factorNode;
         } else {
-            throw new CompilerException("Malformed expression: Unexpected token '"+ nextToken.getTokenValue().getStringValue() + "'");
+            throw new CompilerException("Error: Unexpected token '"+ nextToken.getTokenValue().getStringValue() + "'");
         }
     }
 

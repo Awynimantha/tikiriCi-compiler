@@ -1,4 +1,4 @@
-package com.project.tikiriCi.parser.assembly_gen.ASMT;
+package com.project.tikiriCi.parser.ASMT;
 
 import java.util.ArrayList;
 import java.util.List;

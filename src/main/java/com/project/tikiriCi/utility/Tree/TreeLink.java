@@ -1,6 +1,6 @@
 package com.project.tikiriCi.utility.Tree;
 
-import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNode;
+import com.project.tikiriCi.parser.ASMT.ASMTNode;
 
 /**Represent how parent node and child node are linked **/
 public class TreeLink {

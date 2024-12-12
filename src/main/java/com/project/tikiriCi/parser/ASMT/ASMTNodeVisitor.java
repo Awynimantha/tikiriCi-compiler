@@ -1,4 +1,4 @@
-package com.project.tikiriCi.parser.assembly_gen.ASMT;
+package com.project.tikiriCi.parser.ASMT;
 
 import com.project.tikiriCi.config.ASMTreeType;
 import com.project.tikiriCi.config.Registers;
@@ -72,7 +72,7 @@ public class ASMTNodeVisitor {
         } else if(binary_op.getASMTreeType() == ASMTreeType.MUL) {
             asm = "imulq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
         } else if(binary_op.getASMTreeType() == ASMTreeType.SUB) {
-            
+
         }
         return asm;
     }

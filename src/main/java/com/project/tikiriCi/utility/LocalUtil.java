@@ -12,7 +12,7 @@ import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.main.TokenValue;
-import com.project.tikiriCi.parser.assembly_gen.ASMT.ASMTNode;
+import com.project.tikiriCi.parser.ASMT.ASMTNode;
 
 public class LocalUtil {
 
@@ -37,9 +37,6 @@ public class LocalUtil {
     }
 
     public static Boolean isSymbol(String string) {
-        if(string.length()!=1) {
-            return false;
-        }
         if(regexpMatch(TokenType.SYMBOL, string)) {
             return true;
         }

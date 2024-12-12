@@ -7,7 +7,7 @@ import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.parser.GrammerElement;
-import com.project.tikiriCi.parser.assembly_gen.AASTNode;
+import com.project.tikiriCi.parser.AAST.AASTNode;
 
 public class ASTNodeVisitor {
     private int tmpVarible;
