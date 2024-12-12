@@ -18,16 +18,16 @@ public class Main
        Lexer lexer = new Lexer("/media/yasiru/New Volume/PROJECTS/java/tikirCi-compile/tikiriCi-compiler/src/main/java/com/project/tikiriCi/lexer/test_scripts/script1.tikc") ;
         try {
             ArrayList<Token> tokens = lexer.doLex();
-            for (Token token : tokens) {
-                System.out.println(token.getTokenValue().getStringValue()+"--"+token.getTokenType());
-            } 
+            // for (Token token : tokens) {
+            //     System.out.println(token.getTokenValue().getStringValue()+"--"+token.getTokenType());
+            // } 
             TokenParser parser = new TokenParser(tokens);
             parser.parse();
             AST ast = parser.getAST();
-            ast.traverse();
-            // AAST aast =  new AAST();
-            // aast.createAAST(ast);
-            // //aast.traverseTree();
+            //ast.traverse();
+            AAST aast =  new AAST();
+            aast.createAAST(ast);
+            aast.traverseTree();
             // ASMT asmt = new ASMT();
             // asmt.createASMT(aast);
             // asmt.fixRegAndStack();

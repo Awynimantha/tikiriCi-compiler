@@ -70,7 +70,7 @@ public class ASMT {
         //create allocate size node
         GrammerElement grammerElement = new GrammerElement();
         grammerElement.setValue(numOfReg+"");
-        ASMTNode stackSize = new ASMTNode(grammerElement ,ASMTreeType.INTEGER);
+        ASMTNode stackSize = new ASMTNode(grammerElement);
 
         //create the allocatesize node
         ASMTNode allocateStack = new ASMTNode(ASMTreeType.ALLOCATESTACK);

@@ -25,6 +25,12 @@ public class ASMTNode {
         this.ASMTreetype = asmTreeType;
         this.children = new ArrayList<ASMTNode>();
     } 
+
+    public ASMTNode(GrammerElement grammerElement) {
+        this.grammerElement = grammerElement;
+        this.ASMTreetype = grammerElement.getValue();
+        this.children = new ArrayList<ASMTNode>();
+    }
     
     public GrammerElement getGrammerElement() {
         return grammerElement;
@@ -78,6 +84,10 @@ public class ASMTNode {
 
     public void emptyChildren() {
         children.clear();
+    }
+
+    public String getTokenType() {
+        return grammerElement.getTokenType();
     }
 
     public String accept(ASMTNodeVisitor asmtNodeVisitor) {

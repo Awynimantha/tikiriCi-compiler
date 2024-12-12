@@ -16,12 +16,13 @@ public class AASTNodeVisitor {
     }
 
     public ASMTNode createProgramASTMTNode(AASTNode aastNode) {
-        return new ASMTNode(Grammar.PROGRAM, ASMTreeType.PROGRAM); 
+        GrammerElement grammerElement = aastNode.getGrammerElement();
+        return new ASMTNode(grammerElement, AASTNodeType.PROGRAM); 
     }
 
     public ASMTNode createFunctionASTMNode(AASTNode aastNode) {
         GrammerElement grammerElement = aastNode.getGrammerElement();
-        return new ASMTNode(grammerElement, ASMTreeType.FUNCTION);
+        return new ASMTNode(grammerElement, AASTNodeType.FUNCTION);
     }
 
     public ASMTNode createOperandNode(AASTNode aastNode){
@@ -38,26 +39,11 @@ public class AASTNodeVisitor {
         return val;
     }
 
-    public ASMTNode createUOpreatorNode(AASTNode uoperatorAAST) {
+    public ASMTNode createOpreatorNode(AASTNode uoperatorAAST) {
         ASMTNode operator = new ASMTNode();
-        if(uoperatorAAST.getAASTNodeType() == AASTNodeType.COMPLEMENT){
-            operator = new ASMTNode(ASMTreeType.NOT);
-        } else if(uoperatorAAST.getAASTNodeType() == AASTNodeType.NEGATE) {
-            operator = new ASMTNode(ASMTreeType.NEGATE);
-        }
+        operator = new ASMTNode(uoperatorAAST.getGrammerElement());
         return operator;
     }
-
-    public ASMTNode createBinaryOpreatorNode(AASTNode boperatorAAST) {
-        ASMTNode operator = new ASMTNode();
-        if(boperatorAAST.getAASTNodeType() == AASTNodeType.PLUS){
-            operator = new ASMTNode(ASMTreeType.ADD);
-        } else if(boperatorAAST.getAASTNodeType() == AASTNodeType.MUL) {
-            operator = new ASMTNode(ASMTreeType.MUL);
-        }
-        return operator;
-    }
-
 
     public ASMTNode createMovNode(ASMTNode source, ASMTNode destination) {
         ASMTNode moveNode = new ASMTNode(ASMTreeType.MOV);
@@ -129,7 +115,7 @@ public class AASTNodeVisitor {
         ASMTNode moveNode = createMovNode(sourceASM, destinationASM);
         
         AASTNode operatorNode = aastNode.getChild(0);
-        ASMTNode operatorASM = createUOpreatorNode(operatorNode);
+        ASMTNode operatorASM = createOpreatorNode(operatorNode);
         ASMTNode unary_instruction = createUnaryNode(operatorASM, destinationASM);
 
         nodeList.add(moveNode);
@@ -145,7 +131,7 @@ public class AASTNodeVisitor {
      */
     public List<ASMTNode> createBinaryInstruction(AASTNode aastNode) {
         List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
-        ASMTNode op = createBinaryOpreatorNode(aastNode.getChild(0));
+        ASMTNode op = createOpreatorNode(aastNode.getChild(0));
         ASMTNode src1 = createOperandNode(aastNode.getChild(1));
         ASMTNode src2 = createOperandNode(aastNode.getChild(2));
         ASMTNode dst = createOperandNode(aastNode.getChild(3));

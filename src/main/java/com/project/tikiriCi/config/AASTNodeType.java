@@ -9,12 +9,15 @@ public class AASTNodeType {
     public static String BINARY = "binary";
     public static String VAL = "val";
     public static String VAR = "var";
+    public static String LABEL = "label";
     public static String UNARY_OPERATOR = "unary_operator";
     public static String IDENTIFIER = "identifier";
     public static String COMPLEMENT = "complement";
-    public static String NEGATE = "negate";
     public static String CONSTANCE = "constance";
-    public static String PLUS = "addition";
-    public static String MUL = "multiplication";
+    public static String JUMPIFZERO = "jump_if_zero";
+    public static String JUMP = "jump";
+    public static String COPY = "copy";
+    public static String MOV = "mov";
+
     
 }

@@ -36,8 +36,10 @@ public class AASTNode {
         this.grammerElement = grammerElement;
     }
 
-    public void addChildren(AASTNode aastNode) {
-        children.add(aastNode);
+    public void addChildren(AASTNode... aastNode) {
+        for (AASTNode element : aastNode) {
+            children.add(element);
+        }
     }
 
     public List<AASTNode> getChildren() {
@@ -50,6 +52,10 @@ public class AASTNode {
 
     public void setAASTNodeType(String ASTNodeType) {
         this.aASTNodeType = ASTNodeType; 
+    }
+
+    public String getTokenType() {
+        return grammerElement.getTokenType();
     }
 
     public void insertChildAtStart(AASTNode aastNode) {
