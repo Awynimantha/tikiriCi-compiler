@@ -51,7 +51,7 @@ public class Token {
             return 5; 
         }else if(tokenType == TokenType.PLUS) {
             return 45;
-        } else if(tokenType == TokenType.HYPHONE) {
+        } else if(tokenType == TokenType.SUB) {
             return 45;
         } else if(tokenType == TokenType.MUL) {
             return 50;

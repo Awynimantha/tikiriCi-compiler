@@ -66,9 +66,9 @@ public class ASTNodeVisitor {
             ASTNode unary_operator = expression.getChild(0);
             ASTNode operator = unary_operator.getChild(0);
             AASTNode unop = new AASTNode();
-            if(operator.getTokenType() == TokenType.HYPHONE) {
+            if(operator.getTokenType() == TokenType.SUB) {
                 unop = new AASTNode(operator.getGrammerElement(), AASTNodeType.NEGATE);
-            } else if(operator.getTokenType() == TokenType.TILDE) {
+            } else if(operator.getTokenType() == TokenType.COMPLEMENT) {
                 unop = new AASTNode(operator.getGrammerElement(), AASTNodeType.COMPLEMENT);
             }
             AASTNode unary_node = new AASTNode(AASTNodeType.UNARY);

@@ -2,8 +2,11 @@ package com.project.tikiriCi.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import com.project.tikiriCi.exception.CompilerException;
 import com.project.tikiriCi.parser.Derivation;
+import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.NonTerminal;
 import com.project.tikiriCi.parser.Terminal;
 
@@ -12,9 +15,9 @@ public class Grammar {
 
    public static Terminal IDENTIFIER = new Terminal("identifier", TokenType.IDENTIFIER, true);
 
-   public static Terminal HYPHON = new Terminal(ASTNodeType.NEGATE,TokenType.HYPHONE, true);
+   public static Terminal SUB = new Terminal(ASTNodeType.NEGATE,TokenType.SUB, true);
 
-   public static Terminal TILDE =  new Terminal(ASTNodeType.COMPLEMENT, TokenType.TILDE, true);
+   public static Terminal COMPLEMENT =  new Terminal(ASTNodeType.COMPLEMENT, TokenType.COMPLEMENT, true);
 
    public static Terminal NOT =  new Terminal(ASTNodeType.NOT, TokenType.NOT, true);
 
@@ -45,7 +48,7 @@ public class Grammar {
    public static NonTerminal BINOP = new NonTerminal(ASTNodeType.BINOP, Arrays.asList(
       new Derivation(PLUS),
       new Derivation(MUL),
-      new Derivation(HYPHON),
+      new Derivation(SUB),
       new Derivation(DIV),
       new Derivation(MOD),
       new Derivation(OR),
@@ -58,8 +61,8 @@ public class Grammar {
    ), TokenType.NULL);
 
    public static NonTerminal UNOP = new NonTerminal(ASTNodeType.UNOP, Arrays.asList(
-      new Derivation(HYPHON),
-      new Derivation(TILDE),
+      new Derivation(SUB),
+      new Derivation(COMPLEMENT),
       new Derivation(NOT)
    ), TokenType.NULL);
 
@@ -135,6 +138,27 @@ public class Grammar {
         );
 
         return expression;
+    }
+
+    public static GrammerElement getBinOpGrammarElement(String tokenType) throws CompilerException{
+        Terminal[] terminals = {PLUS, SUB, MUL, DIV, MOD, LESSOREQUAL, LESSTHAN, 
+            GREATEROREQUAL, GREATERTHAN, EQUAL, NOTEQUAL, OR, AND};
+        for (Terminal terminal : terminals) {
+           if(terminal.getTokenType() == tokenType) {
+                return terminal.clone();
+           }
+        }
+        throw new CompilerException("Error: Binary operator "+tokenType + " does not exist");
+    }
+
+    public static GrammerElement getUnOpGrammarElement(String tokenType) throws CompilerException{
+        Terminal[] terminals = {SUB, NOT, COMPLEMENT};
+        for (Terminal terminal : terminals) {
+           if(terminal.getTokenType() == tokenType) {
+                return terminal.clone();
+           }
+        }
+        throw new CompilerException("Error: Binary operator "+tokenType + " does not exist");
     }
     
     

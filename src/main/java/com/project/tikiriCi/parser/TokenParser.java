@@ -30,6 +30,7 @@ public class TokenParser {
         return this.ast;
     }
 
+    //plug parser here
     public void parseNode(ASTNode astNode) throws CompilerException{
         String nodeType = astNode.getGrammerElement().getName();
         if(nodeType == ASTNodeType.EXPRESSION) {
@@ -43,6 +44,7 @@ public class TokenParser {
         }
     }
 
+    //default parser
     public void parseElement(ASTNode node) throws CompilerException{
         List<Derivation> derivations = node.getGrammerElement().getDerivation();
         String nodeType = node.getGrammerElement().getName();
@@ -108,7 +110,7 @@ public class TokenParser {
             ASTNode factorNode = new ASTNode(Grammar.FACTOR);
             factorNode.addChild(new ASTNode(grammerElement));
             return factorNode;
-        } else if(nextToken.getTokenType() == TokenType.HYPHONE || nextToken.getTokenType() == TokenType.TILDE){
+        } else if(nextToken.getTokenType() == TokenType.SUB || nextToken.getTokenType() == TokenType.COMPLEMENT){
             ASTNode operator = parseUnOp();
             ASTNode inner_exp = parserFactor();
             ASTNode factorNode  = new ASTNode(Grammar.FACTOR);
@@ -127,22 +129,23 @@ public class TokenParser {
         }
     }
 
-    private ASTNode parseBinOp() {
+    private ASTNode parseBinOp() throws CompilerException{
         GrammerElement binOpGrammerElement = Grammar.BINOP;
         GrammerElement operandGrammerElement = new GrammerElement();
         ASTNode binOPNode = new ASTNode(binOpGrammerElement);
         ASTNode operandNode = new ASTNode();
-        if(nextToken.getTokenType() == TokenType.PLUS) {
-            operandGrammerElement = Grammar.PLUS;
-        } else if(nextToken.getTokenType() == TokenType.MUL) {
-            operandGrammerElement = Grammar.MUL;
-        } else if(nextToken.getTokenType() == TokenType.HYPHONE) {
-            operandGrammerElement = Grammar.HYPHON;
-        } else if(nextToken.getTokenType() == TokenType.DIV) {
-            operandGrammerElement = Grammar.DIV;
-        } else if(nextToken.getTokenType() == TokenType.MOD) {
-            operandGrammerElement = Grammar.MOD;
-        }
+        // if(nextToken.getTokenType() == TokenType.PLUS) {
+        //     operandGrammerElement = Grammar.PLUS;
+        // } else if(nextToken.getTokenType() == TokenType.MUL) {
+        //     operandGrammerElement = Grammar.MUL;
+        // } else if(nextToken.getTokenType() == TokenType.SUB) {
+        //     operandGrammerElement = Grammar.SUB;
+        // } else if(nextToken.getTokenType() == TokenType.DIV) {
+        //     operandGrammerElement = Grammar.DIV;
+        // } else if(nextToken.getTokenType() == TokenType.MOD) {
+        //     operandGrammerElement = Grammar.MOD;
+        // }
+        operandGrammerElement = Grammar.getBinOpGrammarElement(nextToken.getTokenType());
         operandNode.setGrammerElement(operandGrammerElement);
         operandNode.setValue(nextToken.getTokenValue().getStringValue());
         this.nextToken = consumeTerminal(tokens, operandGrammerElement);
@@ -156,10 +159,10 @@ public class TokenParser {
         GrammerElement operandGrammerElement = new GrammerElement();
         ASTNode unOPNode = new ASTNode(unOpGrammerElement);
         ASTNode operandNode = new ASTNode();
-        if(nextToken.getTokenType() == TokenType.TILDE) {
-            operandGrammerElement = Grammar.TILDE;
-        } else if(nextToken.getTokenType() == TokenType.HYPHONE) {
-            operandGrammerElement = Grammar.HYPHON;
+        if(nextToken.getTokenType() == TokenType.COMPLEMENT) {
+            operandGrammerElement = Grammar.COMPLEMENT;
+        } else if(nextToken.getTokenType() == TokenType.SUB) {
+            operandGrammerElement = Grammar.SUB;
         }
         operandNode.setGrammerElement(operandGrammerElement);
         operandNode.setValue(nextToken.getTokenValue().getStringValue());
@@ -174,7 +177,7 @@ public class TokenParser {
         List<Derivation> derivations = Grammar.FACTOR.getDerivation();
         if(nextToken.getTokenType() == TokenType.CONSTANT) {
             returnDerivation = derivations.get(0);
-        } else if(nextToken.getTokenType() == TokenType.TILDE || nextToken.getTokenType() == TokenType.HYPHONE) {
+        } else if(nextToken.getTokenType() == TokenType.COMPLEMENT || nextToken.getTokenType() == TokenType.SUB) {
             returnDerivation = derivations.get(1);
         } else if(nextToken.getTokenType() == TokenType.LEFT_PARAN) {
             returnDerivation = derivations.get(2);
@@ -185,7 +188,7 @@ public class TokenParser {
     private ASTNode parseExpression(int minPrec) throws CompilerException{ 
         ASTNode left = parserFactor();
         ASTNode expLeft = new ASTNode(Grammar.EXP);
-        expLeft.addChildren(left.getChildren());;
+        expLeft.addChildren(left.getChildren());
         while(LocalUtil.isBinaryOp(nextToken) && nextToken.getPrecedence() >= minPrec) {
             int prec = nextToken.getPrecedence();
             ASTNode operator = parseBinOp();

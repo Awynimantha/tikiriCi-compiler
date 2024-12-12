@@ -20,24 +20,25 @@ public class TokenType {
    public static String NOTEQUAL = "!=";
    public static String LEFT_CHEVRON = "<";
    public static String RIGHT_CHEVRON = ">";
-   public static String EQUAL_RIGHT_CHEVRON = "=>";
-   public static String EQUAL_LEFT_CHEVRON = "=<";
+   public static String EQUAL_RIGHT_CHEVRON = ">=";
+   public static String EQUAL_LEFT_CHEVRON = "<=";
    public static String TYPE = "int\\b";
-   public static String TILDE = "\\~";
-   public static String HYPHONE = "\\-";
+   public static String COMPLEMENT = "\\~";
+   public static String SUB = "\\-";
    public static String PLUS = "\\+";
    public static String MUL = "\\*";
    public static String DIV = "\\/";
    public static String MOD = "\\%";
-   public static String DOUBLE_HYPHONE = "\\--";
+   public static String DOUBLE_SUB = "\\--";
    public static String NULL = "null";
    public static char WHITESPACE =  ' ';
    public static char TAB = '\t';
    public static char NEW_LINE = '\n';
    public static String [] SYMBOLS = {EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE,
-      SEMICOLON,TILDE, HYPHONE, PLUS, MUL, DIV, MOD};
-   public static String[] BINARY_OPS = {PLUS, MUL, DIV, MOD, HYPHONE};
-   public static String [] TOKENS =  {EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, PLUS, MUL, DIV, MOD, TILDE, HYPHONE, DOUBLE_HYPHONE, TYPE, CONSTANT, INTEGER, VOID, RETURN, 
+      SEMICOLON,COMPLEMENT, SUB, PLUS, MUL, DIV, MOD};
+   public static String[] BINARY_OPS = {EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE,
+       SUB, PLUS, MUL, DIV, MOD};
+   public static String [] TOKENS =  {EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, PLUS, MUL, DIV, MOD, COMPLEMENT, SUB, DOUBLE_SUB, TYPE, CONSTANT, INTEGER, VOID, RETURN, 
       LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON, IDENTIFIER};
    public static char [] IGNORE_TOKENS = {WHITESPACE, TAB, NEW_LINE};
 
