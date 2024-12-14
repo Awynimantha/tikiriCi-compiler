@@ -91,7 +91,7 @@ public class ASMTNodeVisitor {
     }
 
     public String createReturnAssembly(ASMTNode asmtNode) {
-        return "movq %rbp, %rsp \npopq %rbp \nmovq %rax, %rdi \nmovq $60, %rax  \nsyscall ";          
+        return "movq %rbp, %rsp \npopq %rbp \nmovq %rax, %rdi \nmovq $60, %rax  \nsyscall\n";          
     }
 
 

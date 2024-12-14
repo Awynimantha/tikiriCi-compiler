@@ -51,30 +51,25 @@ public class Tokenizer {
                     nextStringAdd.append((char) i);
                     String str = currentString.toString() + nextStringAdd.toString();
                     if(LocalUtil.isSymbol(currentString.toString())){
-                            if(LocalUtil.isSymbol(nextStringAdd.toString()) && LocalUtil.isSymbol(currentString.toString())){
-                                token = LocalUtil.matchAllRegex(str);
-                                if(token.getTokenType() != TokenType.NULL) {
-                                    tokens.add(token);
-                                    currentString = new StringBuilder();
-                                    nextStringAdd = new StringBuilder();
-                                    i= inputStream.read();
-                                    continue;
-                                } else {
-                                    throw new LexerException("Invalid1 Symbol Token: "+token.getTokenValue().getStringValue());
-                                }
-                                
-                            } else if(LocalUtil.isSymbol(currentString.toString())) {
-                                token = LocalUtil.matchAllRegex(currentString.toString());
-                                if(token.getTokenType() == TokenType.NULL) {
-                                    //error
-                                    throw new LexerException("Invalid2 Symbol Token: "+token.getTokenValue().getStringValue());
-                                }
-                                tokens.add(token);
-                                currentString = new StringBuilder();
-                                nextStringAdd = new StringBuilder();
-                                continue;
-
+                        token = LocalUtil.matchAllRegex(str);
+                        if(LocalUtil.isSymbol(nextStringAdd.toString()) && LocalUtil.isSymbol(currentString.toString()) && token.getTokenType() != TokenType.NULL){
+                            tokens.add(token);
+                            currentString = new StringBuilder();
+                            nextStringAdd = new StringBuilder();
+                            i= inputStream.read();
+                            continue;  
+                            
+                        } else if(LocalUtil.isSymbol(currentString.toString())) {
+                            token = LocalUtil.matchAllRegex(currentString.toString());
+                            if(token.getTokenType() == TokenType.NULL) {
+                                //error
+                                throw new LexerException("Invalid Symbol Token: "+token.getTokenValue().getStringValue());
                             }
+                            tokens.add(token);
+                            currentString = new StringBuilder();
+                            nextStringAdd = new StringBuilder();
+                            continue;
+                        }
                     } 
                     token = LocalUtil.isToken(currentString.toString(), currentString.toString()+nextStringAdd.toString());
                     if(token.getTokenType() == TokenType.TOKEN) {

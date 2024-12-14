@@ -8,7 +8,7 @@ public class TokenType {
    public static String INTEGER = "int\\b";
    public static String VOID = "void\\b";
    public static String RETURN = "\\breturn\\b";
-   public static String LEFT_PARAN = "\\(";
+   public static String LEFT_PARAN = "^\\($";
    public static String RIGHT_PARAN = "\\)";
    public static String LEFT_BRACE = "\\{";
    public static String RIGHT_BRACE = "\\}"; 
@@ -25,7 +25,7 @@ public class TokenType {
    public static String TYPE = "int\\b";
    public static String COMPLEMENT = "\\~";
    public static String SUB = "\\-";
-   public static String PLUS = "\\+";
+   public static String PLUS = "^\\+$";
    public static String MUL = "\\*";
    public static String DIV = "\\/";
    public static String MOD = "\\%";
@@ -36,8 +36,7 @@ public class TokenType {
    public static char NEW_LINE = '\n';
    public static String [] SYMBOLS = {EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE,
       SEMICOLON,COMPLEMENT, SUB, PLUS, MUL, DIV, MOD};
-   public static String[] BINARY_OPS = {EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE,
-       SUB, PLUS, MUL, DIV, MOD};
+   public static String[] BINARY_OPS = {EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, SUB, PLUS, MUL, DIV, MOD};
    public static String [] TOKENS =  {EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, PLUS, MUL, DIV, MOD, COMPLEMENT, SUB, DOUBLE_SUB, TYPE, CONSTANT, INTEGER, VOID, RETURN, 
       LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON, IDENTIFIER};
    public static char [] IGNORE_TOKENS = {WHITESPACE, TAB, NEW_LINE};

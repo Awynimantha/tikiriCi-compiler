@@ -50,8 +50,8 @@ public class AssemblyScript {
         for (ASMTNode node : children) {
             addContent(node.accept(asmtNodeVisitor));
             traverseNode(node);
-
         }
+
     }
 
     
