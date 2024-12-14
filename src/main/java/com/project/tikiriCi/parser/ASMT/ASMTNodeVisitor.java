@@ -63,18 +63,30 @@ public class ASMTNodeVisitor {
         return asm;
     }
 
+    public String createCmpAssembly(ASMTNode asmtNode) {
+        ASMTNode binary_op = asmtNode.getChild(0);
+        ASMTNode operand1 = asmtNode.getChild(1);
+        ASMTNode operand2 = asmtNode.getChild(2);
+        String asm = "";
+        if(binary_op.getTokenType() == TokenType.EQUAL) {
+            asm = "cmp "+getNodeValue(operand1)+", %rax \nsete %al \nmovzx %al ,%rax\nmov %rax, "+getNodeValue(operand2)+"\n";
+        }
+        return asm;
+    }
+
     public String createBinaryAssembly(ASMTNode asmtNode) {
         ASMTNode binary_op = asmtNode.getChild(0);
         ASMTNode operand1 = asmtNode.getChild(1);
         ASMTNode operand2 = asmtNode.getChild(2);
         String asm = "";
+        
         if(binary_op.getTokenType() == TokenType.PLUS) {
             asm = "addq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
         } else if(binary_op.getTokenType() == TokenType.MUL) {
             asm = "imulq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
         } else if(binary_op.getTokenType() == TokenType.SUB) {
 
-        }
+        } 
         return asm;
     }
 

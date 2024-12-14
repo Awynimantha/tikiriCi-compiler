@@ -105,6 +105,8 @@ public class ASMTNode {
             return asmtNodeVisitor.createReturnAssembly(this);
         } else if(ASMTreetype == ASMTreeType.BINARY) {
             return asmtNodeVisitor.createBinaryAssembly(this);
+        } else if(ASMTreetype == ASMTreeType.CMP) {
+            return asmtNodeVisitor.createCmpAssembly(this);
         }
         return "";
 

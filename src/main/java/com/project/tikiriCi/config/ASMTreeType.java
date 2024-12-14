@@ -26,5 +26,7 @@ public class ASMTreeType {
     public static String AX = "ax";
     public static String R10 = "r10";
     public static String INTEGER = "integer";
+    public static String CMP = "cmp";
+
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASMTreeType;
-import com.project.tikiriCi.config.Grammar;
+import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.ASMT.ASMTNode;
 
@@ -38,7 +38,7 @@ public class AASTNodeVisitor {
         }
         return val;
     }
-
+    
     public ASMTNode createOpreatorNode(AASTNode uoperatorAAST) {
         ASMTNode operator = new ASMTNode();
         operator = new ASMTNode(uoperatorAAST.getGrammerElement());
@@ -65,6 +65,14 @@ public class AASTNodeVisitor {
         binary.addChild(src);
         binary.addChild(dst);
         return binary;
+    }
+
+    public ASMTNode createCompareNode(ASMTNode operator,ASMTNode operand1, ASMTNode dst) {
+        ASMTNode cmpNode = new ASMTNode(ASMTreeType.CMP);
+        cmpNode.addChild(operator);
+        cmpNode.addChild(operand1);
+        cmpNode.addChild(dst);
+        return cmpNode;
     }
 
     public ASMTNode createInstruction(AASTNode aastNode) {
@@ -124,20 +132,31 @@ public class AASTNodeVisitor {
     }
 
     /*
-     * Binary(op, src1, src2, dst)
-        to:
+     * Binary(op, src1, src2, dst) => 
         Mov(src1, dst)
         Binary(op, src2, dst)
+
+       
+     Binary(op, src1, src2, dst) => 
+        Mov(SRC1, RAX) 
+        CMP(SRC2, RAX, dst)
      */
     public List<ASMTNode> createBinaryInstruction(AASTNode aastNode) {
-        List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
         ASMTNode op = createOpreatorNode(aastNode.getChild(0));
         ASMTNode src1 = createOperandNode(aastNode.getChild(1));
         ASMTNode src2 = createOperandNode(aastNode.getChild(2));
         ASMTNode dst = createOperandNode(aastNode.getChild(3));
+        List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
         ASMTNode register = new ASMTNode(ASMTreeType.REG);
         ASMTNode REGAX = new ASMTNode(ASMTreeType.AX);
         register.addChild(REGAX);
+        if(op.getTokenType() == TokenType.EQUAL) {
+            ASMTNode movNode = createMovNode(src1, register);
+            ASMTNode cmpNode = createCompareNode(op,src2, dst);
+            nodeList.add(movNode);
+            nodeList.add(cmpNode);
+            return nodeList;
+        }
         ASMTNode moveNode1 = createMovNode(src1, dst);
         ASMTNode moveNode2 = createMovNode(dst, register);
         ASMTNode binaryNode = createBinaryNode(op, src2, register);

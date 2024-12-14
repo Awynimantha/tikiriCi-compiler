@@ -12,7 +12,6 @@ import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.AAST.AAST;
 import com.project.tikiriCi.parser.AAST.AASTNode;
 import com.project.tikiriCi.parser.AAST.AASTNodeVisitor;
-import com.project.tikiriCi.parser.AST.ASTNode;
 import com.project.tikiriCi.utility.LocalUtil;
 
 public class ASMT {

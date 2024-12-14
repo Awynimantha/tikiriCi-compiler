@@ -18,6 +18,7 @@ public class AASTNodeType {
     public static String JUMP = "jump";
     public static String COPY = "copy";
     public static String MOV = "mov";
+   
 
     
 }
