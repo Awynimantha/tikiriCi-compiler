@@ -150,12 +150,16 @@ public class AASTNodeVisitor {
         ASMTNode register = new ASMTNode(ASMTreeType.REG);
         ASMTNode REGAX = new ASMTNode(ASMTreeType.AX);
         register.addChild(REGAX);
-        if(op.getTokenType() == TokenType.EQUAL) {
-            ASMTNode movNode = createMovNode(src1, register);
-            ASMTNode cmpNode = createCompareNode(op,src2, dst);
-            nodeList.add(movNode);
-            nodeList.add(cmpNode);
-            return nodeList;
+        String[] cmpTokenList = {TokenType.EQUAL, TokenType.NOTEQUAL, TokenType.LEFT_CHEVRON, 
+                TokenType.EQUAL_LEFT_CHEVRON, TokenType.RIGHT_CHEVRON, TokenType.EQUAL_RIGHT_CHEVRON};
+        for (String string : cmpTokenList) {
+            if(op.getTokenType() == string) {
+                ASMTNode movNode = createMovNode(src1, register);
+                ASMTNode cmpNode = createCompareNode(op,src2, dst);
+                nodeList.add(movNode);
+                nodeList.add(cmpNode);
+                return nodeList;
+            }
         }
         ASMTNode moveNode1 = createMovNode(src1, dst);
         ASMTNode moveNode2 = createMovNode(dst, register);

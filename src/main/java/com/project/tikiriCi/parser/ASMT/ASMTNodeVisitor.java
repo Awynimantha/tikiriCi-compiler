@@ -3,6 +3,7 @@ package com.project.tikiriCi.parser.ASMT;
 import com.project.tikiriCi.config.ASMTreeType;
 import com.project.tikiriCi.config.Registers;
 import com.project.tikiriCi.config.TokenType;
+import com.project.tikiriCi.main.Token;
 
 public class ASMTNodeVisitor {
 
@@ -68,9 +69,21 @@ public class ASMTNodeVisitor {
         ASMTNode operand1 = asmtNode.getChild(1);
         ASMTNode operand2 = asmtNode.getChild(2);
         String asm = "";
+        String set = "";
         if(binary_op.getTokenType() == TokenType.EQUAL) {
-            asm = "cmp "+getNodeValue(operand1)+", %rax \nsete %al \nmovzx %al ,%rax\nmov %rax, "+getNodeValue(operand2)+"\n";
+            set = "sete";
+        } else if(binary_op.getTokenType() == TokenType.NOTEQUAL) {
+            set = "setne";
+        } else if(binary_op.getTokenType() == TokenType.LEFT_CHEVRON) {
+            set = "setl";
+        } else if(binary_op.getTokenType() == TokenType.EQUAL_LEFT_CHEVRON) {
+            set = "setle";
+        } else if(binary_op.getTokenType() == TokenType.RIGHT_CHEVRON) {
+            set = "setg";
+        } else if(binary_op.getTokenType() == TokenType.EQUAL_RIGHT_CHEVRON) {
+            set = "setge";
         }
+        asm = "cmp "+getNodeValue(operand1)+", %rax \n"+set +" %al \nmovzx %al ,%rax\nmov %rax, "+getNodeValue(operand2)+"\n";
         return asm;
     }
 
