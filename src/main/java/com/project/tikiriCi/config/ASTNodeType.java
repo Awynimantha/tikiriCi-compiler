@@ -7,10 +7,15 @@ public class ASTNodeType {
     public static String EXPRESSION = "expression";
     public static String STATEMENT = "statement";
     public static String FACTOR = "factor";
+    public static String TYPE = "type";
     public static String INTEGER = "integer";
     public static String BINOP = "binary_operator";
     public static String UNOP = "unary_operator";
     public static String COMPLEMENT = "complement";
+    public static String VARIABLE = "variable";
+    public static String ASSIGNMENT = "assignment";
+    public static String BLOCKITEM = "blockitem";
+    public static String DECLARATION = "declaration";
     public static String NEGATE = TokenType.COMPLEMENT;
     public static String NOT = TokenType.NOT;
     public static String MUL = TokenType.MUL;
@@ -25,5 +30,6 @@ public class ASTNodeType {
     public static String LESSOREQUAL = TokenType.EQUAL_LEFT_CHEVRON;
     public static String GREATERTHAN = TokenType.RIGHT_CHEVRON;
     public static String GREATEROREQUAL = TokenType.EQUAL_RIGHT_CHEVRON;
+    public static String ASSIGN = TokenType.ASSIGN;
     
 }

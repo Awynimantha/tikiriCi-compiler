@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.tikiriCi.config.ASTNodeType;
+import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
@@ -107,6 +108,14 @@ public class ASTNode {
 
     public String getTokenType() {
         return grammerElement.getTokenType();
+    }
+
+    public ASTNode builChild(GrammerElement grammerElement, Token nextToken) {
+        GrammerElement grammar = grammerElement.clone();
+        grammar.setValue(nextToken.getTokenValue().getStringValue());
+        ASTNode astNode = new ASTNode(grammar);
+        this.addChild(astNode);
+        return astNode;
     }
 
     public void addChildren(List<ASTNode> childrenList) {

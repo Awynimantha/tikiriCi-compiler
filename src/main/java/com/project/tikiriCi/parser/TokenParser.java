@@ -1,5 +1,6 @@
 package com.project.tikiriCi.parser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.project.tikiriCi.config.ASTNodeType;
@@ -39,6 +40,8 @@ public class TokenParser {
             for (ASTNode childNode : nodes) {
                 astNode.addChild(childNode);
             }
+        } else if(nodeType == ASTNodeType.FUNCTION) {
+            parseFunctionDerivation(astNode);
         } else {
             parseElement(astNode);
         }
@@ -51,8 +54,10 @@ public class TokenParser {
         Derivation pickedDerivation = new Derivation();
         if(derivations.size() == 1) {
             pickedDerivation = derivations.get(0);
-        } else if(nodeType == ASTNodeType.FACTOR){
+        } else if(nodeType == ASTNodeType.FACTOR) {
             pickedDerivation = pickFactorDerivation(node);
+        } else if(nodeType == ASTNodeType.STATEMENT) {
+            pickedDerivation = pickStatementDerivation(node);
         } else {
             //choose the best derivation
             for (Derivation derivation : derivations) {
@@ -183,6 +188,81 @@ public class TokenParser {
             returnDerivation = derivations.get(2);
         }
         return returnDerivation;
+    }
+
+    private Derivation pickStatementDerivation(ASTNode astNode) {
+        Derivation returDerivation = new Derivation();
+        List<Derivation> derivations = Grammar.STATEMENT.getDerivation();
+        if(nextToken.getTokenType() == TokenType.RETURN) {
+            returDerivation = derivations.get(0);
+        } else if(nextToken.getTokenType() == TokenType.SEMICOLON) {
+            returDerivation = derivations.get(2);
+        } else {
+            returDerivation = derivations.get(1);
+        }
+        return returDerivation;
+    }
+
+    private void parseFunctionDerivation(ASTNode astNode) throws CompilerException{
+        Derivation derivation = Grammar.FUNCTION.getDerivation().get(0);
+        List<GrammerElement> grammerElements = derivation.getGrammarElements();
+        for (GrammerElement grammerElement : grammerElements) {
+            if(grammerElement.isASTNode()) {
+                astNode.builChild(grammerElement, nextToken);
+            }
+            nextToken = consumeTerminal(tokens, grammerElement);
+            if(grammerElement.getTokenType() == TokenType.LEFT_BRACE) {
+                break;
+            }
+        }
+        while(nextToken.getTokenType() != TokenType.RIGHT_BRACE) {
+            parseBlockItemDerivation(astNode);
+        }
+
+        nextToken = consumeTerminal(tokens, TokenType.RIGHT_BRACE);
+        
+
+    } 
+
+    private void parseBlockItemDerivation(ASTNode astNode) throws CompilerException{
+        GrammerElement grammerElement = Grammar.BLOCKITEM.clone();
+        ASTNode blockListNode = new ASTNode(grammerElement);
+        astNode.addChild(blockListNode);
+        if(nextToken.getTokenType() == TokenType.INTEGER) {
+            ASTNode declarationNode = LocalUtil.addChildASTNode(blockListNode, Grammar.DECLARATION);
+            parseDeclaration(declarationNode);
+        } else {            
+            ASTNode statementNode = LocalUtil.addChildASTNode(blockListNode, Grammar.STATEMENT);
+            parseNode(statementNode);
+        }
+    }
+
+    private void parseDeclaration(ASTNode astNode) throws CompilerException{
+        Derivation derivation = Grammar.DECLARATION.getDerivation().get(0);
+        for (GrammerElement grammerElement : derivation.getGrammarElements()) {
+            GrammerElement newGrammarEl = grammerElement.clone();
+            if(grammerElement.getName() == ASTNodeType.EXPRESSION) {
+                ASTNode newNode = parseExpression(0);
+                astNode.addChild(newNode);
+                continue;
+            }
+            if(grammerElement.isASTNode()) {
+                newGrammarEl.setValue(nextToken.getTokenValue().getStringValue());
+                astNode.addChild(new ASTNode(newGrammarEl));
+            }
+            nextToken = consumeTerminal(tokens, grammerElement);
+            if(grammerElement.getTokenType() == TokenType.IDENTIFIER && nextToken.getTokenType() == TokenType.SEMICOLON) {
+                newGrammarEl = Grammar.SEMICOLON;
+                nextToken = consumeTerminal(tokens, newGrammarEl);
+                break;
+            }
+        }
+    }
+
+    private ASTNode praseType() {
+        ASTNode integerNode = new ASTNode(Grammar.TYPE.clone());
+        consumeTerminal(tokens, TokenType.TYPE);
+        return integerNode;
     }
 
     private ASTNode parseExpression(int minPrec) throws CompilerException{ 

@@ -12,7 +12,9 @@ import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.main.TokenValue;
+import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.ASMT.ASMTNode;
+import com.project.tikiriCi.parser.AST.ASTNode;
 
 public class LocalUtil {
 
@@ -87,5 +89,11 @@ public class LocalUtil {
             }
          }
          return false;
+    }
+
+    public static ASTNode addChildASTNode(ASTNode astNode, GrammerElement grammerElement) {
+        ASTNode newNode = new ASTNode(grammerElement.clone());
+        astNode.addChild(newNode);
+        return newNode;
     }
 }
