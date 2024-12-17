@@ -124,5 +124,27 @@ public class ASTNode {
         }
     }
 
+    /**
+     * Spit first matching node
+     */
+    public ASTNode getTerminalChildByASTNodeType(String nodeType){
+        ASTNode returnASTNode = new ASTNode();
+        for (ASTNode astNode : children) {
+            if(astNode.grammerElement.getName() == nodeType) {
+                returnASTNode = astNode;
+            }           
+        }
+        return returnASTNode;
+    }
+
+    public ASTNode getNonTerminalChildByASTNodeType(String nodeType){
+        ASTNode returnASTNode = new ASTNode();
+        for (ASTNode astNode : children) {
+            if(astNode.getASTNodeType() == nodeType) {
+                returnASTNode = astNode;
+            }           
+        }
+        return returnASTNode;
+    }
     
 }

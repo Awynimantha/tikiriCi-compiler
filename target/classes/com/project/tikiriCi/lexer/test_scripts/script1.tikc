@@ -1,4 +1,5 @@
 int main(void) {
-   int n = 9;
+   int n = a;
+   ;
    return     (7>9)==(9) ;
    }

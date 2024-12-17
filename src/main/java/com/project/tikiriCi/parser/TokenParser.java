@@ -90,7 +90,6 @@ public class TokenParser {
                 }
             }
         }
-        
         for (GrammerElement grammerElement : pickedDerivation.getGrammarElements()) {
             ASTNode astNode = new ASTNode(grammerElement);
             if(grammerElement.getIsTerminal()){
@@ -115,6 +114,14 @@ public class TokenParser {
             ASTNode factorNode = new ASTNode(Grammar.FACTOR);
             factorNode.addChild(new ASTNode(grammerElement));
             return factorNode;
+        } else if(nextToken.getTokenType() == TokenType.IDENTIFIER) {
+            GrammerElement  grammerElement = Grammar.IDENTIFIER.clone();
+            grammerElement.setValue(nextToken.getTokenValue().getStringValue());
+            this.nextToken = consumeTerminal(tokens, grammerElement);
+            ASTNode factorNode = new ASTNode(Grammar.FACTOR);
+            factorNode.addChild(new ASTNode(grammerElement));
+            return factorNode;
+
         } else if(nextToken.getTokenType() == TokenType.SUB || nextToken.getTokenType() == TokenType.COMPLEMENT){
             ASTNode operator = parseUnOp();
             ASTNode inner_exp = parserFactor();
@@ -218,10 +225,7 @@ public class TokenParser {
         while(nextToken.getTokenType() != TokenType.RIGHT_BRACE) {
             parseBlockItemDerivation(astNode);
         }
-
         nextToken = consumeTerminal(tokens, TokenType.RIGHT_BRACE);
-        
-
     } 
 
     private void parseBlockItemDerivation(ASTNode astNode) throws CompilerException{
@@ -271,9 +275,17 @@ public class TokenParser {
         expLeft.addChildren(left.getChildren());
         while(LocalUtil.isBinaryOp(nextToken) && nextToken.getPrecedence() >= minPrec) {
             int prec = nextToken.getPrecedence();
-            ASTNode operator = parseBinOp();
-            ASTNode rightExp = parseExpression(prec+1);
-            expLeft = new ASTNode(Grammar.EXP, expLeft, operator, rightExp);
+            if(nextToken.getTokenType() == TokenType.ASSIGN){
+                consumeTerminal(tokens, TokenType.ASSIGN);
+                ASTNode rightExp = parseExpression(prec);
+                GrammerElement grammerElement = new GrammerElement();
+                grammerElement.setName(ASTNodeType.ASSIGNMENT);
+                expLeft = new ASTNode(grammerElement,left, rightExp);
+            } else {
+                ASTNode operator = parseBinOp();
+                ASTNode rightExp = parseExpression(prec+1);
+                expLeft = new ASTNode(Grammar.EXP, expLeft, operator, rightExp);
+            }
             
         }      
         return expLeft;

@@ -1,14 +1,9 @@
 package com.project.tikiriCi.utility;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.project.tikiriCi.config.ASMTreeType;
-import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.main.TokenValue;
@@ -17,7 +12,6 @@ import com.project.tikiriCi.parser.ASMT.ASMTNode;
 import com.project.tikiriCi.parser.AST.ASTNode;
 
 public class LocalUtil {
-
     public static boolean regexpMatch(String regex, String string) {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(string);
@@ -43,7 +37,6 @@ public class LocalUtil {
             return true;
         }
         return false;
-
     }
 
     public static Token isToken(String currentString ,String nextString) {
@@ -55,7 +48,6 @@ public class LocalUtil {
         }
         return token;
     }
-
 
     public static Boolean ignoreChar(char i) {
         for (char charVal : TokenType.IGNORE_TOKENS) {
@@ -82,13 +74,13 @@ public class LocalUtil {
     }
 
     public static Boolean isBinaryOp(Token token) {
-         String[] tokens = TokenType.BINARY_OPS;
-         for (String string : tokens) {
-            if(string == token.getTokenType()) {
-                return true;
-            }
-         }
-         return false;
+        String[] tokens = TokenType.BINARY_OPS;
+        for (String string : tokens) {
+        if(string == token.getTokenType()) {
+            return true;
+        }
+        }
+        return false;
     }
 
     public static ASTNode addChildASTNode(ASTNode astNode, GrammerElement grammerElement) {
