@@ -1,6 +1,6 @@
 int main(void) {
    int n = 5+(1);
-   int m = n3;
-   m=2;
+   int m = n;
+   n=m=2;
    return     (7>9)==9 ;
    }

@@ -1,5 +1,6 @@
 package com.project.tikiriCi.parser.AST;
 
+import java.nio.file.FileStore;
 import java.util.List;
 import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASTNodeType;
@@ -26,9 +27,34 @@ public class ASTNodeVisitor {
         String functionName = astNode.getChild(0).getValue();
         GrammerElement grammerElement = new GrammerElement();
         grammerElement.setValue(functionName);
-        return new AASTNode(grammerElement, 
+        AASTNode functioNode =  new AASTNode(grammerElement, 
                     AASTNodeType.FUNCTION);
+        AASTNode instructionNode =  new AASTNode(AASTNodeType.INSTRUCTION);
+        functioNode.addChildren(instructionNode);
+        List<ASTNode> astNodes = astNode.getChildren();
+        for (ASTNode node : astNodes) {
+            if(node.getASTNodeType() == ASTNodeType.BLOCKITEM) {
+                ASTNode child = node.getChild(0);
+                if(child.getASTNodeType() == ASTNodeType.STATEMENT) {
+
+                } else if(child.getASTNodeType() == ASTNodeType.DECLARATION) {
+
+                }
+            }
+        }
+        return functioNode;
     }
+
+    // public AASTNode createStatementNode(ASTNode statementNode) {
+    //     ASTNode firstNode = statementNode.getChild(0);
+    //     if(firstNode.getASTNodeType() == ASTNodeType.RETURN) {
+
+    //     } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
+
+    //     }
+    // }
+
+
 
     private AASTNode getTmpVariable() {
         String keyword = "tmp.";
@@ -51,7 +77,7 @@ public class ASTNodeVisitor {
         return var;
         
     }
-
+    
     public AASTNode createInstructionNode(ASTNode astNode) {
         AASTNode aastNode = new AASTNode(AASTNodeType.INSTRUCTION);
         List<ASTNode> nodes = astNode.getChildren();
@@ -62,6 +88,11 @@ public class ASTNodeVisitor {
             AASTNode returnNode = new AASTNode(AASTNodeType.RETURN);
             returnNode.addChildren(returnValNode);
             aastNode.addChildren(returnNode);
+        } else if(grammerElement.getName() == ASTNodeType.EXPRESSION) {
+            AASTNode instructionNode = expressionToAAST(aastNode, nodes.get(0));
+
+            
+            
         }
         return aastNode;
     }
@@ -150,6 +181,15 @@ public class ASTNodeVisitor {
             instructionNode.addChildren(binary_node);
             return dst;
 
+        } else if(firstNode.getASTNodeType() == ASTNodeType.ASSIGNMENT) { 
+            ASTNode identifierNode = firstNode.getTerminalChildByASTNodeType(TokenType.IDENTIFIER);
+            ASTNode expressionNode = firstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION);
+            AASTNode var = new AASTNode(identifierNode.getGrammerElement(), AASTNodeType.VAR);
+            AASTNode resultNode = expressionToAAST(instructionNode, expressionNode);
+            AASTNode copyNode = createCopyNode(resultNode, var);
+            instructionNode.addChildren(copyNode);
+
+
         } else if(firstNode.getASTNodeType() == ASTNodeType.VAR) {
             instructionNode.addChildren();
 
@@ -158,6 +198,8 @@ public class ASTNodeVisitor {
         }       
         return null;
     }
+
+    
 
 
 
