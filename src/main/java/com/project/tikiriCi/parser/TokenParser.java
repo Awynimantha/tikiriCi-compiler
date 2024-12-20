@@ -130,11 +130,11 @@ public class TokenParser {
             factorNode.addChild(inner_exp);
             return factorNode;
         } else if(nextToken.getTokenType() == TokenType.LEFT_PARAN){
-            this.nextToken = consumeTerminal(tokens, TokenType.LEFT_PARAN);
+            consumeTerminal(TokenType.LEFT_PARAN);
             ASTNode factorNode = new ASTNode(Grammar.FACTOR);
             ASTNode expression = parseExpression(0);
             factorNode.addChild(expression);
-            this.nextToken = consumeTerminal(tokens, TokenType.RIGHT_PARAN);
+            consumeTerminal(TokenType.RIGHT_PARAN);
             return factorNode;
         } else {
             throw new CompilerException("Error: Unexpected token '"+ nextToken.getTokenValue().getStringValue() + "'");
@@ -225,7 +225,7 @@ public class TokenParser {
         while(nextToken.getTokenType() != TokenType.RIGHT_BRACE) {
             parseBlockItemDerivation(astNode);
         }
-        nextToken = consumeTerminal(tokens, TokenType.RIGHT_BRACE);
+        consumeTerminal(TokenType.RIGHT_BRACE);
     } 
 
     private void parseBlockItemDerivation(ASTNode astNode) throws CompilerException{
@@ -265,7 +265,7 @@ public class TokenParser {
 
     private ASTNode praseType() {
         ASTNode integerNode = new ASTNode(Grammar.TYPE.clone());
-        consumeTerminal(tokens, TokenType.TYPE);
+        consumeTerminal(TokenType.TYPE);
         return integerNode;
     }
 
@@ -276,17 +276,20 @@ public class TokenParser {
         while(LocalUtil.isBinaryOp(nextToken) && nextToken.getPrecedence() >= minPrec) {
             int prec = nextToken.getPrecedence();
             if(nextToken.getTokenType() == TokenType.ASSIGN){
-                consumeTerminal(tokens, TokenType.ASSIGN);
+                consumeTerminal(TokenType.ASSIGN);
                 ASTNode rightExp = parseExpression(prec);
-                GrammerElement grammerElement = new GrammerElement();
-                grammerElement.setName(ASTNodeType.ASSIGNMENT);
-                expLeft = new ASTNode(grammerElement,left, rightExp);
+                GrammerElement grammerElement = new GrammerElement(ASTNodeType.ASSIGNMENT, null,
+                     false, TokenType.NULL, true);
+                //wrap assigment in expression node
+                ASTNode expressionNode = new ASTNode(Grammar.EXP);
+                ASTNode tmpNode = new ASTNode(grammerElement,expLeft, rightExp);
+                expressionNode.addChild(tmpNode);
+                expLeft = expressionNode;               
             } else {
                 ASTNode operator = parseBinOp();
                 ASTNode rightExp = parseExpression(prec+1);
                 expLeft = new ASTNode(Grammar.EXP, expLeft, operator, rightExp);
-            }
-            
+            }    
         }      
         return expLeft;
     }
@@ -309,12 +312,12 @@ public class TokenParser {
         return firstToken;
     }
 
-    private Token consumeTerminal(List<Token> tokens, String tokeType) {
+    private void consumeTerminal(String tokeType) {
         int firstIndex = 0;
-        if(tokens.size()<1){
+        if(this.tokens.size()<1){
             System.out.println("Error: Expected a"+ tokeType+" nothing found");
         }
-        Token firstToken = tokens.get(firstIndex);
+        Token firstToken = this.tokens.get(firstIndex);
         if(tokeType == firstToken.getTokenType()){
             tokens.remove(firstIndex);
             if(tokens.size()>0){
@@ -324,6 +327,6 @@ public class TokenParser {
             System.out.println("Error: Expected a \""+tokeType+ "\", \""
                 + firstToken.getTokenType() + "\" found");
         }
-        return firstToken;
+        this.nextToken = firstToken;
     }
 }

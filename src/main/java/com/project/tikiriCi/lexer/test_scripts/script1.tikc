@@ -1,5 +1,6 @@
 int main(void) {
-   int n = a;
-   ;
-   return     (7>9)==(9) ;
+   int n = 5+(1);
+   int m = n3;
+   m=2;
+   return     (7>9)==9 ;
    }

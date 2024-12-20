@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.project.tikiriCi.exception.CompilerException;
+import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.NonTerminal;
@@ -96,7 +97,7 @@ public class Grammar {
     public static NonTerminal DECLARATION = new NonTerminal(ASTNodeType.DECLARATION, Arrays.asList(
         new Derivation(
             new Terminal("int", TokenType.TYPE, true),
-            IDENTIFIER,
+            new Terminal(ASTNodeType.VAR, TokenType.IDENTIFIER, true),
             ASSIGN,
             EXP,
             new Terminal("semicolon", TokenType.SEMICOLON, false)

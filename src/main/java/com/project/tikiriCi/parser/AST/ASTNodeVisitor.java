@@ -1,9 +1,6 @@
 package com.project.tikiriCi.parser.AST;
 
 import java.util.List;
-
-import org.objectweb.asm.Label;
-
 import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
@@ -153,9 +150,11 @@ public class ASTNodeVisitor {
             instructionNode.addChildren(binary_node);
             return dst;
 
+        } else if(firstNode.getASTNodeType() == ASTNodeType.VAR) {
+            instructionNode.addChildren();
+
         } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
             return expressionToAAST(instructionNode, firstNode);
-
         }       
         return null;
     }
