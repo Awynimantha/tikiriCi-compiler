@@ -51,7 +51,7 @@ public class ASTNodeVisitor {
         AASTNode returnNode = new AASTNode(AASTNodeType.INSTRUCTION);
         if(firstNode.getASTNodeType() == ASTNodeType.RETURN) {
             AASTNode instructioNode = createReturnNode(statementNode);
-            returnNode.addChildren(instructioNode.getChild(0));
+            returnNode.passChildren(instructioNode);
         } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
             expressionToAAST(returnNode, firstNode);
         }
@@ -147,9 +147,11 @@ public class ASTNodeVisitor {
             return constance;
 
         } else if(firstNode.getASTNodeType() == ASTNodeType.ASSIGNMENT) { 
-            ASTNode identifierNode = firstNode.getTerminalChildByASTNodeType(TokenType.IDENTIFIER);
-            ASTNode expressionNode = firstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION);
-            AASTNode var = new AASTNode(identifierNode.getGrammerElement(), AASTNodeType.VAR);
+            //extract the var in expression
+            ASTNode identifierNode = firstNode.getChild(0);
+            ASTNode varNode = identifierNode.getTerminalChildByASTNodeType(TokenType.IDENTIFIER);
+            ASTNode expressionNode = firstNode.getChild(1);
+            AASTNode var = new AASTNode(varNode.getGrammerElement(), AASTNodeType.VAR);
             AASTNode resultNode = expressionToAAST(instructionNode, expressionNode);
             AASTNode copyNode = createCopyNode(resultNode, var);
             instructionNode.addChildren(copyNode);
@@ -203,7 +205,7 @@ public class ASTNodeVisitor {
 
         } else if(firstNode.getASTNodeType() == ASTNodeType.VAR) {
             AASTNode varNode = new AASTNode(firstNode.getGrammerElement(), AASTNodeType.VAR);
-            instructionNode.addChildren(varNode);
+            return varNode; 
 
         } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
             return expressionToAAST(instructionNode, firstNode);
