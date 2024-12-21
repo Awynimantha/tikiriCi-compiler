@@ -119,9 +119,8 @@ public class TokenParser {
             grammerElement.setValue(nextToken.getTokenValue().getStringValue());
             this.nextToken = consumeTerminal(tokens, grammerElement);
             ASTNode factorNode = new ASTNode(Grammar.FACTOR);
-            factorNode.addChild(new ASTNode(grammerElement));
+            factorNode.addChild(new ASTNode(grammerElement, ASTNodeType.VAR));
             return factorNode;
-
         } else if(nextToken.getTokenType() == TokenType.SUB || nextToken.getTokenType() == TokenType.COMPLEMENT){
             ASTNode operator = parseUnOp();
             ASTNode inner_exp = parserFactor();
@@ -146,24 +145,12 @@ public class TokenParser {
         GrammerElement operandGrammerElement = new GrammerElement();
         ASTNode binOPNode = new ASTNode(binOpGrammerElement);
         ASTNode operandNode = new ASTNode();
-        // if(nextToken.getTokenType() == TokenType.PLUS) {
-        //     operandGrammerElement = Grammar.PLUS;
-        // } else if(nextToken.getTokenType() == TokenType.MUL) {
-        //     operandGrammerElement = Grammar.MUL;
-        // } else if(nextToken.getTokenType() == TokenType.SUB) {
-        //     operandGrammerElement = Grammar.SUB;
-        // } else if(nextToken.getTokenType() == TokenType.DIV) {
-        //     operandGrammerElement = Grammar.DIV;
-        // } else if(nextToken.getTokenType() == TokenType.MOD) {
-        //     operandGrammerElement = Grammar.MOD;
-        // }
         operandGrammerElement = Grammar.getBinOpGrammarElement(nextToken.getTokenType());
         operandNode.setGrammerElement(operandGrammerElement);
         operandNode.setValue(nextToken.getTokenValue().getStringValue());
         this.nextToken = consumeTerminal(tokens, operandGrammerElement);
         binOPNode.addChild(operandNode);
-        return binOPNode;
-        
+        return binOPNode;      
     }
 
     private ASTNode parseUnOp() {
@@ -180,8 +167,7 @@ public class TokenParser {
         operandNode.setValue(nextToken.getTokenValue().getStringValue());
         this.nextToken = consumeTerminal(tokens, operandGrammerElement);
         unOPNode.addChild(operandNode);
-        return unOPNode;
-        
+        return unOPNode;        
     }
 
     private Derivation pickFactorDerivation(ASTNode astNode) {
@@ -252,7 +238,14 @@ public class TokenParser {
             }
             if(grammerElement.isASTNode()) {
                 newGrammarEl.setValue(nextToken.getTokenValue().getStringValue());
-                astNode.addChild(new ASTNode(newGrammarEl));
+                //condition not needed
+                if(grammerElement.getTokenType() != TokenType.IDENTIFIER) {
+                    astNode.addChild(new ASTNode(newGrammarEl));
+                } else {
+                    ASTNode node = new ASTNode(newGrammarEl);
+                    node.setASTNodeType(ASTNodeType.VAR);
+                    astNode.addChild(node);
+                }
             }
             nextToken = consumeTerminal(tokens, grammerElement);
             if(grammerElement.getTokenType() == TokenType.IDENTIFIER && nextToken.getTokenType() == TokenType.SEMICOLON) {
@@ -261,12 +254,6 @@ public class TokenParser {
                 break;
             }
         }
-    }
-
-    private ASTNode praseType() {
-        ASTNode integerNode = new ASTNode(Grammar.TYPE.clone());
-        consumeTerminal(TokenType.TYPE);
-        return integerNode;
     }
 
     private ASTNode parseExpression(int minPrec) throws CompilerException{ 

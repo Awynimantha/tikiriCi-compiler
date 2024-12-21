@@ -33,27 +33,32 @@ public class SemanticAnalyser {
         identifierNode.setValue(newValue);
         //check if there is expression
         if(declAstNode.getChildren().size()>3) {
-            expressionAnalyser(declAstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION));
+           expressionAnalyser(declAstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION));
         }
     }
 
     public void expressionAnalyser(ASTNode expNode) throws CompilerException {
         ASTNode astNode = expNode.getChild(0);
         if(astNode.getASTNodeType() == ASTNodeType.ASSIGNMENT){
-            ASTNode leftNode = astNode.getChild(0);
+            ASTNode leftNode = astNode.getChild(0).getChild(0);
             ASTNode rightNode = astNode.getChild(1);
-            if(leftNode.getTokenType()!=TokenType.IDENTIFIER) {
+            //left hand should always be a var
+            if(leftNode.getASTNodeType() != ASTNodeType.VAR) {
                 throw new CompilerException("Error: Wrong left value");
             }
-            GrammerElement grammerElement =  new GrammerElement();
-            grammerElement.setName(ASTNodeType.ASSIGNMENT);
-            expressionAnalyser(leftNode);
+            if(!variableMap.containsKey(leftNode.getValue())) {
+                throw new CompilerException("Error: Unidentified Variable named " + astNode.getValue());
+            }
+            leftNode.setValue(variableMap.get(leftNode.getValue()));
             expressionAnalyser(rightNode);
         } else if(astNode.getGrammerElement().getTokenType() == TokenType.IDENTIFIER) {
-            if(variableMap.containsKey(astNode.getValue())){
-                astNode.setValue(variableMap.get(astNode.getValue()));
-            } else {
-                throw new CompilerException("Error: Unidentified Variable named " + astNode.getValue());
+            if(!variableMap.containsValue(astNode.getValue())){
+                if(variableMap.containsKey(astNode.getValue())){
+                    astNode.setValue(variableMap.get(astNode.getValue()));
+                } else {
+                    throw new CompilerException("Error: Unidentified Variable named " + astNode.getValue());
+                }
+
             }
         } 
         else if(astNode.getASTNodeType() == ASTNodeType.EXPRESSION) {

@@ -1,6 +1,5 @@
 package com.project.tikiriCi.parser.AST;
 
-import java.nio.file.FileStore;
 import java.util.List;
 import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASTNodeType;
@@ -36,23 +35,39 @@ public class ASTNodeVisitor {
             if(node.getASTNodeType() == ASTNodeType.BLOCKITEM) {
                 ASTNode child = node.getChild(0);
                 if(child.getASTNodeType() == ASTNodeType.STATEMENT) {
-
+                    AASTNode outputNode = createStatementNode(child);
+                    instructionNode.passChildren(outputNode);
                 } else if(child.getASTNodeType() == ASTNodeType.DECLARATION) {
-
+                    AASTNode outputNode = createDeclarationNode(child);
+                    instructionNode.passChildren(outputNode);
                 }
             }
         }
         return functioNode;
     }
 
-    // public AASTNode createStatementNode(ASTNode statementNode) {
-    //     ASTNode firstNode = statementNode.getChild(0);
-    //     if(firstNode.getASTNodeType() == ASTNodeType.RETURN) {
+    public AASTNode createStatementNode(ASTNode statementNode) {
+        ASTNode firstNode = statementNode.getChild(0);
+        AASTNode returnNode = new AASTNode(AASTNodeType.INSTRUCTION);
+        if(firstNode.getASTNodeType() == ASTNodeType.RETURN) {
+            AASTNode instructioNode = createReturnNode(statementNode);
+            returnNode.addChildren(instructioNode.getChild(0));
+        } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
+            expressionToAAST(returnNode, firstNode);
+        }
+        return returnNode;
+    }
 
-    //     } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
-
-    //     }
-    // }
+    public AASTNode createDeclarationNode(ASTNode declarationNode) {
+        AASTNode instructionNode = new AASTNode();
+        ASTNode identifierNode = declarationNode.getTerminalChildByASTNodeType(TokenType.IDENTIFIER);
+        ASTNode expressionNode = declarationNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION);
+        AASTNode var = new AASTNode(identifierNode.getGrammerElement(), AASTNodeType.VAR);
+        AASTNode resultNode = expressionToAAST(instructionNode, expressionNode);
+        AASTNode copyNode = createCopyNode(resultNode, var);
+        instructionNode.addChildren(copyNode);
+        return instructionNode;
+    }
 
 
 
@@ -78,21 +93,16 @@ public class ASTNodeVisitor {
         
     }
     
-    public AASTNode createInstructionNode(ASTNode astNode) {
+    public AASTNode createReturnNode(ASTNode statementNode) {
         AASTNode aastNode = new AASTNode(AASTNodeType.INSTRUCTION);
-        List<ASTNode> nodes = astNode.getChildren();
+        List<ASTNode> nodes = statementNode.getChildren();
         GrammerElement grammerElement = nodes.get(0).getGrammerElement();
         if(grammerElement.getName() == ASTNodeType.RETURN) {
-            ASTNode expressionNode = astNode.getChild(1); //expression
+            ASTNode expressionNode = statementNode.getChild(1); //expression
             AASTNode returnValNode = expressionToAAST(aastNode,expressionNode);
             AASTNode returnNode = new AASTNode(AASTNodeType.RETURN);
             returnNode.addChildren(returnValNode);
             aastNode.addChildren(returnNode);
-        } else if(grammerElement.getName() == ASTNodeType.EXPRESSION) {
-            AASTNode instructionNode = expressionToAAST(aastNode, nodes.get(0));
-
-            
-            
         }
         return aastNode;
     }
@@ -135,6 +145,16 @@ public class ASTNodeVisitor {
         if(expression.getChildren().size()==1 && firstNode.getASTNodeType() == ASTNodeType.INTEGER) {
             AASTNode constance = new AASTNode(firstNode.getGrammerElement(), AASTNodeType.CONSTANCE);
             return constance;
+
+        } else if(firstNode.getASTNodeType() == ASTNodeType.ASSIGNMENT) { 
+            ASTNode identifierNode = firstNode.getTerminalChildByASTNodeType(TokenType.IDENTIFIER);
+            ASTNode expressionNode = firstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION);
+            AASTNode var = new AASTNode(identifierNode.getGrammerElement(), AASTNodeType.VAR);
+            AASTNode resultNode = expressionToAAST(instructionNode, expressionNode);
+            AASTNode copyNode = createCopyNode(resultNode, var);
+            instructionNode.addChildren(copyNode);
+            return instructionNode;
+
 
         } else if(firstNode.getASTNodeType() == ASTNodeType.UNOP){    
             AASTNode src = expressionToAAST(instructionNode, expression.getChild(1));
@@ -181,17 +201,9 @@ public class ASTNodeVisitor {
             instructionNode.addChildren(binary_node);
             return dst;
 
-        } else if(firstNode.getASTNodeType() == ASTNodeType.ASSIGNMENT) { 
-            ASTNode identifierNode = firstNode.getTerminalChildByASTNodeType(TokenType.IDENTIFIER);
-            ASTNode expressionNode = firstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION);
-            AASTNode var = new AASTNode(identifierNode.getGrammerElement(), AASTNodeType.VAR);
-            AASTNode resultNode = expressionToAAST(instructionNode, expressionNode);
-            AASTNode copyNode = createCopyNode(resultNode, var);
-            instructionNode.addChildren(copyNode);
-
-
         } else if(firstNode.getASTNodeType() == ASTNodeType.VAR) {
-            instructionNode.addChildren();
+            AASTNode varNode = new AASTNode(firstNode.getGrammerElement(), AASTNodeType.VAR);
+            instructionNode.addChildren(varNode);
 
         } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
             return expressionToAAST(instructionNode, firstNode);

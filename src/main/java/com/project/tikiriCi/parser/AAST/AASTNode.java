@@ -68,6 +68,13 @@ public class AASTNode {
         }
         return null;
     }
+
+    public void passChildren(AASTNode aastNode) {
+        List<AASTNode> childrenNode = aastNode.getChildren();
+        for (AASTNode node : childrenNode) {
+            children.add(node);
+        }
+    }
     
      public ASMTNode accept(AASTNodeVisitor nodeVisitor) {
         if(aASTNodeType == AASTNodeType.PROGRAM){

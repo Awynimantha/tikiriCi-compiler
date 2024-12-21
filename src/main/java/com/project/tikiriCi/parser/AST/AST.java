@@ -92,9 +92,9 @@ public class AST {
             if(astNode.getASTNodeType() == ASTNodeType.DECLARATION) {
                 semanticAnalyser.declarationAnalyser(astNode);
             } 
-            // else if(astNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
-            //     semanticAnalyser.expressionAnalyser(astNode);;
-            // }
+            else if(astNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
+                semanticAnalyser.expressionAnalyser(astNode);
+            }
             for (ASTNode node : astNodeList) {
                 queue.offer(node);    
             }
