@@ -5,7 +5,6 @@ import java.util.HashMap;
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.exception.CompilerException;
-import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.AST.ASTNode;
 
 public class SemanticAnalyser {
@@ -17,8 +16,9 @@ public class SemanticAnalyser {
         uniqueIdentifer = 0;
     }
 
+    //create variable <var_name>.<identifier>
     public String createUniqueVar(String value) {
-        return uniqueIdentifer + value;
+        return value + "." + uniqueIdentifer;
     }
 
     public void declarationAnalyser(ASTNode declAstNode) throws CompilerException{

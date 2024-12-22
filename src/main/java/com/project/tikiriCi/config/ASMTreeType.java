@@ -17,6 +17,7 @@ public class ASMTreeType {
     public static String NOT = "not";
     public static String ADD = "add";
     public static String SUB = "sub";
+    public static String COPY = "copy";
     public static String MUL = "mul";
     public static String REG = "register";
     public static String REG_NAME = "regname";

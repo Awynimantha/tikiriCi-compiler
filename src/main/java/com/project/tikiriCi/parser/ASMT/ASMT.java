@@ -1,6 +1,8 @@
 package com.project.tikiriCi.parser.ASMT;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -16,6 +18,13 @@ import com.project.tikiriCi.utility.LocalUtil;
 
 public class ASMT {
     private ASMTNode root;
+    private HashMap<String, String>  registerMap;
+    private int byteCount;
+
+    public ASMT() {
+        this.registerMap = new LinkedHashMap<String,String>();
+        this.byteCount = 0;
+    }
 
     public ASMTNode getRoot() {
         return root;
@@ -47,12 +56,18 @@ public class ASMT {
                 if(regNumberStr.length<=1){
                     continue;
                 }
-                String numString = regNumberStr[1];
-                regNumber = Short.parseShort(numString);
-                regNumber = (regNumber+1)*(8);
-                String newTemRegName = "-" + regNumber + "("+Registers.BASE_POINTER+")";
-                asmtNode.getGrammerElement().setValue(newTemRegName);
-            }
+                if(registerMap.containsKey(temRegName)) {
+                    asmtNode.getGrammerElement().setValue(registerMap.get(temRegName));
+                } else{
+                    this.byteCount++;
+                    int numString = this.byteCount;
+                    regNumber = (numString)*(8);
+                    String newTemRegName = "-" + regNumber + "("+Registers.BASE_POINTER+")";
+                    this.registerMap.put(temRegName, newTemRegName);
+                    asmtNode.getGrammerElement().setValue(newTemRegName);
+                }
+            } 
+            //else if(asmtNode.getASMTreeType() == ASMTreeType.)
             for (ASMTNode node : asmtNodesList) {
                 queue.offer(node);              
             }

@@ -8,6 +8,7 @@ import com.project.tikiriCi.config.ASMTreeType;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.ASMT.ASMTNode;
+import com.project.tikiriCi.parser.AST.ASTNode;
 
 public class AASTNodeVisitor {
 
@@ -75,6 +76,14 @@ public class AASTNodeVisitor {
         return cmpNode;
     }
 
+    public ASMTNode createCopyNode(ASMTNode operand1, ASMTNode operand2) {
+        ASMTNode copyNode = new ASMTNode(ASMTreeType.MOV);
+        copyNode.addChild(operand1);
+        copyNode.addChild(operand2);
+        return copyNode;
+    }
+
+
     public ASMTNode createInstruction(AASTNode aastNode) {
         ASMTNode instructionNode = new ASMTNode(ASMTreeType.INSTRUCTION);
         List<AASTNode> nodeList = aastNode.getChildren();
@@ -86,6 +95,8 @@ public class AASTNodeVisitor {
                 asmNodeList = createUnaryInstruction(childNode);
             } else if(childNode.getAASTNodeType() == AASTNodeType.BINARY) {
                 asmNodeList = createBinaryInstruction(childNode);
+            } else if(childNode.getAASTNodeType() == AASTNodeType.COPY) {
+                asmNodeList = createCopyInstruction(childNode);
             }  
             for (ASMTNode asmtNode : asmNodeList) {
                 instructionNode.addChild(asmtNode);
@@ -129,6 +140,20 @@ public class AASTNodeVisitor {
         nodeList.add(moveNode);
         nodeList.add(unary_instruction);
         return nodeList;
+    }
+
+      public List<ASMTNode> createCopyInstruction(AASTNode aastNode) {
+        List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
+        //aastNode is the unary
+        AASTNode sourceNode = aastNode.getChild(0);
+        ASMTNode sourceASM = createOperandNode(sourceNode);
+
+        AASTNode destinationNode = aastNode.getChild(1);
+        ASMTNode destinationASM = createOperandNode(destinationNode);
+
+        ASMTNode copyNode = createCopyNode(sourceASM, destinationASM);
+        nodeList.add(copyNode);
+        return nodeList; 
     }
 
     /*
