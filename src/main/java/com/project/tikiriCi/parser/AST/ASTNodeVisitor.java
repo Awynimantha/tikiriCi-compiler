@@ -38,6 +38,9 @@ public class ASTNodeVisitor {
                     AASTNode outputNode = createStatementNode(child);
                     instructionNode.passChildren(outputNode);
                 } else if(child.getASTNodeType() == ASTNodeType.DECLARATION) {
+                    if(child.getChildren().size()==2){
+                        continue;
+                    }
                     AASTNode outputNode = createDeclarationNode(child);
                     instructionNode.passChildren(outputNode);
                 }
@@ -68,8 +71,6 @@ public class ASTNodeVisitor {
         instructionNode.addChildren(copyNode);
         return instructionNode;
     }
-
-
 
     private AASTNode getTmpVariable() {
         String keyword = "tmp.";

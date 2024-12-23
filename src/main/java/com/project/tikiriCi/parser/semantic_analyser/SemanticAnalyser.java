@@ -1,6 +1,8 @@
 package com.project.tikiriCi.parser.semantic_analyser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.TokenType;
@@ -9,10 +11,12 @@ import com.project.tikiriCi.parser.AST.ASTNode;
 
 public class SemanticAnalyser {
     private HashMap<String, String> variableMap;
+    private List<String> parsedVariables;
     private int uniqueIdentifer;
 
     public SemanticAnalyser() {
         variableMap = new HashMap<String,String>();
+        parsedVariables = new ArrayList<String>();
         uniqueIdentifer = 0;
     }
 
@@ -28,11 +32,12 @@ public class SemanticAnalyser {
         if(variableMap.containsKey(value)) {
             throw new CompilerException("Error: Duplicate variable declaration of "+value);
         }
-        String newValue = createUniqueVar(value);
-        variableMap.put(value, newValue);
-        identifierNode.setValue(newValue);
         //check if there is expression
+        parsedVariables.add(value);
         if(declAstNode.getChildren().size()>3) {
+            String newValue = createUniqueVar(value);
+            variableMap.put(value, newValue);
+            identifierNode.setValue(newValue);
            expressionAnalyser(declAstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION));
         }
     }
@@ -46,17 +51,28 @@ public class SemanticAnalyser {
             if(leftNode.getASTNodeType() != ASTNodeType.VAR) {
                 throw new CompilerException("Error: Wrong left value");
             }
-            if(!variableMap.containsKey(leftNode.getValue())) {
-                throw new CompilerException("Error: Unidentified Variable named " + astNode.getValue());
+            if(!variableMap.containsKey(leftNode.getValue()) && !variableMap.containsValue(leftNode.getValue())) {
+                if(!parsedVariables.contains(leftNode.getValue())) {
+                    throw new CompilerException("Error: Unidentified Variable this named " + astNode.getValue());
+                } else {
+                    throw new CompilerException("Error: Variable " + astNode.getValue() + " is not initialized");
+                }
             }
-            leftNode.setValue(variableMap.get(leftNode.getValue()));
+            //m.0 comes here, fix 
+            if(!variableMap.containsValue(leftNode.getValue())){
+                leftNode.setValue(variableMap.get(leftNode.getValue()));
+            }
             expressionAnalyser(rightNode);
         } else if(astNode.getGrammerElement().getTokenType() == TokenType.IDENTIFIER) {
             if(!variableMap.containsValue(astNode.getValue())){
                 if(variableMap.containsKey(astNode.getValue())){
                     astNode.setValue(variableMap.get(astNode.getValue()));
                 } else {
-                    throw new CompilerException("Error: Unidentified Variable named " + astNode.getValue());
+                    if(!parsedVariables.contains(astNode.getValue())) {
+                        throw new CompilerException("Error: Unidentified Variable named " + astNode.getValue());
+                    } else {
+                        throw new CompilerException("Error: Variable " + astNode.getValue() + " is not initialized");
+                    }
                 }
 
             }
