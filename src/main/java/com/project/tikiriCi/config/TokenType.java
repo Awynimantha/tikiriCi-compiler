@@ -8,12 +8,16 @@ public class TokenType {
    public static String INTEGER = "int\\b";
    public static String VOID = "void\\b";
    public static String RETURN = "\\breturn\\b";
+   public static String IF = "\\bif\\b";
+   public static String ELSE = "\\belse\\b";
    public static String LEFT_PARAN = "^\\($";
    public static String RIGHT_PARAN = "^\\)$";
    public static String LEFT_BRACE = "^\\{$";
    public static String RIGHT_BRACE = "^\\}$"; 
    public static String SEMICOLON = "^;$";
    public static String NOT = "^\\!$";
+   public static String QUESTION_MARK = "^\\?$";
+   public static String COLON = "^\\:$";
    public static String AND = "&&";
    public static String OR = "\\|\\|";
    public static String EQUAL = "^==$"; 

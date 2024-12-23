@@ -52,6 +52,14 @@ public class Grammar {
     
     public static Terminal ASSIGN = new Terminal(ASTNodeType.ASSIGN, TokenType.ASSIGN, true);
 
+    public static Terminal QUESTION_MARK = new Terminal(ASTNodeType.QUESTION_MARK, TokenType.QUESTION_MARK, true);
+
+    public static Terminal COLON = new Terminal(ASTNodeType.COLON, TokenType.COLON, true);
+
+    public static Terminal IF = new Terminal("if", TokenType.IF, false);
+
+    public static Terminal ELSE = new Terminal("else", TokenType.ELSE, false);
+
 
     public static NonTerminal BINOP = new NonTerminal(ASTNodeType.BINOP, Arrays.asList(
         new Derivation(PLUS),
@@ -79,20 +87,7 @@ public class Grammar {
     public static NonTerminal EXP = createExpression();
    
 
-    public static NonTerminal STATEMENT = new NonTerminal(ASTNodeType.STATEMENT, Arrays.asList(
-        new Derivation(
-            new Terminal(ASTNodeType.RETURN, TokenType.RETURN, true),
-            EXP,
-            new Terminal("semicolon", TokenType.SEMICOLON, false)
-        ),
-        new Derivation(
-            EXP,
-            SEMICOLON
-        ),
-        new Derivation(
-            SEMICOLON
-        )
-    ), TokenType.NULL);
+    public static NonTerminal STATEMENT = createStatement();
     
     public static NonTerminal DECLARATION = new NonTerminal(ASTNodeType.DECLARATION, Arrays.asList(
         new Derivation(
@@ -159,6 +154,14 @@ public class Grammar {
                     expression,
                     BINOP,
                     expression
+                ),
+                new Derivation(
+                    expression,
+                    QUESTION_MARK,
+                    expression,
+                    COLON,
+                    expression
+
                 )
             )
         );
@@ -205,6 +208,42 @@ public class Grammar {
            }
         }
         throw new CompilerException("Error: Binary operator "+tokenType + " does not exist");
+    }
+
+    public static NonTerminal createStatement() {
+        NonTerminal statement = new NonTerminal(ASTNodeType.STATEMENT, new ArrayList<Derivation>(), TokenType.NULL);
+        statement.getDerivation().addAll(Arrays.asList(
+            new Derivation(
+            new Terminal(ASTNodeType.RETURN, TokenType.RETURN, true),
+            EXP,
+            new Terminal("semicolon", TokenType.SEMICOLON, false)
+        ),
+        new Derivation(
+            EXP,
+            SEMICOLON
+        ),
+        new Derivation(
+            SEMICOLON
+        ),
+        new Derivation(
+            IF,
+            new Terminal("(", TokenType.LEFT_PARAN, false),
+            EXP,
+            new Terminal(")", TokenType.RIGHT_PARAN, false),
+            STATEMENT,
+            ELSE,
+            STATEMENT
+        ),
+        new Derivation(
+            IF,
+            new Terminal("(", TokenType.LEFT_PARAN, false),
+            EXP,
+            new Terminal(")", TokenType.RIGHT_PARAN, false),
+            STATEMENT
+    
+        )
+        ));
+        return statement;
     }
     
     
