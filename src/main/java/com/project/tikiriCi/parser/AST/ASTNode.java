@@ -19,6 +19,12 @@ public class ASTNode {
         this.grammerElement = new GrammerElement();
     }
 
+    public ASTNode(String astNodeType) {
+        this.children = new ArrayList<ASTNode>() ;
+        this.grammerElement = new GrammerElement();
+        this.grammerElement.setName(astNodeType);
+    }
+
     public ASTNode(GrammerElement grammerElement) {
         this.grammerElement = grammerElement;
         this.children = new ArrayList<ASTNode>() ;

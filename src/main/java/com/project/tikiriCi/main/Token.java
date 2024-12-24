@@ -57,6 +57,8 @@ public class Token {
             return 50;
         } else if(tokenType == TokenType.DIV) {
             return 50;
+        } else if(tokenType == TokenType.QUESTION_MARK) {
+            return 3;
         } else {
             return 50;
         }

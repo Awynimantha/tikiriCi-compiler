@@ -12,6 +12,7 @@ public class ASTNodeType {
     public static String BINOP = "binary_operator";
     public static String UNOP = "unary_operator";
     public static String COMPLEMENT = "complement";
+    public static String CONDITIONAL = "conditional";
     public static String VARIABLE = "variable";
     public static String ASSIGNMENT = "assignment";
     public static String BLOCKITEM = "blockitem";

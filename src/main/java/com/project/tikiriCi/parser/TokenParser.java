@@ -1,6 +1,7 @@
 package com.project.tikiriCi.parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.project.tikiriCi.config.ASTNodeType;
@@ -272,6 +273,19 @@ public class TokenParser {
                 ASTNode tmpNode = new ASTNode(grammerElement,expLeft, rightExp);
                 expressionNode.addChild(tmpNode);
                 expLeft = expressionNode;               
+                
+            } else if(nextToken.getTokenType() == TokenType.QUESTION_MARK) {
+                consumeTerminal(TokenType.QUESTION_MARK);
+                ASTNode middleExp = parseExpression(minPrec);
+                consumeTerminal(TokenType.COLON);
+                ASTNode rightExp = parseExpression(nextToken.getPrecedence());
+                GrammerElement grammerElement = new GrammerElement(ASTNodeType.CONDITIONAL, null,
+                     false, TokenType.NULL, true);
+                ASTNode expressionNode = new ASTNode(Grammar.EXP);
+                ASTNode conditionNode = new ASTNode(grammerElement, expLeft, middleExp, rightExp);
+                expressionNode.addChild(conditionNode);
+                consumeTerminal(TokenType.SEMICOLON);
+                expLeft = expressionNode;
             } else {
                 ASTNode operator = parseBinOp();
                 ASTNode rightExp = parseExpression(prec+1);

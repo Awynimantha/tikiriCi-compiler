@@ -1,7 +1,4 @@
 int main(void) {
-   int n = 5+(1);
-   int m=3;
-   int v=9;
-   n=m;
-   return     n+v;
+   (5==3)?5:8; 
+   return     1;
    } 
