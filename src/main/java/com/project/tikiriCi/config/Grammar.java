@@ -85,19 +85,10 @@ public class Grammar {
     
     public static NonTerminal FACTOR = createFactor();
     public static NonTerminal EXP = createExpression();
+    public static NonTerminal ELSE_EXP = createElseCondition();
     public static NonTerminal CONDITION = createCondition();
     public static NonTerminal STATEMENT = createStatement();
     
-    public static NonTerminal ELSE_EXP = new NonTerminal(ASTNodeType.ELSE_EXPRESSION, Arrays.asList(
-        new Derivation(
-            ELSE,
-            STATEMENT
-            ),
-            //no else part
-            new Derivation(
-                
-                )
-    ), TokenType.NULL);
                 
         
     public static NonTerminal DECLARATION = new NonTerminal(ASTNodeType.DECLARATION, Arrays.asList(
@@ -226,9 +217,13 @@ public class Grammar {
         return condition;
     }
 
+    public static NonTerminal createElseCondition() {
+        NonTerminal elseCon = new NonTerminal(ASTNodeType.ELSE_EXPRESSION, new ArrayList(), TokenType.NULL);
+        return elseCon;
+    }
+
     public static NonTerminal createStatement() {
         NonTerminal statement = new NonTerminal(ASTNodeType.STATEMENT, new ArrayList<Derivation>(), TokenType.NULL);
-        NonTerminal condition = createCondition();
         statement.getDerivation().addAll(Arrays.asList(
             new Derivation(
                 new Terminal(ASTNodeType.RETURN, TokenType.RETURN, true),
@@ -248,13 +243,21 @@ public class Grammar {
             )
         ));
 
+        ELSE_EXP.getDerivation().addAll(Arrays.asList(
+            new Derivation(
+                ELSE,
+                statement
+            )
+        ));
+
         CONDITION.getDerivation().addAll( Arrays.asList(
             new Derivation(
                 IF,
                 new Terminal("(", TokenType.LEFT_PARAN, false),
                 EXP,
                 new Terminal(")", TokenType.RIGHT_PARAN, false),
-                statement
+                statement,
+                ELSE_EXP
             ))
         );
         return statement;
