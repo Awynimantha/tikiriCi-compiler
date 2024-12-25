@@ -18,6 +18,7 @@ public class ASTNodeType {
     public static String BLOCKITEM = "blockitem";
     public static String DECLARATION = "declaration";
     public static String VAR = "var";
+    public static String ELSE_EXPRESSION = "else_expression";
     public static String QUESTION_MARK = TokenType.QUESTION_MARK;
     public static String COLON = TokenType.COLON;
     public static String NEGATE = TokenType.COMPLEMENT;

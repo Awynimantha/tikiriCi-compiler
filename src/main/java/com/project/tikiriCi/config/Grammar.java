@@ -85,9 +85,19 @@ public class Grammar {
     
     public static NonTerminal FACTOR = createFactor();
     public static NonTerminal EXP = createExpression();
-   
-
     public static NonTerminal STATEMENT = createStatement();
+    
+    public static NonTerminal ELSE_EXP = new NonTerminal(ASTNodeType.ELSE_EXPRESSION, Arrays.asList(
+        new Derivation(
+            ELSE,
+            STATEMENT
+        ),
+        //no else part
+        new Derivation(
+
+        )
+    ), TokenType.NULL);
+
     
     public static NonTerminal DECLARATION = new NonTerminal(ASTNodeType.DECLARATION, Arrays.asList(
         new Derivation(
@@ -230,17 +240,7 @@ public class Grammar {
             new Terminal("(", TokenType.LEFT_PARAN, false),
             EXP,
             new Terminal(")", TokenType.RIGHT_PARAN, false),
-            STATEMENT,
-            ELSE,
             STATEMENT
-        ),
-        new Derivation(
-            IF,
-            new Terminal("(", TokenType.LEFT_PARAN, false),
-            EXP,
-            new Terminal(")", TokenType.RIGHT_PARAN, false),
-            STATEMENT
-    
         )
         ));
         return statement;

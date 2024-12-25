@@ -185,16 +185,18 @@ public class TokenParser {
     }
 
     private Derivation pickStatementDerivation(ASTNode astNode) {
-        Derivation returDerivation = new Derivation();
+        Derivation returnDerivation = new Derivation();
         List<Derivation> derivations = Grammar.STATEMENT.getDerivation();
-        if(nextToken.getTokenType() == TokenType.RETURN) {
-            returDerivation = derivations.get(0);
+        if(nextToken.getTokenType() == TokenType.IF) {
+            returnDerivation = derivations.get(3);
+        } else if(nextToken.getTokenType() == TokenType.RETURN) {
+            returnDerivation = derivations.get(0);
         } else if(nextToken.getTokenType() == TokenType.SEMICOLON) {
-            returDerivation = derivations.get(2);
+            returnDerivation = derivations.get(2);
         } else {
-            returDerivation = derivations.get(1);
+            returnDerivation = derivations.get(1);
         }
-        return returDerivation;
+        return returnDerivation;
     }
 
     private void parseFunctionDerivation(ASTNode astNode) throws CompilerException{
