@@ -23,7 +23,7 @@ public class Main
             TokenParser parser = new TokenParser(tokens);
             parser.parse();
             AST ast = parser.getAST();
-            //ast.analyseSematics();
+            ast.analyseSematics();
             ast.traverse();
             // AAST aast =  new AAST();
             // aast.createAAST(ast);
