@@ -286,7 +286,6 @@ public class TokenParser {
                 ASTNode expressionNode = new ASTNode(Grammar.EXP);
                 ASTNode conditionNode = new ASTNode(grammerElement, expLeft, middleExp, rightExp);
                 expressionNode.addChild(conditionNode);
-                consumeTerminal(TokenType.SEMICOLON);
                 expLeft = expressionNode;
             } else {
                 ASTNode operator = parseBinOp();

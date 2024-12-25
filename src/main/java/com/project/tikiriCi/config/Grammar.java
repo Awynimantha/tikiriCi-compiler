@@ -238,8 +238,7 @@ public class Grammar {
                 SEMICOLON
             ),
             new Derivation(
-                CONDITION,
-                SEMICOLON
+                CONDITION
             )
         ));
 
