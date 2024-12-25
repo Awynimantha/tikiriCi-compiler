@@ -1,5 +1,0 @@
-int main(void) {
-   if(5==5) int n = 3;
-   (5==3)?5:8; 
-   return     1;
-   } 
