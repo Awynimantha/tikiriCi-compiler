@@ -32,7 +32,7 @@ public class TokenParser {
         return this.ast;
     }
 
-    //plug parser here
+    
     public void parseNode(ASTNode astNode) throws CompilerException{
         String nodeType = astNode.getGrammerElement().getName();
         if(nodeType == ASTNodeType.EXPRESSION) {
@@ -60,36 +60,8 @@ public class TokenParser {
         } else if(nodeType == ASTNodeType.STATEMENT) {
             pickedDerivation = pickStatementDerivation(node);
         } else {
-            //choose the best derivation
-            for (Derivation derivation : derivations) {
-                GrammerElement firstGrammerElement = derivation.peekDerivation();
-                if(firstGrammerElement.getIsTerminal()){
-                    if(nextToken.getTokenType() == firstGrammerElement.getTokenType()){
-                        pickedDerivation = derivation;
-                        break;
-                    }
-                } else {
-                    List<Derivation> firstGrammerElementDerivation = firstGrammerElement.getDerivation();
-                    for (Derivation deriv : firstGrammerElementDerivation) {
-                        firstGrammerElement = deriv.peekDerivation();
-                        if(firstGrammerElement.getIsTerminal()){
-                            if(nextToken.getTokenType() == firstGrammerElement.getTokenType()){
-                                pickedDerivation = derivation;
-                                break;
-                            }
-                        } else{
-                            List<Derivation> fgrammerChildren = firstGrammerElement.getDerivation();
-                            for (Derivation derivationl : fgrammerChildren) {
-                                GrammerElement firstElement = derivationl.peekDerivation();
-                                if(nextToken.getTokenType() == firstElement.getTokenType()){
-                                    pickedDerivation = derivation;
-                                    break;      
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //default
+            pickedDerivation = TokenParserUtils.lookAHeadDerivationPicker(derivations, nextToken);
         }
         for (GrammerElement grammerElement : pickedDerivation.getGrammarElements()) {
             ASTNode astNode = new ASTNode(grammerElement);
@@ -176,7 +148,8 @@ public class TokenParser {
         List<Derivation> derivations = Grammar.FACTOR.getDerivation();
         if(nextToken.getTokenType() == TokenType.CONSTANT) {
             returnDerivation = derivations.get(0);
-        } else if(nextToken.getTokenType() == TokenType.COMPLEMENT || nextToken.getTokenType() == TokenType.SUB) {
+        } else if(nextToken.getTokenType() == TokenType.COMPLEMENT || 
+            nextToken.getTokenType() == TokenType.SUB) {
             returnDerivation = derivations.get(1);
         } else if(nextToken.getTokenType() == TokenType.LEFT_PARAN) {
             returnDerivation = derivations.get(2);

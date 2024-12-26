@@ -85,7 +85,7 @@ public class AASTNode {
             return nodeVisitor.createFunctionASTMNode(this);
         } else if(aASTNodeType == AASTNodeType.INSTRUCTION){
             return nodeVisitor.createInstruction(this);
-        }
+        } 
 
         return new ASMTNode();
     }

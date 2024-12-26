@@ -35,7 +35,7 @@ public class AASTNodeVisitor {
         } else if(aastNode.getAASTNodeType() == AASTNodeType.VAR){
             val = new ASMTNode(grammerElement, ASMTreeType.PSEUDO);
             return val;
-        }
+        } 
         return val;
     }
     
@@ -75,11 +75,22 @@ public class AASTNodeVisitor {
         return cmpNode;
     }
 
+    public ASMTNode createLabelNode(AASTNode labelNode) {
+        ASMTNode asmtNode = new ASMTNode(labelNode.getGrammerElement(), ASMTreeType.LABEL);
+        return asmtNode;
+    }
     public ASMTNode createCopyNode(ASMTNode operand1, ASMTNode operand2) {
         ASMTNode copyNode = new ASMTNode(ASMTreeType.MOV);
         copyNode.addChild(operand1);
         copyNode.addChild(operand2);
         return copyNode;
+    }
+
+    public ASMTNode createRegisterNode(String registerName) {
+        ASMTNode register = new ASMTNode(ASMTreeType.REG);
+        ASMTNode REGAX = new ASMTNode(registerName);
+        register.addChild(REGAX);
+        return register;
     }
 
 
@@ -96,7 +107,14 @@ public class AASTNodeVisitor {
                 asmNodeList = createBinaryInstruction(childNode);
             } else if(childNode.getAASTNodeType() == AASTNodeType.COPY) {
                 asmNodeList = createCopyInstruction(childNode);
-            }  
+            } else if(childNode.getAASTNodeType() == AASTNodeType.JUMP ||
+                 childNode.getAASTNodeType() == AASTNodeType.JUMPIFZERO ) {
+                asmNodeList = createJumpInstruction(childNode);
+            } else if(childNode.getAASTNodeType() == AASTNodeType.LABEL) {
+                asmNodeList = createLabelInstruction(childNode);
+            } else if(childNode.getAASTNodeType() == AASTNodeType.MOV) {
+                asmNodeList = createMovInstruction(childNode);
+            }
             for (ASMTNode asmtNode : asmNodeList) {
                 instructionNode.addChild(asmtNode);
             }
@@ -109,9 +127,7 @@ public class AASTNodeVisitor {
         List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
         ASMTNode val = new ASMTNode();
         //create the register
-        ASMTNode register = new ASMTNode(ASMTreeType.REG);
-        ASMTNode REGAX = new ASMTNode(ASMTreeType.AX);
-        register.addChild(REGAX);
+        ASMTNode register = createRegisterNode(ASMTreeType.AX);
         //define the two operands
         AASTNode returnVal = aastNode.getChild(0);
         val = createOperandNode(returnVal);
@@ -141,7 +157,7 @@ public class AASTNodeVisitor {
         return nodeList;
     }
 
-      public List<ASMTNode> createCopyInstruction(AASTNode aastNode) {
+    public List<ASMTNode> createCopyInstruction(AASTNode aastNode) {
         List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
         //aastNode is the unary
         AASTNode sourceNode = aastNode.getChild(0);
@@ -155,12 +171,60 @@ public class AASTNodeVisitor {
         return nodeList; 
     }
 
+    public List<ASMTNode> createMovInstruction(AASTNode aastNode) {
+        List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
+        //aastNode is the unary
+        AASTNode sourceNode = aastNode.getChild(0);
+        ASMTNode sourceASM = createOperandNode(sourceNode);
+
+        AASTNode destinationNode = aastNode.getChild(1);
+        ASMTNode destinationASM = createOperandNode(destinationNode);
+
+        ASMTNode movNode = createMovNode(sourceASM, destinationASM);
+        nodeList.add(movNode);
+        return nodeList; 
+    }
+
+
+    public List<ASMTNode> createLabelInstruction(AASTNode aastNode) {
+        List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
+        ASMTNode labelNode = createLabelNode(aastNode);
+        nodeList.add(labelNode);
+        return nodeList;
+    }
+
+    public List<ASMTNode> createJumpInstruction(AASTNode jmpNode) {
+        AASTNode node1 = jmpNode.getChild(0);
+        AASTNode node2 = jmpNode.getChild(1);
+        List<ASMTNode> nodeList = new ArrayList<ASMTNode>();
+        if(jmpNode.getAASTNodeType() == AASTNodeType.JUMPIFZERO) {
+            //move node create
+            ASMTNode registerNode = createRegisterNode(ASMTreeType.AX);
+            ASMTNode tempVariable = createOperandNode(node1);
+            ASMTNode moveNode = createMovNode(tempVariable, registerNode);
+
+            //label node create
+            ASMTNode jmpASMNode = new ASMTNode(ASMTreeType.JZ);
+            ASMTNode labelNode = createLabelNode(node2);
+            jmpASMNode.addChild(labelNode);
+            nodeList.add(moveNode);
+            nodeList.add(labelNode);
+        } else if(jmpNode.getAASTNodeType() == AASTNodeType.JUMP) {
+            //label node create
+            ASMTNode asmtNode = new ASMTNode(ASMTreeType.J);
+            ASMTNode labelNode = createLabelNode(node1);
+            asmtNode.addChild(labelNode);
+            nodeList.add(asmtNode);
+        }
+        return nodeList;
+    }
+
     /*
      * Binary(op, src1, src2, dst) => 
         Mov(src1, dst)
         Binary(op, src2, dst)
 
-       
+       >
      Binary(op, src1, src2, dst) => 
         Mov(SRC1, RAX) 
         CMP(SRC2, RAX, dst)

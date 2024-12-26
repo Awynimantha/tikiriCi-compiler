@@ -29,11 +29,11 @@ public class TokenType {
    public static String EQUAL_LEFT_CHEVRON = "^<=$";
    public static String TYPE = "int\\b";
    public static String COMPLEMENT = "\\~";
-   public static String SUB = "\\-";
+   public static String SUB = "^\\-$";
    public static String PLUS = "^\\+$";
-   public static String MUL = "\\*";
-   public static String DIV = "\\/";
-   public static String MOD = "\\%";
+   public static String MUL = "^\\*$";
+   public static String DIV = "^\\/$";
+   public static String MOD = "^\\%$";
    public static String DOUBLE_SUB = "\\--";
    public static String NULL = "null";
    public static char WHITESPACE =  ' ';

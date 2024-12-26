@@ -28,6 +28,10 @@ public class ASMTreeType {
     public static String R10 = "r10";
     public static String INTEGER = "integer";
     public static String CMP = "cmp";
+    public static String LABEL = "label";
+    public static String JZ = "jz";
+    public static String JZN = "jzn";
+    public static String J = "j";
 
 
 }

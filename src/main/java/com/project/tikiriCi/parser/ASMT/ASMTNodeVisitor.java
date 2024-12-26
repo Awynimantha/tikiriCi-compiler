@@ -56,10 +56,11 @@ public class ASMTNodeVisitor {
         ASMTNode operand = asmtNode.getChild(1);
         String operand_value =  getNodeValue(operand);
         String asm = "";
-        if(unary_op.getTokenType() == TokenType.NOT) {
-            asm = "notq "+ operand_value+"\n";
-        } else if(unary_op.getTokenType() == TokenType.COMPLEMENT) {
-            asm = "negq "+operand_value+"\n";
+         if(unary_op.getTokenType() == TokenType.COMPLEMENT) {
+            asm = "notq "+operand_value+"\n";
+        } else if(unary_op.getTokenType() == TokenType.SUB) {
+            asm = "subq "+operand_value+"\n";
+
         }
         return asm;
     }
@@ -98,7 +99,7 @@ public class ASMTNodeVisitor {
         } else if(binary_op.getTokenType() == TokenType.MUL) {
             asm = "imulq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
         } else if(binary_op.getTokenType() == TokenType.SUB) {
-
+            asm = "subq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
         } 
         return asm;
     }

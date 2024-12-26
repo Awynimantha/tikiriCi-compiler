@@ -192,7 +192,9 @@ public class ASTNodeVisitor {
                 AASTNode resultZero = createValNode("0");
                 AASTNode moveOne = createMovNode(resultOne, dst);
                 AASTNode moveZero = createMovNode(resultZero, dst);
-                instructionNode.addChildren(jumpNode1, jumpNode2, moveOne, jumpNode3, label, moveZero, endLabel);
+                //for short circuiting
+                instructionNode.getChildren().add(1, jumpNode1);
+                instructionNode.addChildren(jumpNode2, moveOne, jumpNode3, label, moveZero, endLabel);
                 return dst;       
             }
             GrammerElement operatorGrammerElement = operator.getGrammerElement();
