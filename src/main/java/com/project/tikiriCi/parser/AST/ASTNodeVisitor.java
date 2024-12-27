@@ -89,7 +89,7 @@ public class ASTNodeVisitor {
         this.labelVariable = this.labelVariable + 1;
         GrammerElement grammerElement = new GrammerElement();
         grammerElement.setValue(ret);
-        AASTNode var = new AASTNode(grammerElement, AASTNodeType.LABEL);
+        AASTNode var = new AASTNode(grammerElement, AASTNodeType.LABEL_NAME);
         return var;
         
     }
@@ -141,6 +141,12 @@ public class ASTNodeVisitor {
         return moveNode;
     }
 
+    public AASTNode createLabelNode(AASTNode labelNameNode) {
+        AASTNode labelNode = new AASTNode(AASTNodeType.LABEL);
+        labelNode.addChildren(labelNameNode);
+        return labelNode;
+    }
+
     private AASTNode expressionToAAST(AASTNode instructionNode,ASTNode expression) {
         ASTNode firstNode = expression.getChild(0);
         if(expression.getChildren().size()==1 && firstNode.getASTNodeType() == ASTNodeType.INTEGER) {
@@ -183,18 +189,19 @@ public class ASTNodeVisitor {
             ASTNode operator = binary_operator.getChild(0);
             AASTNode binary_node = new AASTNode(AASTNodeType.BINARY);
             if(operator.getTokenType() == TokenType.AND){
-                AASTNode label = getLabelVariable();
-                AASTNode endLabel = getLabelVariable();
-                AASTNode jumpNode1 = createJumpIfZeroNode(v1, label);
-                AASTNode jumpNode2 = createJumpIfZeroNode(v2, label);
-                AASTNode jumpNode3 = createJumpNode(endLabel);
+                AASTNode labelName = getLabelVariable();
+                AASTNode endLabelName = getLabelVariable();
+                AASTNode jumpNode1 = createJumpIfZeroNode(v1, labelName);
+                AASTNode jumpNode2 = createJumpIfZeroNode(v2, labelName);
+                AASTNode jumpNode3 = createJumpNode(endLabelName);
                 AASTNode resultOne = createValNode("1");
                 AASTNode resultZero = createValNode("0");
                 AASTNode moveOne = createMovNode(resultOne, dst);
                 AASTNode moveZero = createMovNode(resultZero, dst);
                 //for short circuiting
                 instructionNode.getChildren().add(1, jumpNode1);
-                instructionNode.addChildren(jumpNode2, moveOne, jumpNode3, label, moveZero, endLabel);
+                instructionNode.addChildren(jumpNode2, moveOne, jumpNode3, createLabelNode(labelName),
+                    moveZero, createLabelNode(endLabelName));
                 return dst;       
             }
             GrammerElement operatorGrammerElement = operator.getGrammerElement();

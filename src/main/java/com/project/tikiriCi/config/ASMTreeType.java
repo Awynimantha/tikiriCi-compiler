@@ -29,6 +29,7 @@ public class ASMTreeType {
     public static String INTEGER = "integer";
     public static String CMP = "cmp";
     public static String LABEL = "label";
+    public static String LABEL_NAME = "label_name";
     public static String JZ = "jz";
     public static String JZN = "jzn";
     public static String J = "j";

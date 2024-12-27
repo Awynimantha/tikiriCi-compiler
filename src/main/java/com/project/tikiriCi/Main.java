@@ -33,8 +33,8 @@ public class Main
             asmt.fixRegAndStack();
             asmt.processMovNodes();
             asmt.traverseTree();
-            // AssemblyScript assemblyScript = new AssemblyScript(null, "/home/yasiru/Desktop/test/ass.asm", asmt);
-            // assemblyScript.writeToScript();
+            AssemblyScript assemblyScript = new AssemblyScript(null, "/home/yasiru/Desktop/test/ass.asm", asmt);
+            assemblyScript.writeToScript();
         } catch (Exception e) {
             e.printStackTrace();;
         }

@@ -189,7 +189,8 @@ public class ASMT {
     public void traverse(ASMTNode asmtNode) {
         for (ASMTNode node : asmtNode.getChildren()) {
             if(node.getASMTreeType() == ASMTreeType.IMM || node.getASMTreeType() == ASMTreeType.PSEUDO ||
-                node.getASMTreeType() == ASMTreeType.INTEGER || node.getASMTreeType() == ASMTreeType.FUNCTION || node.getASMTreeType() == ASMTreeType.LABEL) {
+                node.getASMTreeType() == ASMTreeType.INTEGER || node.getASMTreeType() == ASMTreeType.FUNCTION ||
+                 node.getASMTreeType() == ASMTreeType.LABEL_NAME) {
                 System.out.println(node.getASMTreeType()+"-->"+node.getGrammerElement().getValue());
             } else{
                 System.out.println(node.getASMTreeType());

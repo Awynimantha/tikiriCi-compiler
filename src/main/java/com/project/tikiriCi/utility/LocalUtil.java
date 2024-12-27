@@ -60,7 +60,21 @@ public class LocalUtil {
 
     public static Token peekTokenList(List<Token> tokenList) {
         return tokenList.get(0);
+    }
 
+    /**
+     * Create assembly statment
+     * @param assemblyComps
+     * @return
+     */
+    public static String createAssemblyStatment(String... assemblyComps) {
+        String asm = "";
+        for(String assComp: assemblyComps) {
+            asm = asm.concat(assComp).concat(" ");
+        }
+        asm = asm.strip();
+        asm = asm.concat("\n");
+        return asm;
     }
    
     public static Boolean isInvalidMov(ASMTNode asmtNode){

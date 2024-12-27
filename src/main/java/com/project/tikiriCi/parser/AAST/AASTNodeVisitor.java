@@ -75,10 +75,20 @@ public class AASTNodeVisitor {
         return cmpNode;
     }
 
+    public ASMTNode createLabelNameNode(AASTNode labelNameNode) {
+        ASMTNode labelNNode = new ASMTNode(labelNameNode.getGrammerElement(), ASMTreeType.LABEL_NAME);
+        return labelNNode;
+    }
+
     public ASMTNode createLabelNode(AASTNode labelNode) {
-        ASMTNode asmtNode = new ASMTNode(labelNode.getGrammerElement(), ASMTreeType.LABEL);
+        AASTNode labelastNode = labelNode.getChild(0);
+        ASMTNode labelasmNode = createLabelNameNode(labelastNode);
+        ASMTNode asmtNode = new ASMTNode(ASMTreeType.LABEL);
+        asmtNode.addChild(labelasmNode);
         return asmtNode;
     }
+
+
     public ASMTNode createCopyNode(ASMTNode operand1, ASMTNode operand2) {
         ASMTNode copyNode = new ASMTNode(ASMTreeType.MOV);
         copyNode.addChild(operand1);
@@ -205,14 +215,14 @@ public class AASTNodeVisitor {
 
             //label node create
             ASMTNode jmpASMNode = new ASMTNode(ASMTreeType.JZ);
-            ASMTNode labelNode = createLabelNode(node2);
+            ASMTNode labelNode = createLabelNameNode(node2);
             jmpASMNode.addChild(labelNode);
             nodeList.add(moveNode);
-            nodeList.add(labelNode);
+            nodeList.add(jmpASMNode);
         } else if(jmpNode.getAASTNodeType() == AASTNodeType.JUMP) {
             //label node create
             ASMTNode asmtNode = new ASMTNode(ASMTreeType.J);
-            ASMTNode labelNode = createLabelNode(node1);
+            ASMTNode labelNode = createLabelNameNode(node1);
             asmtNode.addChild(labelNode);
             nodeList.add(asmtNode);
         }

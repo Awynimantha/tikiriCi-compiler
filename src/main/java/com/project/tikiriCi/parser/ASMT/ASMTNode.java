@@ -107,9 +107,13 @@ public class ASMTNode {
             return asmtNodeVisitor.createBinaryAssembly(this);
         } else if(ASMTreetype == ASMTreeType.CMP) {
             return asmtNodeVisitor.createCmpAssembly(this);
+        } else if(ASMTreetype == ASMTreeType.J || ASMTreetype == ASMTreeType.JZ || 
+        ASMTreetype == ASMTreeType.JZN){
+            return asmtNodeVisitor.createJumpAssembly(this);
+        } else if(ASMTreetype == ASMTreeType.LABEL) {
+            return asmtNodeVisitor.createLabelAssembly(this);
         }
         return "";
-
     }
 
     

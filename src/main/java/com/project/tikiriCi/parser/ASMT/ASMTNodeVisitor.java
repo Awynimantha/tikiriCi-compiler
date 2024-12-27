@@ -4,6 +4,7 @@ import com.project.tikiriCi.config.ASMTreeType;
 import com.project.tikiriCi.config.Registers;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.main.Token;
+import com.project.tikiriCi.utility.LocalUtil;
 
 public class ASMTNodeVisitor {
 
@@ -64,6 +65,30 @@ public class ASMTNodeVisitor {
         }
         return asm;
     }
+ 
+    public String createJumpAssembly(ASMTNode asmtNode) {
+        ASMTNode labelNode = asmtNode.getChild(0);
+        String labelName = labelNode.getValue();
+        String asm = "";
+        //hardcoded, no issue found
+        String test = LocalUtil.createAssemblyStatment("test","%rax,","%rax");
+        if(asmtNode.getASMTreeType() == ASMTreeType.J) {
+            asm = LocalUtil.createAssemblyStatment(test, "JMP", labelName);
+        } else if(asmtNode.getASMTreeType() == ASMTreeType.JZ) {
+            asm = LocalUtil.createAssemblyStatment(test, "JZ", labelName);
+        } else if(asmtNode.getASMTreeType() == ASMTreeType.JZN) {
+            asm = LocalUtil.createAssemblyStatment(test, "JNZ", labelName);
+        }
+        return asm;
+    }
+
+    public String createLabelAssembly(ASMTNode asmtNode) {
+        String labelName = asmtNode.getChild(0).getValue();
+        String asm = LocalUtil.createAssemblyStatment(labelName.concat(":"));
+        return asm;
+    }
+
+
 
     public String createCmpAssembly(ASMTNode asmtNode) {
         ASMTNode binary_op = asmtNode.getChild(0);
@@ -84,7 +109,7 @@ public class ASMTNodeVisitor {
         } else if(binary_op.getTokenType() == TokenType.EQUAL_RIGHT_CHEVRON) {
             set = "setge";
         }
-        asm = "cmp "+getNodeValue(operand1)+", %rax \n"+set +" %al \nmovzx %al ,%rax\nmov %rax, "+getNodeValue(operand2)+"\n";
+        asm = "cmp "+getNodeValue(operand1)+", %rax \n"+set +" %al \nmovzx %al ,%rax\nmovq %rax, "+getNodeValue(operand2)+"\n";
         return asm;
     }
 
@@ -101,7 +126,7 @@ public class ASMTNodeVisitor {
         } else if(binary_op.getTokenType() == TokenType.SUB) {
             asm = "subq "+getNodeValue(operand1)+", "+getNodeValue(operand2)+"\n";
         } 
-        return asm;
+        return asm; 
     }
 
     public String createReturnAssembly(ASMTNode asmtNode) {

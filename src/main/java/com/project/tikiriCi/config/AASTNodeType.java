@@ -10,6 +10,7 @@ public class AASTNodeType {
     public static String VAL = "val";
     public static String VAR = "var";
     public static String LABEL = "label";
+    public static String LABEL_NAME = "label_name";
     public static String UNARY_OPERATOR = "unary_operator";
     public static String IDENTIFIER = "identifier";
     public static String COMPLEMENT = "complement";
