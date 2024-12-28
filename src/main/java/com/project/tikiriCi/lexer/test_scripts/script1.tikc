@@ -1,4 +1,6 @@
-int main(void) {
-   return (3==3 && 4==3);
+int main(void){
+   if(9==8)
+   return 7;
+   else return 9;
    
 }

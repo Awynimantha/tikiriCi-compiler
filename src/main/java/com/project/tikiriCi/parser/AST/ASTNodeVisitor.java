@@ -57,6 +57,9 @@ public class ASTNodeVisitor {
             returnNode.passChildren(instructioNode);
         } else if(firstNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
             expressionToAAST(returnNode, firstNode);
+        } else if(firstNode.getASTNodeType() == ASTNodeType.CONDITIONAL) {
+            AASTNode instructioNode = conditionalToAAST(firstNode);
+            returnNode.passChildren(instructioNode); 
         }
         return returnNode;
     }
@@ -145,6 +148,35 @@ public class ASTNodeVisitor {
         AASTNode labelNode = new AASTNode(AASTNodeType.LABEL);
         labelNode.addChildren(labelNameNode);
         return labelNode;
+    }
+
+    private AASTNode conditionalToAAST(ASTNode conditional) {
+        AASTNode instructionNode =  new AASTNode(AASTNodeType.INSTRUCTION);
+        ASTNode expressionNode = conditional.getChild(0);
+        ASTNode statmentNode  = conditional.getChild(1);
+
+        //check if expression
+        AASTNode resultNode = expressionToAAST(instructionNode, expressionNode);
+        AASTNode elseLabel = getLabelVariable();
+        AASTNode labelNode = createLabelNode(elseLabel);
+        AASTNode ifJumpNode = createJumpIfZeroNode(resultNode, elseLabel);
+        instructionNode.addChildren(ifJumpNode);
+        
+        //did not jump perform if
+        AASTNode statementAASTNode = createStatementNode(statmentNode);
+        instructionNode.passChildren(statementAASTNode);
+        AASTNode endLabel = getLabelVariable();
+        AASTNode jumpNode = createJumpNode(endLabel);
+        instructionNode.addChildren(jumpNode, labelNode);
+
+        if(conditional.getChildren().size()>2) {
+            ASTNode elseNode  = conditional.getChild(2);
+            ASTNode elseStatementNode = elseNode.getChild(0);
+            statementAASTNode = createStatementNode(elseStatementNode);
+            instructionNode.passChildren(statementAASTNode);
+        }
+        instructionNode.addChildren(createLabelNode(endLabel));
+        return instructionNode;
     }
 
     private AASTNode expressionToAAST(AASTNode instructionNode,ASTNode expression) {

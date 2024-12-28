@@ -24,7 +24,7 @@ public class Main
             parser.parse();
             AST ast = parser.getAST();
             ast.analyseSematics();
-            //ast.traverse();
+            ast.traverse();
             AAST aast =  new AAST();
             aast.createAAST(ast);
             aast.traverseTree();

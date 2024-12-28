@@ -2,7 +2,6 @@ package com.project.tikiriCi.lexer;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.project.tikiriCi.exception.LexerException;
