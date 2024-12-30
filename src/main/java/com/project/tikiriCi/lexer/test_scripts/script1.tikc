@@ -1,6 +1,5 @@
 int main(void){
-   if(9==8)
-   return 7;
-   else return 9;
-   
+   int n;
+   n =8 ;
+   return n;
 }

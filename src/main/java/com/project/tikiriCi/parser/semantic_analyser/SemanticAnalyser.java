@@ -38,7 +38,7 @@ public class SemanticAnalyser {
             String newValue = createUniqueVar(value);
             variableMap.put(value, newValue);
             identifierNode.setValue(newValue);
-           expressionAnalyser(declAstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION));
+            expressionAnalyser(declAstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION));
         }
     }
 
@@ -52,10 +52,12 @@ public class SemanticAnalyser {
                 throw new CompilerException("Error: Wrong left value");
             }
             if(!variableMap.containsKey(leftNode.getValue()) && !variableMap.containsValue(leftNode.getValue())) {
-                if(!parsedVariables.contains(leftNode.getValue())) {
-                    throw new CompilerException("Error: Unidentified Variable this named " + astNode.getValue());
+                if(parsedVariables.contains(leftNode.getValue())) {
+                    String newValue = createUniqueVar(leftNode.getValue());
+                    variableMap.put(leftNode.getValue(), newValue);
+                    leftNode.setValue(newValue);
                 } else {
-                    throw new CompilerException("Error: Variable " + astNode.getValue() + " is not initialized");
+                    throw new CompilerException("Error: Unidentified Variable this named " + astNode.getValue());
                 }
             }
             //m.0 comes here, fix 

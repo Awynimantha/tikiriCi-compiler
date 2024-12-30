@@ -72,7 +72,7 @@ public class LocalUtil {
         for(String assComp: assemblyComps) {
             asm = asm.concat(assComp).concat(" ");
         }
-        asm = asm.strip();
+        //asm = asm.strip();
         asm = asm.concat("\n");
         return asm;
     }
