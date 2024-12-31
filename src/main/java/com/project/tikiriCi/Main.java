@@ -25,16 +25,16 @@ public class Main
             AST ast = parser.getAST();
             ast.analyseSematics();
             ast.traverse();
-            AAST aast =  new AAST();
-            aast.createAAST(ast);
-            aast.traverseTree();
-            ASMT asmt = new ASMT();
-            asmt.createASMT(aast);
-            asmt.fixRegAndStack();
-            asmt.processMovNodes();
-            asmt.traverseTree();
-            AssemblyScript assemblyScript = new AssemblyScript(null, "/home/yasiru/Desktop/test/ass.asm", asmt);
-            assemblyScript.writeToScript();
+            //AAST aast =  new AAST();
+            //aast.createAAST(ast);
+            //aast.traverseTree();
+            //ASMT asmt = new ASMT();
+            //asmt.createASMT(aast);
+            //asmt.fixRegAndStack();
+            //asmt.processMovNodes();
+            //asmt.traverseTree();
+            //AssemblyScript assemblyScript = new AssemblyScript(null, "/home/yasiru/Desktop/test/ass.asm", asmt);
+            //assemblyScript.writeToScript();
         } catch (Exception e) {
             e.printStackTrace();;
         }

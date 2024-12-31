@@ -43,6 +43,8 @@ public class TokenParser {
             }
         } else if(nodeType == ASTNodeType.FUNCTION) {
             parseFunctionDerivation(astNode);
+        } else if(nodeType == ASTNodeType.BLOCK) {
+            parseBlockDerivation(astNode);
         } else {
             parseElement(astNode);
         }
@@ -166,6 +168,8 @@ public class TokenParser {
             returnDerivation = derivations.get(0);
         } else if(nextToken.getTokenType() == TokenType.SEMICOLON) {
             returnDerivation = derivations.get(2);
+        } else if(nextToken.getTokenType() == TokenType.LEFT_BRACE) {
+            returnDerivation = derivations.get(4);
         } else {
             returnDerivation = derivations.get(1);
         }
@@ -180,15 +184,22 @@ public class TokenParser {
                 astNode.builChild(grammerElement, nextToken);
             }
             nextToken = consumeTerminal(tokens, grammerElement);
-            if(grammerElement.getTokenType() == TokenType.LEFT_BRACE) {
+            if(grammerElement.getTokenType() == TokenType.RIGHT_PARAN) {
                 break;
             }
         }
-        while(nextToken.getTokenType() != TokenType.RIGHT_BRACE) {
-            parseBlockItemDerivation(astNode);
-        }
-        consumeTerminal(TokenType.RIGHT_BRACE);
+        parseBlockDerivation(astNode);
     } 
+
+    private void parseBlockDerivation(ASTNode astNode) throws CompilerException{ 
+        ASTNode blockNode = new ASTNode(Grammar.BLOCK.clone());
+        astNode.addChild(blockNode);
+        consumeTerminal(TokenType.LEFT_BRACE);
+        while(nextToken.getTokenType() != TokenType.RIGHT_BRACE) {
+            parseBlockItemDerivation(blockNode);
+        }
+        consumeTerminal(TokenType.RIGHT_BRACE); 
+    }
 
     private void parseBlockItemDerivation(ASTNode astNode) throws CompilerException{
         GrammerElement grammerElement = Grammar.BLOCKITEM.clone();

@@ -99,14 +99,15 @@ public class Grammar {
         EXP,
         new Terminal("semicolon", TokenType.SEMICOLON, false)
         ),
-    new Derivation(
-        new Terminal("int", TokenType.TYPE, false),
-        IDENTIFIER,
-        new Terminal("semicolon", TokenType.SEMICOLON, false)
-        )
-    ), TokenType.NULL);
+        new Derivation(
+            new Terminal("int", TokenType.TYPE, false),
+            IDENTIFIER,
+            new Terminal("semicolon", TokenType.SEMICOLON, false)
+            )
+        ), TokenType.NULL);
             
     public static NonTerminal BLOCKITEM = createBlockList();
+    public static NonTerminal BLOCK  = createBlock();
 
     public static NonTerminal FUNCTION = new NonTerminal(ASTNodeType.FUNCTION, Arrays.asList(
         new Derivation(
@@ -115,9 +116,7 @@ public class Grammar {
             new Terminal("(", TokenType.LEFT_PARAN, false),
             new Terminal("void", TokenType.VOID, false),
             new Terminal(")", TokenType.RIGHT_PARAN, false),
-            new Terminal("{", TokenType.LEFT_BRACE, false),
-            BLOCKITEM,
-            new Terminal("}", TokenType.RIGHT_BRACE, false)
+            BLOCK
         )
     ), TokenType.NULL);
    
@@ -131,8 +130,7 @@ public class Grammar {
          TokenType.NULL);
          blockList.getDerivation().addAll( Arrays.asList(
             new Derivation(STATEMENT, BLOCKITEM),
-            new Derivation(DECLARATION,BLOCKITEM),
-            new Derivation()
+            new Derivation(DECLARATION,BLOCKITEM)
             )
          );
         return blockList;
@@ -146,7 +144,6 @@ public class Grammar {
     private static NonTerminal createExpression() {
         NonTerminal expression = new NonTerminal(ASTNodeType.EXPRESSION, new ArrayList<Derivation>(), TokenType.NULL);
         NonTerminal factor = createFactor();
-
         expression.getDerivation().addAll(
             Arrays.asList(
                 new Derivation(
@@ -220,6 +217,22 @@ public class Grammar {
     public static NonTerminal createElseCondition() {
         NonTerminal elseCon = new NonTerminal(ASTNodeType.ELSE_EXPRESSION, new ArrayList(), TokenType.NULL);
         return elseCon;
+    }
+
+    public static NonTerminal createBlock() {
+        NonTerminal block = new NonTerminal(ASTNodeType.BLOCK, new ArrayList(), TokenType.NULL);
+        block.getDerivation().addAll(Arrays.asList(
+            new Derivation(
+                new Terminal("{", TokenType.LEFT_BRACE, false),
+                BLOCKITEM,
+                new Terminal("}", TokenType.RIGHT_BRACE, false),
+                BLOCK
+            )
+        ));
+        STATEMENT.getDerivation().addAll(Arrays.asList(
+            new Derivation(block)
+        ));
+        return block;
     }
 
     public static NonTerminal createStatement() {
