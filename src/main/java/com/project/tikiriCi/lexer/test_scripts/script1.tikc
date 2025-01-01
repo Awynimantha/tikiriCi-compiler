@@ -4,6 +4,10 @@ int main(void){
    if(n==3) {
       n = 9;
       return 9;
+   } else {
+    n=3;
+    return 9;
+   } {
+    return n;
    }
-   return n;
 }

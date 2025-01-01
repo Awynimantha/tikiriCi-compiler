@@ -14,8 +14,8 @@ import com.project.tikiriCi.parser.AST.ASTNode;
 import com.project.tikiriCi.utility.LocalUtil;
 
 public class TokenParser {
-    private AST ast;
-    private List<Token> tokens;
+    
+  private AST ast; private List<Token> tokens;
     private Token nextToken;
 
     public TokenParser(List<Token> tokens) {
@@ -44,6 +44,8 @@ public class TokenParser {
         } else if(nodeType == ASTNodeType.FUNCTION) {
             parseFunctionDerivation(astNode);
         } else if(nodeType == ASTNodeType.BLOCK) {
+//           // ASTNode block =  new ASTNode(Grammar.BLOCK.clone());
+            //astNode.addChild(block); 
             parseBlockDerivation(astNode);
         } else {
             parseElement(astNode);
@@ -188,15 +190,15 @@ public class TokenParser {
                 break;
             }
         }
-        parseBlockDerivation(astNode);
+        ASTNode blockNode = new ASTNode(Grammar.BLOCK.clone());
+        astNode.addChild(blockNode);
+        parseBlockDerivation(blockNode);
     } 
 
     private void parseBlockDerivation(ASTNode astNode) throws CompilerException{ 
-        ASTNode blockNode = new ASTNode(Grammar.BLOCK.clone());
-        astNode.addChild(blockNode);
         consumeTerminal(TokenType.LEFT_BRACE);
         while(nextToken.getTokenType() != TokenType.RIGHT_BRACE) {
-            parseBlockItemDerivation(blockNode);
+            parseBlockItemDerivation(astNode);
         }
         consumeTerminal(TokenType.RIGHT_BRACE); 
     }
