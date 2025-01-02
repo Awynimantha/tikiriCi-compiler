@@ -9,6 +9,7 @@ import com.project.tikiriCi.parser.ASMT.ASMT;
 import com.project.tikiriCi.parser.AST.AST;
 import com.project.tikiriCi.parser.assembly_gen.assembly_script.AssemblyScript;
 
+
 public class Main 
 {
     public static void main( String[] args )
