@@ -1,13 +1,11 @@
 package com.project.tikiriCi;
 
 import java.util.ArrayList;
+
 import com.project.tikiriCi.lexer.Lexer;
 import com.project.tikiriCi.main.Token;
-import com.project.tikiriCi.parser.TokenParser;
-import com.project.tikiriCi.parser.AAST.AAST;
-import com.project.tikiriCi.parser.ASMT.ASMT;
 import com.project.tikiriCi.parser.AST.AST;
-import com.project.tikiriCi.parser.assembly_gen.assembly_script.AssemblyScript;
+import com.project.tikiriCi.parser.TokenParser;
 
 
 public class Main 

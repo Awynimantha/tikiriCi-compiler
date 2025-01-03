@@ -1,6 +1,8 @@
 package com.project.tikiriCi.utility;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.project.tikiriCi.config.ASMTreeType;
@@ -10,6 +12,7 @@ import com.project.tikiriCi.main.TokenValue;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.ASMT.ASMTNode;
 import com.project.tikiriCi.parser.AST.ASTNode;
+import com.project.tikiriCi.parser.semantic_analyser.SemanticVariable;
 
 public class LocalUtil {
     public static boolean regexpMatch(String regex, String string) {
@@ -102,4 +105,13 @@ public class LocalUtil {
         astNode.addChild(newNode);
         return newNode;
     }
+
+    public static HashMap<String, SemanticVariable> removeVariableFromBlock(HashMap<String, 
+       SemanticVariable> hashMap) {
+       HashMap<String, SemanticVariable> newHashMap = new HashMap<>();
+       for (Map.Entry<String, SemanticVariable> entry: hashMap.entrySet()) {
+          newHashMap.put(entry.getKey(), entry.getValue().makeNonCurrentBlock()) ;
+       }  
+       return newHashMap;
+    }   
 }

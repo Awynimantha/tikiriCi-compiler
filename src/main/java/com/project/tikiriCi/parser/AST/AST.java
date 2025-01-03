@@ -1,5 +1,7 @@
 package com.project.tikiriCi.parser.AST;
 
+import java.awt.Component;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -10,6 +12,7 @@ import com.project.tikiriCi.exception.CompilerException;
 import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.semantic_analyser.SemanticAnalyser;
+import com.project.tikiriCi.parser.semantic_analyser.SemanticVariable;
 
 public class AST {
     private ASTNode ASTRoot;  
@@ -81,25 +84,22 @@ public class AST {
         traverseNode(ASTRoot,0);
     }
 
-    public void analyseSematics() throws CompilerException{
-        Queue<ASTNode> queue =  new LinkedList<ASTNode>();
+    public void analyseSematics() throws CompilerException{ 
         SemanticAnalyser semanticAnalyser = new SemanticAnalyser();
-        queue.offer(ASTRoot);
-        ASTNode astNode = new ASTNode();
-        while(!queue.isEmpty()) {
-            astNode = queue.poll();
-            List<ASTNode> astNodeList = astNode.getChildren();
-            if(astNode.getASTNodeType() == ASTNodeType.DECLARATION) {
-                semanticAnalyser.declarationAnalyser(astNode);
-            } 
-            else if(astNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
-                semanticAnalyser.expressionAnalyser(astNode);
+        HashMap<String, SemanticVariable> variableMap = new HashMap<>();
+        semanticTraverse(ASTRoot, semanticAnalyser, variableMap); 
+    }
+
+    public void semanticTraverse(ASTNode astNode, SemanticAnalyser semanticAnalyser, 
+    HashMap<String, SemanticVariable> variableMap) throws CompilerException{
+        List<ASTNode> children = astNode.getChildren();
+        for (ASTNode child : children) {        
+            semanticTraverse(child, semanticAnalyser, variableMap);
+            if(child.getASTNodeType() == ASTNodeType.BLOCK) {
+                semanticAnalyser.blockAnalyser(child, variableMap);
             }
-            for (ASTNode node : astNodeList) {
-                queue.offer(node);    
-            }
+            semanticTraverse(child, semanticAnalyser, variableMap);
         }
-        
     }
 
     //Ugly printer

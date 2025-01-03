@@ -1,6 +1,6 @@
 package com.project.tikiriCi.parser.semantic_analyser;
 
-class SemanticVariable {
+public class SemanticVariable {
   public String value;
   public boolean isInCurrentVariableMap;
   
@@ -22,12 +22,14 @@ class SemanticVariable {
     return this.isInCurrentVariableMap;
   }
 
-  public void makeNonCurrentBlock() {
+  public SemanticVariable makeNonCurrentBlock() {
     this.isInCurrentVariableMap = false;
+    return this;
   }
 
-  public void makeCurrentBlock() {
+  public SemanticVariable makeCurrentBlock() {
     this.isInCurrentVariableMap = true;
+    return this;
   }
   
   @Override
