@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.tikiriCi.config.ASTNodeType;
-import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.main.Token;
-import com.project.tikiriCi.parser.Derivation;
-import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.AAST.AASTNode;
+import com.project.tikiriCi.parser.GrammerElement;
 
 public class ASTNode {
     private GrammerElement grammerElement;
     private List<ASTNode> children;
    
     public ASTNode() {
-        this.children = new ArrayList<ASTNode>() ;
+        this.children = new ArrayList<>() ;
         this.grammerElement = new GrammerElement();
     }
 
@@ -89,24 +87,13 @@ public class ASTNode {
     }
 
     public AASTNode accept(ASTNodeVisitor nodeVisitor) {
-        if(grammerElement.getName() == ASTNodeType.PROGRAM){
+        if(grammerElement.getName().equals(ASTNodeType.PROGRAM)){
             return nodeVisitor.createProgramNode(this);
-        } else if(grammerElement.getName() == ASTNodeType.FUNCTION) {
+        } else if(grammerElement.getName().equals(ASTNodeType.FUNCTION)) {
             return nodeVisitor.createFunctionNode(this);
         }
         return new AASTNode();
     }
-
-    // public Derivation pickDerivation(Token nextToken) {
-    //     List<Derivation> derivations = grammerElement.getDerivation();
-    //     PickDerivVisitor pickDerivVisitor = 
-    //     Derivation returnDeriv = new Derivation();
-    //     if( derivations.size()>0 && derivations.size()<=1){
-    //         returnDeriv = derivations.get(0);
-    //     } else if(grammerElement.getName() == ASTNodeType.EXPRESSION) {
-    //         return 
-    //     }
-    // }
 
     public String getValue() {
         return grammerElement.getValue();

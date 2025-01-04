@@ -10,6 +10,11 @@ public class TokenType {
    public static String RETURN = "\\breturn\\b";
    public static String IF = "\\bif\\b";
    public static String ELSE = "\\belse\\b";
+   public static String WHILE = "\\bwhile\\b";
+   public static String FOR = "\\bfor\\b";
+   public static String CONTINUE = "\\bcontinue\\b";
+   public static String BREAK = "\\bbreak\\b";
+   public static String DO = "\\bdo\\b";
    public static String LEFT_PARAN = "^\\($";
    public static String RIGHT_PARAN = "^\\)$";
    public static String LEFT_BRACE = "^\\{$";
@@ -43,7 +48,7 @@ public class TokenType {
       SEMICOLON,COMPLEMENT, SUB, PLUS, MUL, DIV, MOD};
    public static String[] BINARY_OPS = {QUESTION_MARK, ASSIGN, EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, SUB, PLUS, MUL, DIV, MOD};
    //if the token is specialized identifier do not append
-   public static String [] TOKENS =  {COLON, QUESTION_MARK, IF, ELSE, ASSIGN, EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, PLUS, MUL, DIV, MOD, COMPLEMENT, SUB, DOUBLE_SUB, TYPE, CONSTANT, INTEGER, VOID, RETURN, 
+   public static String [] TOKENS =  {DO, FOR, WHILE, BREAK ,CONTINUE, COLON, QUESTION_MARK, IF, ELSE, ASSIGN, EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, PLUS, MUL, DIV, MOD, COMPLEMENT, SUB, DOUBLE_SUB, TYPE, CONSTANT, INTEGER, VOID, RETURN, 
       LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON, IDENTIFIER};
    public static char [] IGNORE_TOKENS = {WHITESPACE, TAB, NEW_LINE};
 
