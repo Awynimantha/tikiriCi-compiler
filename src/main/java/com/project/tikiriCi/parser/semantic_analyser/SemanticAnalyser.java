@@ -7,6 +7,7 @@ import java.util.List;
 
 
 import com.project.tikiriCi.config.ASTNodeType;
+import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
 import com.project.tikiriCi.exception.CompilerException;
 import com.project.tikiriCi.parser.AST.ASTNode;
@@ -23,6 +24,7 @@ public class SemanticAnalyser {
 
     //create variable <var_name>.<identifier>
     public String createUniqueVar(String value) {
+        value = value.split("\\.")[0];
         return value + "." + uniqueIdentifer;
     }
 
@@ -39,7 +41,7 @@ public class SemanticAnalyser {
             if(firstChild.getChildren().size() != 2) {
                 statementAnalyser(firstChild.getChild(2), variableMap);
             }
-        } else if(firstChild.getASTNodeType() == ASTNodeType.EXPRESSION) {
+        } else if(firstChild.getASTNodeType().equals(ASTNodeType.EXPRESSION)) {
             expressionAnalyser(firstChild.getChild(0), variableMap);
         }
 
@@ -47,16 +49,15 @@ public class SemanticAnalyser {
     
     public void blockAnalyser(ASTNode blockNode, HashMap<String, SemanticVariable> variableMap) 
     throws CompilerException {
+        uniqueIdentifer++;
         List<ASTNode> children = blockNode.getChildren();
         for (ASTNode astNode : children) {
-            if(astNode.getChild(0).getASTNodeType() == ASTNodeType.DECLARATION) {
+            if(astNode.getChild(0).getASTNodeType().equals(ASTNodeType.DECLARATION)) {
                 declarationAnalyser(astNode.getChild(0), variableMap);
-            }
-            else{
+            } else{
                 statementAnalyser(astNode.getChild(0), variableMap);
             }
-        }
-       
+        }      
     }
     
     public void declarationAnalyser(ASTNode declAstNode, HashMap<String, SemanticVariable> variableMap)
@@ -69,12 +70,16 @@ public class SemanticAnalyser {
         }
         //check if there is expression
         parsedVariables.add(value);
+        String newValue = createUniqueVar(value);
+        variableMap.put(value, new SemanticVariable(newValue));
+        identifierNode.setValue(newValue);
         if(declAstNode.getChildren().size()>3) {
-            //variable is declared
-            String newValue = createUniqueVar(value);
-            variableMap.put(value, new SemanticVariable(newValue));
-            identifierNode.setValue(newValue);
             expressionAnalyser(declAstNode.getNonTerminalChildByASTNodeType(ASTNodeType.EXPRESSION), variableMap);
+        } else {
+            ASTNode expressionNode = new ASTNode(Grammar.EXP.clone());
+            ASTNode integerNode = new ASTNode(Grammar.INT.clone());
+            integerNode.setValue("0");
+            expressionNode.addChild(integerNode);
         }
     }
 
@@ -102,7 +107,7 @@ public class SemanticAnalyser {
                 leftNode.setValue(variableMap.get(leftNode.getValue()).getValue());
             }
             expressionAnalyser(rightNode, variableMap);
-        } else if(astNode.getGrammerElement().getTokenType() == TokenType.IDENTIFIER) {
+        } else if(astNode.getGrammerElement().getTokenType().equals(TokenType.IDENTIFIER)) {
             if(!variableMap.containsValue(new SemanticVariable(astNode.getValue()))){
                 if(variableMap.containsKey(astNode.getValue())){
                     astNode.setValue(variableMap.get(astNode.getValue()).getValue());

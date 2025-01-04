@@ -1,7 +1,5 @@
 package com.project.tikiriCi.parser;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.project.tikiriCi.config.ASTNodeType;
@@ -68,7 +66,7 @@ public class TokenParser {
             pickedDerivation = TokenParserUtils.lookAHeadDerivationPicker(derivations, nextToken);
         }
         for (GrammerElement grammerElement : pickedDerivation.getGrammarElements()) {
-            ASTNode astNode = new ASTNode(grammerElement);
+            ASTNode astNode = new ASTNode(grammerElement.clone());
             if(grammerElement.getIsTerminal()){
                 if(grammerElement.isASTNode()){
                     astNode.getGrammerElement().setValue(
@@ -123,7 +121,7 @@ public class TokenParser {
         ASTNode binOPNode = new ASTNode(binOpGrammerElement);
         ASTNode operandNode = new ASTNode();
         operandGrammerElement = Grammar.getBinOpGrammarElement(nextToken.getTokenType());
-        operandNode.setGrammerElement(operandGrammerElement);
+        operandNode.setGrammerElement(operandGrammerElement.clone());
         operandNode.setValue(nextToken.getTokenValue().getStringValue());
         this.nextToken = consumeTerminal(tokens, operandGrammerElement);
         binOPNode.addChild(operandNode);

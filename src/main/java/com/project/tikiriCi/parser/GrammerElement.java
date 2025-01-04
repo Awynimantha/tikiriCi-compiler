@@ -66,6 +66,8 @@ public class GrammerElement {
     }
 
     public GrammerElement clone() {
-        return new GrammerElement(name, derivations, isASTNode, tokenType, isTerminal);
+        GrammerElement returnEl = new GrammerElement(name, derivations, isASTNode, tokenType, isTerminal);
+        returnEl.setValue(this.value);
+        return returnEl;
     }
 }

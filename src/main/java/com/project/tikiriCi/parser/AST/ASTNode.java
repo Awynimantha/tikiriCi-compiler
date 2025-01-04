@@ -20,25 +20,25 @@ public class ASTNode {
     }
 
     public ASTNode(String astNodeType) {
-        this.children = new ArrayList<ASTNode>() ;
+        this.children = new ArrayList<>() ;
         this.grammerElement = new GrammerElement();
         this.grammerElement.setName(astNodeType);
     }
 
     public ASTNode(GrammerElement grammerElement) {
         this.grammerElement = grammerElement;
-        this.children = new ArrayList<ASTNode>() ;
+        this.children = new ArrayList<>() ;
     }
     
     public ASTNode(GrammerElement grammerElement, String astNodeType) {
         this.grammerElement = grammerElement;
-        this.children = new ArrayList<ASTNode>() ;
+        this.children = new ArrayList<>() ;
         grammerElement.setName(astNodeType);
     }
 
      public ASTNode(GrammerElement grammerElement, ASTNode... astNodeList) {
         this.grammerElement = grammerElement;
-        this.children = new ArrayList<ASTNode>() ;
+        this.children = new ArrayList<>() ;
         for (ASTNode astNode : astNodeList) {
             addChild(astNode);
         }

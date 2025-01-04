@@ -1,10 +1,7 @@
 package com.project.tikiriCi.parser.AST;
 
-import java.awt.Component;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
@@ -94,8 +91,7 @@ public class AST {
     HashMap<String, SemanticVariable> variableMap) throws CompilerException{
         List<ASTNode> children = astNode.getChildren();
         for (ASTNode child : children) {        
-            semanticTraverse(child, semanticAnalyser, variableMap);
-            if(child.getASTNodeType() == ASTNodeType.BLOCK) {
+            if(child.getASTNodeType().equals(ASTNodeType.BLOCK)) {
                 semanticAnalyser.blockAnalyser(child, variableMap);
             }
             semanticTraverse(child, semanticAnalyser, variableMap);

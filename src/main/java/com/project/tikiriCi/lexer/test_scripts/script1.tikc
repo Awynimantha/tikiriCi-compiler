@@ -1,10 +1,10 @@
 int main(void){
-   int n =8 ;
+   
    if(n==3) {
       int n = 9;
       return 9;
    } else {
-    int n=3;
+    n=3;
     return 9;
    } {
     return n;
