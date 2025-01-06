@@ -42,7 +42,7 @@ public class TokenParser {
         } else if(nodeType == ASTNodeType.FUNCTION) {
             parseFunctionDerivation(astNode);
         } else if(nodeType == ASTNodeType.BLOCK) {
-//           // ASTNode block =  new ASTNode(Grammar.BLOCK.clone());
+           // ASTNode block =  new ASTNode(Grammar.BLOCK.clone());
             //astNode.addChild(block); 
             parseBlockDerivation(astNode);
         } else {

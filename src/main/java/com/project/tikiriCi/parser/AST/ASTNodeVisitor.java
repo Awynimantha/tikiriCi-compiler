@@ -1,12 +1,13 @@
 package com.project.tikiriCi.parser.AST;
 
 import java.util.List;
+
 import com.project.tikiriCi.config.AASTNodeType;
 import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.config.TokenType;
-import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.AAST.AASTNode;
+import com.project.tikiriCi.parser.GrammerElement;
 
 public class ASTNodeVisitor {
     private int tmpVarible;
@@ -21,32 +22,54 @@ public class ASTNodeVisitor {
     public AASTNode createProgramNode(ASTNode astNode) {
         return new AASTNode(Grammar.PROGRAM, AASTNodeType.PROGRAM);
     }
-    
+   
     public AASTNode createFunctionNode(ASTNode astNode) {
+        //set function name
         String functionName = astNode.getChild(0).getValue();
         GrammerElement grammerElement = new GrammerElement();
         grammerElement.setValue(functionName);
+
         AASTNode functioNode =  new AASTNode(grammerElement, 
                     AASTNodeType.FUNCTION);
         AASTNode instructionNode =  new AASTNode(AASTNodeType.INSTRUCTION);
         functioNode.addChildren(instructionNode);
-        List<ASTNode> astNodes = astNode.getChildren();
-        for (ASTNode node : astNodes) {
-            if(node.getASTNodeType() == ASTNodeType.BLOCKITEM) {
-                ASTNode child = node.getChild(0);
-                if(child.getASTNodeType() == ASTNodeType.STATEMENT) {
-                    AASTNode outputNode = createStatementNode(child);
-                    instructionNode.passChildren(outputNode);
-                } else if(child.getASTNodeType() == ASTNodeType.DECLARATION) {
-                    if(child.getChildren().size()==2){
+        ASTNode blockNode = astNode.getNonTerminalChildByASTNodeType(ASTNodeType.BLOCK);
+        AASTNode returnedInstNode = createBlockNode(blockNode);
+        instructionNode.passChildren(returnedInstNode);
+        //for (ASTNode node : astNodes) {
+         //   if(node.getASTNodeType() == ASTNodeType.BLOCKITEM) {
+        //        ASTNode child = node.getChild(0);
+        //        if(child.getASTNodeType() == ASTNodeType.STATEMENT) {
+        //            AASTNode outputNode = createStatementNode(child);
+        //            instructionNode.passChildren(outputNode);
+        //        } else if(child.getASTNodeType() == ASTNodeType.DECLARATION) {
+        //            if(child.getChildren().size()==2){
+        //                continue;
+        //            }
+        //        }
+        //    }
+        //}
+        return functioNode;
+    }
+    
+    public AASTNode createBlockNode(ASTNode blockNode) {
+        List<ASTNode> children = blockNode.getChildren();
+        AASTNode returnNode = new AASTNode(AASTNodeType.INSTRUCTION);
+        for (ASTNode blockItem : children) {
+            List<ASTNode> nodeList = blockItem.getChildren();
+            for(ASTNode line: nodeList){
+                if(line.getASTNodeType().equals(ASTNodeType.STATEMENT)) {
+                    AASTNode outputNode = createStatementNode(line);
+                } else if(line.getASTNodeType() == ASTNodeType.DECLARATION) {
+                    if(line.getChildren().size() == 2) {
                         continue;
                     }
-                    AASTNode outputNode = createDeclarationNode(child);
-                    instructionNode.passChildren(outputNode);
-                }
+                    AASTNode outputNode = createDeclarationNode(line);
+                    returnNode.passChildren(outputNode);
+                }    
             }
         }
-        return functioNode;
+        return returnNode;
     }
 
     public AASTNode createStatementNode(ASTNode statementNode) {
@@ -60,6 +83,9 @@ public class ASTNodeVisitor {
         } else if(firstNode.getASTNodeType() == ASTNodeType.CONDITIONAL) {
             AASTNode instructioNode = conditionalToAAST(firstNode);
             returnNode.passChildren(instructioNode); 
+        } else if(firstNode.getASTNodeType() == ASTNodeType.BLOCK) {
+            AASTNode instructionNode = conditionalToAAST(firstNode);
+            returnNode.passChildren(instructionNode);
         }
         return returnNode;
     }

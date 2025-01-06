@@ -19,60 +19,6 @@ public class AST {
         this.ASTRoot = startNode;
     }
     
-    
-    
-    public void parseElment(ASTNode node) {
-        //LL(K) parser k = 1
-        List<Derivation> derivations = node.getGrammerElement().getDerivation();
-        Derivation pickedDerivation = new Derivation();
-        // for (Derivation derivation : derivations) {
-        //     GrammerElement firstGrammerElement = derivation.peekDerivation();
-        //     if(firstGrammerElement.getIsTerminal()){
-        //         if(nextToken.getTokenType() == firstGrammerElement.getTokenType()){
-        //             pickedDerivation = derivation;
-        //             break;
-        //         }
-        //     } else {
-        //         List<Derivation> firstGrammerElementDerivation = firstGrammerElement.getDerivation();
-        //         for (Derivation deriv : firstGrammerElementDerivation) {
-        //             firstGrammerElement = deriv.peekDerivation();
-        //             if(firstGrammerElement.getIsTerminal()){
-        //                 if(nextToken.getTokenType() == firstGrammerElement.getTokenType()){
-        //                     pickedDerivation = derivation;
-        //                     break;
-        //                 }
-        //             } else{
-        //                 List<Derivation> fgrammerChildren = firstGrammerElement.getDerivation();
-        //                 for (Derivation derivationl : fgrammerChildren) {
-        //                     GrammerElement firstElement = derivationl.peekDerivation();
-        //                     if(nextToken.getTokenType() == firstElement.getTokenType()){
-        //                         pickedDerivation = derivation;
-        //                         break;      
-        //                     }
-        //                 }
-
-        //             }
-        //         }
-        //     }
-        // }
-        //Process the picked derivation
-        // for (GrammerElement grammerElement : pickedDerivation.getGrammarElements()) {
-        //     ASTNode astNode = new ASTNode(grammerElement);
-        //     if(grammerElement.getIsTerminal()){
-        //         if(grammerElement.isASTNode()){
-        //             astNode.getGrammerElement().setValue(
-        //                 LocalUtil.peekTokenList(tokens).getTokenValue().getStringValue());
-        //             node.addChild(astNode);
-        //         }
-        //         nextToken = consumeTerminal(this.tokens, grammerElement);                   
-        //     } else {
-        //         node.addChild(astNode);
-        //         parseElment(astNode);
-        //     }
-        // }    
-        
-    }
-
     public ASTNode getASTRoot() {
         return ASTRoot;
     }
@@ -110,7 +56,6 @@ public class AST {
         List<ASTNode> children = astNode.getChildren();
         for (ASTNode child : children) {        
             GrammerElement grammerElement = child.getGrammerElement();
-
             // Print the current node with proper indentation
             if (grammerElement.getIsTerminal()) {
                 System.out.println(sindent + child.getGrammerElement().getName() + " ---> " + child.getGrammerElement().getValue());

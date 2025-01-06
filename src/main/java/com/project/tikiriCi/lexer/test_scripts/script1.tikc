@@ -1,5 +1,5 @@
 int main(void){
-   
+  int n;   
    if(n==3) {
       int n = 9;
       return 9;

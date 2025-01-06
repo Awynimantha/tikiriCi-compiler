@@ -80,6 +80,7 @@ public class SemanticAnalyser {
             ASTNode integerNode = new ASTNode(Grammar.INT.clone());
             integerNode.setValue("0");
             expressionNode.addChild(integerNode);
+            declAstNode.addChild(expressionNode);
         }
     }
 
