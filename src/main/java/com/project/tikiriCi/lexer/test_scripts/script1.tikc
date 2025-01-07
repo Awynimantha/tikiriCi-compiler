@@ -1,12 +1,6 @@
 int main(void){
-  int n;   
-   if(n==3) {
-      int n = 9;
-      return 9;
-   } else {
-    n=3;
-    return 9;
-   } {
-    return n;
-   }
+  int n=3+6; 
+  n = 89+9;  
+  
+   
 }

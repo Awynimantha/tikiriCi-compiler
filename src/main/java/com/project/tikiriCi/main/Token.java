@@ -59,6 +59,8 @@ public class Token {
             return 50;
         } else if(tokenType == TokenType.QUESTION_MARK) {
             return 3;
+        } else if(tokenType == TokenType.ASSIGN) {
+            return 1;
         } else {
             return 50;
         }

@@ -13,7 +13,8 @@ import com.project.tikiriCi.utility.LocalUtil;
 
 public class TokenParser {
     
-  private AST ast; private List<Token> tokens;
+    private AST ast; 
+    private List<Token> tokens;
     private Token nextToken;
 
     public TokenParser(List<Token> tokens) {
@@ -162,13 +163,13 @@ public class TokenParser {
     private Derivation pickStatementDerivation(ASTNode astNode) {
         Derivation returnDerivation = new Derivation();
         List<Derivation> derivations = Grammar.STATEMENT.getDerivation();
-        if(nextToken.getTokenType() == TokenType.IF) {
+        if(nextToken.getTokenType().equals(TokenType.IF)) {
             returnDerivation = derivations.get(3);
-        } else if(nextToken.getTokenType() == TokenType.RETURN) {
+        } else if(nextToken.getTokenType().equals(TokenType.RETURN)) {
             returnDerivation = derivations.get(0);
-        } else if(nextToken.getTokenType() == TokenType.SEMICOLON) {
+        } else if(nextToken.getTokenType().equals(TokenType.SEMICOLON)) {
             returnDerivation = derivations.get(2);
-        } else if(nextToken.getTokenType() == TokenType.LEFT_BRACE) {
+        } else if(nextToken.getTokenType().equals(TokenType.LEFT_BRACE)) {
             returnDerivation = derivations.get(4);
         } else {
             returnDerivation = derivations.get(1);

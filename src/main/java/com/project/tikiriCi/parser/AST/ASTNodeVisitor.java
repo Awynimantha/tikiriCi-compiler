@@ -60,6 +60,7 @@ public class ASTNodeVisitor {
             for(ASTNode line: nodeList){
                 if(line.getASTNodeType().equals(ASTNodeType.STATEMENT)) {
                     AASTNode outputNode = createStatementNode(line);
+                    returnNode.passChildren(outputNode);
                 } else if(line.getASTNodeType() == ASTNodeType.DECLARATION) {
                     if(line.getChildren().size() == 2) {
                         continue;
@@ -84,7 +85,7 @@ public class ASTNodeVisitor {
             AASTNode instructioNode = conditionalToAAST(firstNode);
             returnNode.passChildren(instructioNode); 
         } else if(firstNode.getASTNodeType() == ASTNodeType.BLOCK) {
-            AASTNode instructionNode = conditionalToAAST(firstNode);
+            AASTNode instructionNode = createBlockNode(firstNode);
             returnNode.passChildren(instructionNode);
         }
         return returnNode;
@@ -280,9 +281,4 @@ public class ASTNodeVisitor {
         }       
         return null;
     }
-
-    
-
-
-
 }
