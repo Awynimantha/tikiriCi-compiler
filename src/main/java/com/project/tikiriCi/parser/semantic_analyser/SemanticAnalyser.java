@@ -121,8 +121,10 @@ public class SemanticAnalyser {
                 }
 
             }
-        } 
-        else if(astNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
+        } else if(expNode.getChildren().size() > 1 && expNode.getChild(1).getASTNodeType() == ASTNodeType.BINOP) {
+            expressionAnalyser(expNode.getChild(0), variableMap);  
+            expressionAnalyser(expNode.getChild(2), variableMap);  
+        } else if(astNode.getASTNodeType() == ASTNodeType.EXPRESSION) {
             expressionAnalyser(astNode, variableMap);
         }
 

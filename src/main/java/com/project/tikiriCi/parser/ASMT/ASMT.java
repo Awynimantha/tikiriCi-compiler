@@ -75,7 +75,8 @@ public class ASMT {
         }
         return regNumber;
     }
-
+    
+    
     public void fixRegAndStack() {
         Queue<ASMTNode> queue = new LinkedList<ASMTNode>();
         ASMTNode asmtNode = new ASMTNode();
