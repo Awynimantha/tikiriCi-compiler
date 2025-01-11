@@ -18,7 +18,7 @@ public class Main
        Lexer lexer = new Lexer("/media/yasiru/New Volume/PROJECTS/java/tikirCi-compile/tikiriCi-compiler/src/main/java/com/project/tikiriCi/lexer/test_scripts/script1.tikc") ;
         try {
             ArrayList<Token> tokens = lexer.doLex();
-           for (Token token : tokens) {
+            for (Token token : tokens) {
                 System.out.println(token.getTokenValue().getStringValue()+"--"+token.getTokenType());
             } 
             TokenParser parser = new TokenParser(tokens);
@@ -26,7 +26,7 @@ public class Main
             AST ast = parser.getAST();
             ast.analyseSematics();
             ast.traverse();
-            AAST aast =  new AAST();
+            /**AAST aast =  new AAST();
             aast.createAAST(ast);
             aast.traverseTree();
             ASMT asmt = new ASMT();
@@ -35,7 +35,7 @@ public class Main
             asmt.processMovNodes();
             asmt.traverseTree();
             AssemblyScript assemblyScript = new AssemblyScript(null, "/home/yasiru/Desktop/test/ass.asm", asmt);
-            assemblyScript.writeToScript();
+            assemblyScript.writeToScript(); ***/
         } catch (Exception e) {
             e.printStackTrace();;
         }

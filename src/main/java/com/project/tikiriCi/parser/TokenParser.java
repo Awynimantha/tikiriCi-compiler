@@ -171,12 +171,21 @@ public class TokenParser {
             returnDerivation = derivations.get(2);
         } else if(nextToken.getTokenType().equals(TokenType.LEFT_BRACE)) {
             returnDerivation = derivations.get(4);
+        } else if(nextToken.getTokenType().equals(TokenType.WHILE)) {
+            returnDerivation =  derivations.get(7);        
+        } else if(nextToken.getTokenType().equals(TokenType.DO)) {
+            returnDerivation = derivations.get(8);
+        } else if(nextToken.getTokenType().equals(TokenType.CONTINUE)) {
+            returnDerivation = derivations.get(6); 
+        } else if(nextToken.getTokenType().equals(TokenType.BREAK)) {
+            returnDerivation = derivations.get(5); 
         } else {
             returnDerivation = derivations.get(1);
         }
         return returnDerivation;
     }
 
+    
     private void parseFunctionDerivation(ASTNode astNode) throws CompilerException{
         Derivation derivation = Grammar.FUNCTION.getDerivation().get(0);
         List<GrammerElement> grammerElements = derivation.getGrammarElements();

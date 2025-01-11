@@ -20,6 +20,16 @@ public class ASTNodeType {
     public static String VAR = "var";
     public static String ELSE_EXPRESSION = "else_expression";
     public static String BLOCK = "block";
+    public static String FOR_INIT = "for_init";
+    public static String INIT_DECL = "init_decl";
+    public static String INIT_EXP = "init_exp"; 
+    public static String FOR = "for";
+    public static String WHILE = "while";
+    public static String WHILELOOP = "whileloop";
+    public static String DOWHILELOOP = "dowhileloop";
+    public static String DOWHILE = "dowhile";
+    public static String CONTINUE = "contine";
+    public static String BREAK = "break";
     public static String QUESTION_MARK = TokenType.QUESTION_MARK;
     public static String COLON = TokenType.COLON;
     public static String NEGATE = TokenType.COMPLEMENT;

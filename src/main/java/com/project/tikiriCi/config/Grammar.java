@@ -10,6 +10,7 @@ import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.NonTerminal;
 import com.project.tikiriCi.parser.Terminal;
+import com.project.tikiriCi.parser.AST.AST;
 
 public class Grammar {
     public static Terminal INT = new Terminal(ASTNodeType.INTEGER,  TokenType.CONSTANT, true);
@@ -59,9 +60,30 @@ public class Grammar {
     public static Terminal IF = new Terminal("if", TokenType.IF, false);
 
     public static Terminal ELSE = new Terminal("else", TokenType.ELSE, false);
+  
+    public static Terminal FOR = new Terminal("for", TokenType.FOR, false);
 
+    public static Terminal WHILE = new Terminal("while", TokenType.WHILE, false);
+    
+    public static Terminal BREAK = new Terminal("break", TokenType.BREAK, false);
 
+    public static Terminal CONTINUE = new Terminal("continue", TokenType.CONTINUE, false);
 
+    public static Terminal DO = new Terminal("do", TokenType.DO, false);
+
+    public static NonTerminal CONTINUE_STATEMENT = new NonTerminal(ASTNodeType.BREAK, Arrays.asList(
+        new Derivation(
+          CONTINUE,
+          SEMICOLON
+        )      
+    ), TokenType.NULL); 
+
+    public static NonTerminal BREAK_STATEMENT = new NonTerminal(ASTNodeType.BREAK, Arrays.asList(
+        new Derivation(
+          BREAK,
+          SEMICOLON
+        )      
+    ), TokenType.NULL);
 
     public static NonTerminal BINOP = new NonTerminal(ASTNodeType.BINOP, Arrays.asList(
         new Derivation(PLUS),
@@ -107,7 +129,40 @@ public class Grammar {
             new Terminal("semicolon", TokenType.SEMICOLON, false)
             )
         ), TokenType.NULL);
-            
+
+    public static NonTerminal WHILELOOP = new NonTerminal(ASTNodeType.WHILELOOP, Arrays.asList(
+        new Derivation(
+          WHILE,
+          new Terminal("(", TokenType.LEFT_PARAN, false),
+          EXP,
+          new Terminal(")", TokenType.RIGHT_PARAN, false),
+          STATEMENT
+        )
+      ), TokenType.NULL
+    );    
+
+    public static NonTerminal DOWHILELOOP = new NonTerminal(ASTNodeType.DOWHILELOOP, Arrays.asList(
+        new Derivation(
+          DO,
+          STATEMENT,
+          WHILE,
+          new Terminal("(", TokenType.LEFT_PARAN, false),
+          EXP,
+          new Terminal(")", TokenType.RIGHT_PARAN, false),
+          SEMICOLON
+        )
+    ), TokenType.NULL);
+
+    //recursion of expression is not handles
+    public static NonTerminal FOR_INIT = new NonTerminal(ASTNodeType.FOR_INIT, Arrays.asList(
+        new Derivation(
+          DECLARATION
+        ), 
+        new Derivation(
+            EXP
+        )
+    ), TokenType.NULL);
+       
     public static NonTerminal BLOCKITEM = createBlockList();
     public static NonTerminal BLOCK  = createBlock();
 
@@ -162,7 +217,6 @@ public class Grammar {
                     expression,
                     COLON,
                     expression
-
                 )
             )
         );
@@ -186,7 +240,6 @@ public class Grammar {
                 )
             )
         );
-
         return expression;
     }
 
@@ -231,8 +284,32 @@ public class Grammar {
                 BLOCK
             )
         ));
+
         STATEMENT.getDerivation().addAll(Arrays.asList(
-            new Derivation(block)
+            new Derivation(block), //4
+            new Derivation(
+                BREAK_STATEMENT
+            ),
+            new Derivation(
+                CONTINUE_STATEMENT
+            ),
+            new Derivation(
+                WHILELOOP
+            ),
+            new Derivation(
+                DOWHILELOOP                 
+            ), 
+            new Derivation(
+                FOR,
+                new Terminal("(", TokenType.LEFT_PARAN, false),
+                FOR_INIT,
+                EXP,
+                SEMICOLON,
+                EXP,
+                new Terminal(")", TokenType.RIGHT_PARAN, false),
+                STATEMENT,
+                SEMICOLON
+            )
         ));
         return block;
     }
@@ -241,8 +318,7 @@ public class Grammar {
         NonTerminal statement = new NonTerminal(ASTNodeType.STATEMENT, new ArrayList<Derivation>(), TokenType.NULL);
         statement.getDerivation().addAll(Arrays.asList(
             new Derivation(
-                new Terminal(ASTNodeType.RETURN, TokenType.RETURN, true),
-                EXP,
+                new Terminal(ASTNodeType.RETURN, TokenType.RETURN, true), EXP,
                 new Terminal("semicolon", TokenType.SEMICOLON, false)
             ),
             new Derivation(
@@ -261,7 +337,8 @@ public class Grammar {
             new Derivation(
                 ELSE,
                 statement
-            )
+            ), 
+            new Derivation()
         ));
 
         CONDITION.getDerivation().addAll( Arrays.asList(
