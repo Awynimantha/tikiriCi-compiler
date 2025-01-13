@@ -17,10 +17,11 @@ public class ASTNode {
         this.grammerElement = new GrammerElement();
     }
 
-    public ASTNode(String astNodeType) {
+    public ASTNode(String astNodeType, Boolean isTerminal) {
         this.children = new ArrayList<>() ;
         this.grammerElement = new GrammerElement();
         this.grammerElement.setName(astNodeType);
+        this.grammerElement.setIsTerminal(isTerminal);
     }
 
     public ASTNode(GrammerElement grammerElement) {

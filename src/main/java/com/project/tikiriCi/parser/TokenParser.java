@@ -61,7 +61,12 @@ public class TokenParser {
         } else if(nodeType == ASTNodeType.FACTOR) {
             pickedDerivation = pickFactorDerivation(node);
         } else if(nodeType == ASTNodeType.STATEMENT) {
-            pickedDerivation = pickStatementDerivation(node);
+            if(this.nextToken.getTokenType() == TokenType.FOR) {
+              parseForLoop(node);
+              pickedDerivation = new Derivation();
+            } else {
+              pickedDerivation = pickStatementDerivation(node);
+            }
         } else {
             //default
             pickedDerivation = TokenParserUtils.lookAHeadDerivationPicker(derivations, nextToken);
@@ -146,6 +151,55 @@ public class TokenParser {
         return unOPNode;        
     }
 
+    private ASTNode parseForLoop(ASTNode astNode) throws CompilerException {
+        //for
+        consumeTerminal(TokenType.FOR);
+        consumeTerminal(TokenType.LEFT_PARAN);
+        // init
+        ASTNode forLoop = new ASTNode(Grammar.FOR);
+        ASTNode initExpt = new ASTNode(Grammar.FOR_INIT);
+        ASTNode tmpExpressionNode = new ASTNode();
+        forLoop.addChild(initExpt);
+        astNode.addChild(forLoop);
+        while (this.nextToken.getTokenType() != TokenType.SEMICOLON) {
+          if(this.nextToken.getTokenType() == TokenType.INTEGER) {
+            ASTNode declarationNode = parseExpression(0);
+            initExpt.addChild(declarationNode);
+          } else {
+            tmpExpressionNode = parseExpression(0);
+            initExpt.addChild(tmpExpressionNode);
+          }
+          if(this.nextToken.getTokenType() != TokenType.SEMICOLON) {
+            consumeTerminal(TokenType.COMMA); 
+          }
+        }
+        // semicolon
+        consumeTerminal(TokenType.SEMICOLON);
+        if(this.nextToken.getTokenType() != TokenType.SEMICOLON) {
+          tmpExpressionNode = parseExpression(0);
+          ASTNode midExp = new ASTNode(ASTNodeType.MID_EXP, false);
+          midExp.addChild(tmpExpressionNode);
+          forLoop.addChild(midExp); 
+        }
+        consumeTerminal(TokenType.SEMICOLON);
+        if(this.nextToken.getTokenType() != TokenType.RIGHT_PARAN) {
+          ASTNode tailExp = new ASTNode(ASTNodeType.TAIL_EXP, false);
+          forLoop.addChild(tailExp);
+          while (this.nextToken.getTokenType() != TokenType.RIGHT_PARAN) {
+            tmpExpressionNode = parseExpression(0);
+            tailExp.addChild(tmpExpressionNode);
+            if(this.nextToken.getTokenType() != TokenType.SEMICOLON) {
+              consumeTerminal(TokenType.COMMA); 
+            }
+        }
+        }
+        consumeTerminal(TokenType.RIGHT_PARAN);
+        ASTNode statementNode = new ASTNode(Grammar.STATEMENT);
+        forLoop.addChild(statementNode);
+        parseElement(statementNode); 
+        return forLoop;
+    }
+
     private Derivation pickFactorDerivation(ASTNode astNode) {
         Derivation returnDerivation = new Derivation();
         List<Derivation> derivations = Grammar.FACTOR.getDerivation();
@@ -179,7 +233,8 @@ public class TokenParser {
             returnDerivation = derivations.get(6); 
         } else if(nextToken.getTokenType().equals(TokenType.BREAK)) {
             returnDerivation = derivations.get(5); 
-        } else {
+        } 
+        else {
             returnDerivation = derivations.get(1);
         }
         return returnDerivation;
