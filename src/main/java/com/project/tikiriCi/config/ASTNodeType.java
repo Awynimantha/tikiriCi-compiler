@@ -24,6 +24,9 @@ public class ASTNodeType {
     public static String INIT_DECL = "init_decl";
     public static String INIT_EXP = "init_exp"; 
     public static String FOR = "for";
+    public static String FORLOOP = "forloop";
+    public static String MID_EXP = "mid_exp";
+    public static String TAIL_EXP = "tail_exp";
     public static String WHILE = "while";
     public static String WHILELOOP = "whileloop";
     public static String DOWHILELOOP = "dowhileloop";

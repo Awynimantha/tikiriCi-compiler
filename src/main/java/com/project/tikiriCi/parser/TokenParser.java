@@ -156,7 +156,7 @@ public class TokenParser {
         consumeTerminal(TokenType.FOR);
         consumeTerminal(TokenType.LEFT_PARAN);
         // init
-        ASTNode forLoop = new ASTNode(Grammar.FOR);
+        ASTNode forLoop = new ASTNode(ASTNodeType.FORLOOP, true);
         ASTNode initExpt = new ASTNode(Grammar.FOR_INIT);
         ASTNode tmpExpressionNode = new ASTNode();
         forLoop.addChild(initExpt);

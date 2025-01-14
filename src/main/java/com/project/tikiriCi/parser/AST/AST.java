@@ -3,10 +3,8 @@ package com.project.tikiriCi.parser.AST;
 import java.util.HashMap;
 import java.util.List;
 
-import com.project.tikiriCi.config.ASTNodeType;
 import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.exception.CompilerException;
-import com.project.tikiriCi.parser.Derivation;
 import com.project.tikiriCi.parser.GrammerElement;
 import com.project.tikiriCi.parser.semantic_analyser.SemanticAnalyser;
 import com.project.tikiriCi.parser.semantic_analyser.SemanticVariable;
@@ -35,13 +33,16 @@ public class AST {
 
     public void semanticTraverse(ASTNode astNode, SemanticAnalyser semanticAnalyser, 
     HashMap<String, SemanticVariable> variableMap) throws CompilerException{
-        List<ASTNode> children = astNode.getChildren();
-        for (ASTNode child : children) {        
-            if(child.getASTNodeType().equals(ASTNodeType.BLOCK)) {
-                semanticAnalyser.blockAnalyser(child, variableMap);
-            }
-            semanticTraverse(child, semanticAnalyser, variableMap);
-        }
+        ASTNode functionNode = astNode.getChild(0);
+        ASTNode blockNode = functionNode.getChild(2);
+        semanticAnalyser.blockAnalyser(blockNode, variableMap);
+        // List<ASTNode> children = astNode.getChildren();
+        // for (ASTNode child : children) {        
+        //     if(child.getASTNodeType().equals(ASTNodeType.BLOCK)) {
+        //         semanticAnalyser.blockAnalyser(blockNode, variableMap);
+        //     }
+        //     semanticTraverse(child, semanticAnalyser, variableMap);
+        // }
     }
 
     //Ugly printer

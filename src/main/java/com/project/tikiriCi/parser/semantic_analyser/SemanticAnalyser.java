@@ -27,6 +27,11 @@ public class SemanticAnalyser {
         value = value.split("\\.")[0];
         return value + "." + uniqueIdentifer;
     }
+    
+    public String getBaseName(String value) {
+      value = value.split("\\.")[0];
+      return value;     
+    }
 
     public void statementAnalyser(ASTNode semanticNode, HashMap<String, SemanticVariable> variableMap)
     throws CompilerException{
@@ -41,8 +46,14 @@ public class SemanticAnalyser {
             if(firstChild.getChildren().size() != 2) {
                 statementAnalyser(firstChild.getChild(2), variableMap);
             }
+        } else if(firstChild.getASTNodeType().equals(ASTNodeType.FORLOOP)){
+
+
+        } else if(firstChild.getASTNodeType().equals(ASTNodeType.WHILELOOP)){
+            expressionAnalyser(firstChild.getChild(0), variableMap);    
+            statementAnalyser(firstChild.getChild(1), variableMap);
         } else if(firstChild.getASTNodeType().equals(ASTNodeType.EXPRESSION)) {
-            expressionAnalyser(firstChild.getChild(0), variableMap);
+            expressionAnalyser(firstChild, variableMap);
         }
 
     }
@@ -89,37 +100,28 @@ public class SemanticAnalyser {
         ASTNode astNode = expNode.getChild(0);
         if(astNode.getASTNodeType() == ASTNodeType.ASSIGNMENT){
             ASTNode leftNode = astNode.getChild(0).getChild(0);
-            ASTNode rightNode = astNode.getChild(1);
+            ASTNode rightNode = astNode.getChild(1).getChild(0);
             //left hand should always be a var
             if(leftNode.getASTNodeType() != ASTNodeType.VAR) {
                 throw new CompilerException("Error: Wrong left value");
             }
-            if(!variableMap.containsKey(leftNode.getValue()) && !variableMap.containsValue(new SemanticVariable(leftNode.getValue()))) {
-                if(parsedVariables.contains(leftNode.getValue())) {
-                    String newValue = createUniqueVar(leftNode.getValue());
-                    variableMap.put(leftNode.getValue(), new SemanticVariable(newValue));
-                    leftNode.setValue(newValue);
-                } else {
-                    throw new CompilerException("Error: Unidentified Variable this named " + astNode.getValue());
-                }
-            }
+            //if(!variableMap.containsKey(leftNode.getValue()) && !variableMap.containsValue(new SemanticVariable(leftNode.getValue()))) {
+             //       String newValue = createUniqueVar(leftNode.getValue());
+              //      variableMap.put(leftNode.getValue(), new SemanticVariable(newValue));
+               //     leftNode.setValue(newValue);
+            //}
             //m.0 comes here, fix 
-            if(!variableMap.containsValue(new SemanticVariable(leftNode.getValue()))){
+            if(variableMap.containsKey(getBaseName(leftNode.getValue()))){
                 leftNode.setValue(variableMap.get(leftNode.getValue()).getValue());
+            } else {
+                throw new CompilerException("Error: Undefined Varibale");
             }
             expressionAnalyser(rightNode, variableMap);
-        } else if(astNode.getGrammerElement().getTokenType().equals(TokenType.IDENTIFIER)) {
-            if(!variableMap.containsValue(new SemanticVariable(astNode.getValue()))){
-                if(variableMap.containsKey(astNode.getValue())){
-                    astNode.setValue(variableMap.get(astNode.getValue()).getValue());
-                } else {
-                    if(!parsedVariables.contains(astNode.getValue())) {
-                        throw new CompilerException("Error: Unidentified Variable named " + astNode.getValue());
-                    } else {
-                        throw new CompilerException("Error: Variable " + astNode.getValue() + " is not initialized");
-                    }
-                }
-
+        } else if(astNode.getASTNodeType().equals(ASTNodeType.VAR)) {
+            if(variableMap.containsKey(getBaseName(astNode.getValue()))){
+                    astNode.setValue(variableMap.get(getBaseName(astNode.getValue())).getValue());
+            } else {
+              throw new CompilerException("Error: Unidentified Variable named " + astNode.getValue());
             }
         } else if(expNode.getChildren().size() > 1 && expNode.getChild(1).getASTNodeType() == ASTNodeType.BINOP) {
             expressionAnalyser(expNode.getChild(0), variableMap);  

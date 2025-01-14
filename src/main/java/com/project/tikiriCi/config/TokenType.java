@@ -12,6 +12,7 @@ public class TokenType {
    public static String ELSE = "\\belse\\b";
    public static String WHILE = "\\bwhile\\b";
    public static String FOR = "\\bfor\\b";
+   public static String COMMA = "^\\,$";
    public static String CONTINUE = "\\bcontinue\\b";
    public static String BREAK = "\\bbreak\\b";
    public static String DO = "\\bdo\\b";
@@ -44,11 +45,11 @@ public class TokenType {
    public static char WHITESPACE =  ' ';
    public static char TAB = '\t';
    public static char NEW_LINE = '\n';
-   public static String [] SYMBOLS = {QUESTION_MARK, COLON, ASSIGN, EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE,
+   public static String [] SYMBOLS = {COMMA, QUESTION_MARK, COLON, ASSIGN, EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE,
       SEMICOLON,COMPLEMENT, SUB, PLUS, MUL, DIV, MOD};
    public static String[] BINARY_OPS = {QUESTION_MARK, ASSIGN, EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, SUB, PLUS, MUL, DIV, MOD};
    //if the token is specialized identifier do not append
-   public static String [] TOKENS =  {DO, FOR, WHILE, BREAK ,CONTINUE, COLON, QUESTION_MARK, IF, ELSE, ASSIGN, EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, PLUS, MUL, DIV, MOD, COMPLEMENT, SUB, DOUBLE_SUB, TYPE, CONSTANT, INTEGER, VOID, RETURN, 
+   public static String [] TOKENS =  {COMMA, DO, FOR, WHILE, BREAK ,CONTINUE, COLON, QUESTION_MARK, IF, ELSE, ASSIGN, EQUAL_RIGHT_CHEVRON ,EQUAL_LEFT_CHEVRON, RIGHT_CHEVRON, LEFT_CHEVRON ,NOTEQUAL, EQUAL, OR, AND, NOT, PLUS, MUL, DIV, MOD, COMPLEMENT, SUB, DOUBLE_SUB, TYPE, CONSTANT, INTEGER, VOID, RETURN, 
       LEFT_PARAN, RIGHT_PARAN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON, IDENTIFIER};
    public static char [] IGNORE_TOKENS = {WHITESPACE, TAB, NEW_LINE};
 

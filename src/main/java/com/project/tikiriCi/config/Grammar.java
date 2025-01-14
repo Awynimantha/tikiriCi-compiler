@@ -113,8 +113,6 @@ public class Grammar {
     public static NonTerminal CONDITION = createCondition();
     public static NonTerminal STATEMENT = createStatement();
     
-                
-        
     public static NonTerminal DECLARATION = new NonTerminal(ASTNodeType.DECLARATION, Arrays.asList(
         new Derivation(
         new Terminal("int", TokenType.TYPE, true),
