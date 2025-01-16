@@ -23,6 +23,7 @@ public class Main
             parser.parse();
             AST ast = parser.getAST();
             ast.analyseSematics();
+            ast.labelLoop();          
             ast.traverse();
             /**AAST aast =  new AAST();
             aast.createAAST(ast);

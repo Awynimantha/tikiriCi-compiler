@@ -33,6 +33,7 @@ public class ASTNodeType {
     public static String DOWHILE = "dowhile";
     public static String CONTINUE = "contine";
     public static String BREAK = "break";
+    public static String LABEL = "label";
     public static String QUESTION_MARK = TokenType.QUESTION_MARK;
     public static String COLON = TokenType.COLON;
     public static String NEGATE = TokenType.COMPLEMENT;

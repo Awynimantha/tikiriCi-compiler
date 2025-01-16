@@ -71,7 +71,7 @@ public class Grammar {
 
     public static Terminal DO = new Terminal("do", TokenType.DO, false);
 
-    public static NonTerminal CONTINUE_STATEMENT = new NonTerminal(ASTNodeType.BREAK, Arrays.asList(
+    public static NonTerminal CONTINUE_STATEMENT = new NonTerminal(ASTNodeType.CONTINUE, Arrays.asList(
         new Derivation(
           CONTINUE,
           SEMICOLON

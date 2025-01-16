@@ -6,6 +6,7 @@ import java.util.List;
 import com.project.tikiriCi.config.Grammar;
 import com.project.tikiriCi.exception.CompilerException;
 import com.project.tikiriCi.parser.GrammerElement;
+import com.project.tikiriCi.parser.semantic_analyser.LoopMarker;
 import com.project.tikiriCi.parser.semantic_analyser.SemanticAnalyser;
 import com.project.tikiriCi.parser.semantic_analyser.SemanticVariable;
 
@@ -23,6 +24,11 @@ public class AST {
 
     public void traverse() {
         traverseNode(ASTRoot,0);
+    }
+    
+    public void labelLoop() {
+      LoopMarker loopMarker = new LoopMarker(this.ASTRoot);
+      loopMarker.process();
     }
 
     public void analyseSematics() throws CompilerException{ 
