@@ -6,6 +6,7 @@ import com.project.tikiriCi.lexer.Lexer;
 import com.project.tikiriCi.main.Token;
 import com.project.tikiriCi.parser.AST.AST;
 import com.project.tikiriCi.parser.TokenParser;
+import com.project.tikiriCi.parser.AAST.AAST;
 
 
 public class Main 
@@ -25,10 +26,10 @@ public class Main
             ast.analyseSematics();
             ast.labelLoop();          
             ast.traverse();
-            /**AAST aast =  new AAST();
+            AAST aast =  new AAST();
             aast.createAAST(ast);
             aast.traverseTree();
-            ASMT asmt = new ASMT();
+            /**ASMT asmt = new ASMT();
             asmt.createASMT(aast);
             asmt.fixRegAndStack();
             asmt.processMovNodes();

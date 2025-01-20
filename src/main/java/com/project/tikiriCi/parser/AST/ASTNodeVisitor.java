@@ -91,6 +91,13 @@ public class ASTNodeVisitor {
         return returnNode;
     }
 
+    public AASTNode createWhileLoopNode(ASTNode loopNode) {
+      AASTNode returnNode = new AASTNode(AASTNodeType.INSTRUCTION);   
+      ASTNode expression = loopNode.getChild(0);
+      AASTNode varNode = expressionToAAST(returnNode, expression);
+      AASTNode raxNode = new AASTNode(AASTNodeType.);
+    }
+
     public AASTNode createDeclarationNode(ASTNode declarationNode) {
         AASTNode instructionNode = new AASTNode();
         ASTNode identifierNode = declarationNode.getTerminalChildByASTNodeType(TokenType.IDENTIFIER);
