@@ -44,7 +44,8 @@ public class SemanticAnalyser {
             expressionAnalyser(firstChild.getChild(0), variableMap);       
             statementAnalyser(firstChild.getChild(1), variableMap);
             if(firstChild.getChildren().size() != 2) {
-                statementAnalyser(firstChild.getChild(2), variableMap);
+                System.out.print("----------------------------in--------------------");
+                statementAnalyser(firstChild.getChild(2).getChild(0), variableMap);
             }
         } else if(firstChild.getASTNodeType().equals(ASTNodeType.FORLOOP)){
 

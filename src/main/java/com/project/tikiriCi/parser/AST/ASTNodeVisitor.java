@@ -87,6 +87,17 @@ public class ASTNodeVisitor {
         } else if(firstNode.getASTNodeType() == ASTNodeType.BLOCK) {
             AASTNode instructionNode = createBlockNode(firstNode);
             returnNode.passChildren(instructionNode);
+        } else if(firstNode.getASTNodeType() == ASTNodeType.WHILELOOP) {
+            AASTNode instructionNode = createWhileLoopNode(firstNode);
+            returnNode.passChildren(instructionNode);
+        } else if(firstNode.getASTNodeType() == ASTNodeType.BREAK) {
+            AASTNode labelNode = createBreakLabelAASTNode(firstNode.getChild(0).getValue()).getChild(0); 
+            AASTNode jumpNode = createJumpNode(labelNode);
+            returnNode.addChildren(jumpNode);
+        } else if(firstNode.getASTNodeType() == ASTNodeType.CONTINUE) {
+            AASTNode labelNode = createStartLabelAASTNode(firstNode.getChild(0).getValue()).getChild(0); 
+            AASTNode jumpNode = createJumpNode(labelNode);
+            returnNode.addChildren(jumpNode);
         }
         return returnNode;
     }
@@ -94,8 +105,58 @@ public class ASTNodeVisitor {
     public AASTNode createWhileLoopNode(ASTNode loopNode) {
       AASTNode returnNode = new AASTNode(AASTNodeType.INSTRUCTION);   
       ASTNode expression = loopNode.getChild(0);
+      ASTNode statement = loopNode.getChild(1);
+
+      AASTNode breakLabel = createBreakLabelAASTNode(loopNode.getValue());
+      AASTNode startLabel = createStartLabelAASTNode(loopNode.getValue());
+      
+      returnNode.addChildren(startLabel);
+
       AASTNode varNode = expressionToAAST(returnNode, expression);
-      AASTNode raxNode = new AASTNode(AASTNodeType.);
+      AASTNode jumpIfNode = createJumpIfZeroNode(varNode, breakLabel.getChild(0)); 
+      returnNode.addChildren(jumpIfNode);
+      AASTNode statementInstruction = createStatementNode(statement);
+      returnNode.passChildren(statementInstruction);
+
+      AASTNode jumpNode = createJumpNode(startLabel.getChild(0));
+      returnNode.addChildren(jumpNode);
+      returnNode.addChildren(breakLabel);
+      return returnNode;
+      
+    }
+    
+    public AASTNode createBreakLabelAASTNode(ASTNode labelASTNode) {
+      String labelName = labelASTNode.getChild(0).getValue();
+      AASTNode labelNode = new AASTNode(AASTNodeType.LABEL);
+      AASTNode labelNameNode = new AASTNode(AASTNodeType.LABEL_NAME);
+      labelNameNode.setValue(labelName+"."+"break");
+      labelNode.addChildren(labelNameNode);
+      return labelNode;
+    }
+    
+    public AASTNode createBreakLabelAASTNode(String labelName) {
+      AASTNode labelNode = new AASTNode(AASTNodeType.LABEL);
+      AASTNode labelNameNode = new AASTNode(AASTNodeType.LABEL_NAME);
+      labelNameNode.setValue(labelName+"."+"break");
+      labelNode.addChildren(labelNameNode);
+      return labelNode;
+    }
+
+    public AASTNode createStartLabelAASTNode(String labelName) {
+      AASTNode labelNode = new AASTNode(AASTNodeType.LABEL);
+      AASTNode labelNameNode = new AASTNode(AASTNodeType.LABEL_NAME);
+      labelNameNode.setValue(labelName+"."+"start");
+      labelNode.addChildren(labelNameNode);
+      return labelNode;
+    }
+
+    public AASTNode createStartLabelAASTNode(ASTNode labelASTNode) { 
+      String labelName = labelASTNode.getChild(0).getValue();
+      AASTNode labelNode = new AASTNode(AASTNodeType.LABEL);
+      AASTNode labelNameNode = new AASTNode(AASTNodeType.LABEL_NAME);
+      labelNameNode.setValue(labelName+"."+"start");
+      labelNode.addChildren(labelNameNode);
+      return labelNode;
     }
 
     public AASTNode createDeclarationNode(ASTNode declarationNode) {

@@ -18,7 +18,7 @@ public class LoopMarker {
   }
 
   public String generateLoopLabel() {
-    return "loop"+currentLoop;
+    return "loop."+currentLoop;
   }
 
   public void process() {
@@ -33,6 +33,7 @@ public class LoopMarker {
       astNode = queue.poll();
       if(astNode.getASTNodeType() == ASTNodeType.WHILELOOP) {
         this.currentLoop = this.currentLoop + 1; 
+        astNode.setValue(generateLoopLabel());
       } else if(astNode.getASTNodeType() == ASTNodeType.CONTINUE ||
       astNode.getASTNodeType() == ASTNodeType.BREAK) {
         ASTNode labelNode = new ASTNode(ASTNodeType.LABEL, true);    

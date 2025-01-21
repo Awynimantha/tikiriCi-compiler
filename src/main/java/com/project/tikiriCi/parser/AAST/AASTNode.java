@@ -15,6 +15,7 @@ public class AASTNode {
 
     public AASTNode(){
         this.children = new ArrayList<AASTNode>();
+        this.grammerElement = new GrammerElement();
     }
 
     public AASTNode(String aASTNodeType) {
@@ -36,6 +37,10 @@ public class AASTNode {
 
     public void setGrammerElement(GrammerElement grammerElement) {
         this.grammerElement = grammerElement;
+    }
+
+    public void setValue(String value) {
+      this.grammerElement.setValue(value);
     }
 
     public void addChildren(AASTNode... aastNode) {
